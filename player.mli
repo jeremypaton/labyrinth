@@ -1,15 +1,15 @@
 open constants
-open Graphics
+open input
 
-(** the player module contains the update_player_position function **)
+(** the player module updates the player location based on keypresses **)
 
-(** variant movement_direction is the movement that the player will go in **)
-type movement_direction= Left | Right | Up | Down | None
+(** a key is a char representing a key pressed by the keyboard **)
+type key= char
 
-(** function update_player_postiion takes in player position, movement
+(** function update_player_position takes in player position, movement
  ** direction, global master board, and returns a new player position **)
-val update_player_postiion: position -> movement_direction -> master_board ->
+val update_player_position: position -> key list -> master_board ->
                             position
 
-(** in the .ml, there will be a helper function that takes in input from I/O
+(** in the .ml, there will be a helper function that takes in input from input.ml
  ** and outputs movement direction based on key press **)
