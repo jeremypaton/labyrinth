@@ -14,7 +14,7 @@ type game_progress= | In_progress | Won | Lost | Unstarted
 type game_state= {level_number: int;
                   game_progress: game_progress;
                   player_position: position;
-                  monster_postiion: position;
+                  monster_postiion: position list;
                   time: int}
 
 (** [redraw] takes a drawing_area and a game_state as input, and
