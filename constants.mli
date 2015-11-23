@@ -8,4 +8,27 @@
 type master_board= bool list list
 
 (** type levels board is a board of ints **)
-type levels_board= int list list
+type levels_board= float list list
+
+(** position is a tuple of ints- the coordinates **)
+type position= (int*int)
+
+(** game progress is a variant of strings: in_progress, win, lose, unstarted **)
+type game_progress= In_progress | Won | Lost | Unstarted
+
+(** game_state is a record that holds the level number, game progress, monster
+ **  position, player position, and time **)
+type game_state= {level_number: int;
+                  game_progress: game_progress;
+                  player_position: position;
+                  monster_position: position list;
+                  time: int}
+
+(** initialize a given level **)
+val init_level: int -> game_state option
+
+(** get a given level's master board **)
+val get_master: int -> master_board option
+
+(** get a given level's weight board **)
+val get_weights: int -> levels_board option
