@@ -47,20 +47,20 @@ let find_errors tentative =
                List.length (List.hd tentative.master_board)
                else 0 in
   let l_size = rows_l > 0 in
-  let l_square = List.fold_left (fun a b -> a && List.length b = rows_m) true
+  let l_rect = List.fold_left (fun a b -> a && List.length b = rows_m) true
                                 tentative.levels_board in
   let m_size = rows_m > 0 in
-  let m_square = List.fold_left (fun a b -> a && List.length b = rows_m) true
+  let m_rect = List.fold_left (fun a b -> a && List.length b = rows_m) true
                                 tentative.master_board in
   let player = List.length tentative.player_start = 1 in
   let monsters = List.length tentative.monster_start > 0 in
   let t = tentative.time > 0 in
 
-  match l_size,l_square,m_size,m_square,player,monsters,t with
+  match l_size,l_rect,m_size,m_rect,player,monsters,t with
   | false,_,_,_,_,_,_ -> failwith "level must be non-empty"
-  | _,false,_,_,_,_,_ -> failwith "level must be square"
+  | _,false,_,_,_,_,_ -> failwith "level must be rectangular"
   | _,_,false,_,_,_,_ -> failwith "masterboard must be non-empty"
-  | _,_,_,false,_,_,_ -> failwith "masterboard must be square"
+  | _,_,_,false,_,_,_ -> failwith "masterboard must be rectangular"
   | _,_,_,_,false,_,_ -> failwith "there must be one (and only one) player"
   | _,_,_,_,_,false,_ -> failwith "there must be a monster"
   | _,_,_,_,_,_,false -> failwith "time must be greater than 0"
