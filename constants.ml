@@ -40,8 +40,12 @@ let get_element_positions design element =
   search element design 0 []
 
 let find_errors tentative =
-  let rows_l = List.length tentative.levels_board in
-  let rows_m = List.length tentative.master_board in
+  let rows_l = if List.length tentative.levels_board > 0 then
+               List.length (List.hd tentative.levels_board)
+               else 0 in
+  let rows_m = if List.length tentative.master_board > 0 then
+               List.length (List.hd tentative.master_board)
+               else 0 in
   let l_size = rows_l > 0 in
   let l_square = List.fold_left (fun a b -> a && List.length b = rows_m) true
                                 tentative.levels_board in
@@ -109,10 +113,37 @@ let lvl1 =
                 [x;x;x;x;o;x;x;o;x]]
   in gen_lvl design 2.0 15
 
+let lvl2 =
+  let design = [[x;o;o;o;o;o;x;x;o;o;o;o;o;x;o;o;o;o;o;x];
+                [x;o;x;x;x;o;x;x;x;o;x;x;o;x;o;x;o;x;o;x];
+                [x;o;o;o;o;o;x;x;x;o;x;x;o;x;o;x;o;x;o;o];
+                [x;x;x;x;x;o;o;o;o;o;o;x;o;x;o;o;o;o;o;x];
+                [x;x;x;x;x;o;x;x;x;x;o;x;o;o;o;o;x;x;x;x];
+                [x;x;x;x;x;o;x;o;o;o;o;o;o;x;x;o;o;x;x;x];
+                [x;o;o;x;x;o;x;x;o;x;x;x;o;x;x;x;o;o;x;x];
+                [x;o;x;x;x;o;o;o;o;o;o;o;o;x;o;x;x;o;o;o];
+                [o;o;o;o;o;o;x;x;o;x;x;x;o;x;o;x;x;x;o;o];
+                [x;o;x;x;o;o;o;x;o;o;o;o;o;o;o;o;x;x;o;o];
+                [x;o;o;x;x;o;o;o;x;x;o;o;o;x;o;x;x;x;x;o];
+                [x;o;x;x;x;x;x;o;o;o;o;m;o;x;o;x;o;x;x;o];
+                [o;o;x;x;x;x;x;o;x;x;o;o;o;x;o;o;o;x;x;o];
+                [o;x;x;x;x;x;x;x;x;o;o;o;x;x;x;x;o;x;x;o];
+                [o;o;o;o;o;o;o;o;x;x;o;x;o;o;o;o;o;o;o;o];
+                [x;o;o;x;x;x;o;x;o;o;o;x;x;o;x;x;o;x;x;x];
+                [x;o;o;x;x;x;o;o;o;x;o;x;x;o;x;o;o;o;x;x];
+                [x;o;o;o;o;o;o;x;x;x;o;x;x;o;x;o;x;o;x;x];
+                [x;o;o;x;x;o;x;o;o;o;o;x;x;o;o;o;o;o;o;o];
+                [x;o;o;x;x;x;x;o;x;x;x;o;o;o;x;x;x;o;x;o];
+                [x;o;x;x;x;o;o;o;o;x;x;x;x;o;x;x;x;o;x;o];
+                [o;o;o;x;x;x;x;x;o;x;x;x;x;o;x;x;x;o;o;o];
+                [x;x;o;o;o;o;p;x;o;o;o;o;o;o;x;x;x;x;x;x]]
+  in gen_lvl design 4.0 60
+
 let retrieve lvl =
   match lvl with
   |0 -> Some lvl0
   |1 -> Some lvl1
+  |2 -> Some lvl2
   |_ -> None
 
 (******************************************************************************
