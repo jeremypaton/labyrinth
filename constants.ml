@@ -47,7 +47,7 @@ let find_errors tentative =
                List.length (List.hd tentative.master_board)
                else 0 in
   let l_size = rows_l > 0 in
-  let l_rect = List.fold_left (fun a b -> a && List.length b = rows_m) true
+  let l_rect = List.fold_left (fun a b -> a && List.length b = rows_l) true
                                 tentative.levels_board in
   let m_size = rows_m > 0 in
   let m_rect = List.fold_left (fun a b -> a && List.length b = rows_m) true
