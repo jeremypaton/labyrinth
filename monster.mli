@@ -14,4 +14,4 @@ val decision: move_type -> int -> move_type **)
 
 (** a function update_monster_position that takes in current monster position,
  ** player position, move type, and returns a new monster position **)
-val update_monster_position: position -> position -> move_type -> position
+val update_monster_position: position -> position -> int -> levels_board -> position
