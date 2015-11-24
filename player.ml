@@ -1,19 +1,17 @@
 open Constants
-open Input
-
 type key = char
 
-let get_keys () =
-      get_keypresses ()
+(* let get_keys () = *)
+      (* get_keypresses () *)
 type direction = Up | Down| Left | Right | Stay
 
 
 (*Assumption- Top left corner of board is (0,0) *)
 
-let update_player_position (p:position)   (m_board: master_board): position =
+let update_player_position (p:position)  (k_list:key list) (m_board: master_board): position =
           (*master_board = bool list list, key = char, position = (int*int) *)
 
-          let keys = get_keys () in
+          let keys = k_list in
           let dir = match keys with
                     |[] -> Stay
                     | h::t -> (match h with
