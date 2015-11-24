@@ -18,8 +18,6 @@ let decision()=
 let update_monster_position monster player level levels_board=
   let monster_x= fst monster in
   let monster_y= snd monster in
-  let player_x= fst player in
-  let player_y= snd player in
   if (!curr_move_type == Random) then
     let r= Random.int 4 in
     if (r == 0) then (monster_x+1, monster_y)
