@@ -1,4 +1,4 @@
-(** module display creates a GTK window (our GUI) and updates it according to
+(*(** module display creates a GTK window (our GUI) and updates it according to
  ** what needs to be displayed at any given frame. **)
 open GMain
 open constants
@@ -28,4 +28,4 @@ val create_screen: unit -> drawing_area
 
 
 (* Note: these function types might change as more is learned about
- * lablgtk *)
+ * lablgtk *)*)
