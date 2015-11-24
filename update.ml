@@ -1,6 +1,5 @@
-open player
-open monster
-open input
+open Player
+open Monster
 
 (** position is a tuple of ints- the coordinates **)
 type position= (int*int)
