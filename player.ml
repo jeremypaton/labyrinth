@@ -34,16 +34,16 @@ let update_player_position (p:position)   (m_board: master_board): position =
                     |Left -> (x-1,y)
                     |Right -> (x+1,y)
                     |Stay-> (x,y)
-          | _ -> failwith "position must be a pair of ints"
+
         )
         in
         (*Check if the movement to that pos is actually possible, i.e, if it is
         on board, and not a wall*)
-      let len_y =List.length master_board in
-      let len_x = List.length (List.hd master_board) in
+      let len_y =List.length m_board in
+      let len_x = List.length (List.hd m_board) in
       let new_pos_real =
           if new_x< len_x && new_x>=0 &&  new_y < len_y && new_y>= 0 then
-            if (List.nth ( List.nth new_y master_board) new_x )  (*Not a wall*)
+            if (List.nth ( List.nth m_board new_y) new_x )  (*Not a wall*)
               then (new_x,new_y)
             else p
         else p
