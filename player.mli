@@ -8,8 +8,7 @@ type key= char
 
 (** function update_player_position takes in player position, movement
  ** direction, global master board, and returns a new player position **)
-val update_player_position: position  -> master_board ->
+val update_player_position: position  ->key list ->  master_board ->
                             position
 
-(** in the .ml, there will be a helper function that takes in input from input.ml
- ** and outputs movement direction based on key press **)
+(** takes in input key_list from update **)
