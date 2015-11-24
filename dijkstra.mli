@@ -1,3 +1,4 @@
+open Constants
 (** module Dijkstra gets the first movmement of the optimal path between two
  ** positions **)
 
