@@ -1,5 +1,6 @@
 (* heavily took example of http://caml.inria.fr/pub/docs/oreilly-book/pdf/chap5.pdf *)
-
+open Constants
+open Update
 exception End
 
 
@@ -118,16 +119,24 @@ let draw_monster (s:display) (pos: int*int) =
 
 
 
-let skel f_init f_end f_key f_mouse f_except =
+let skel f_init f_loop f_end f_key f_mouse f_except =
   f_init ();
+  let game = ref (match (Constants.init_level 0) with
+                  | Some x -> x
+                  | None -> failwith "display.ml : cannot access level") in
   try
   while true do
-  try
-  let s = Graphics.wait_next_event
-  [Graphics.Button_down; Graphics.Key_pressed]
-  in if s.Graphics.keypressed then f_key s.Graphics.key
-  else if s.Graphics.button
-  then f_mouse s.Graphics.mouse_x s.Graphics.mouse_y
+    try
+    let s = Graphics.wait_next_event [Graphics.Button_down;
+                                      Graphics.Key_pressed;
+                                      Graphics.Poll] in
+    if s.Graphics.keypressed then
+      f_loop game [s.Graphics.key]
+    else if s.Graphics.button then
+      f_mouse s.Graphics.mouse_x s.Graphics.mouse_y
+    else
+      f_loop game []
+
   with
   End -> raise End
   | e -> f_except e
@@ -149,8 +158,8 @@ let handle_char c = match c with
   | _ -> Graphics.draw_char c
 
 let go () = skel
-  (fun () -> Graphics.clear_graph ();
-  Graphics.moveto 0 (Graphics.size_y() -12) )
+  (fun () -> Graphics.clear_graph (); Graphics.moveto 0 (Graphics.size_y() -12) )
+  (fun x y -> ())
   (fun () -> Graphics.clear_graph() )
   handle_char
   (fun x y -> Graphics.moveto x y)
@@ -167,15 +176,22 @@ let draw_point x y s c =
   Graphics.fill_rect (s*x) (s*y) s s
 
 
-let t_init s () =
+let t_init (s:display) () =
   Graphics.open_graph (" " ^ (string_of_int (s.scale*s.maxx)) ^
   "x" ^ (string_of_int (s.scale*s.maxy)));
   Graphics.set_color s.bc;
   Graphics.fill_rect 0 0 (s.scale*s.maxx+1) (s.scale*s.maxy+1);
   (*draw_point s.x s.y s.scale s.pc*)
 
-  Array.iter draw_box s.grid
+  Array.iter draw_block s.grid
 
+
+let t_loop (s:display) (game:game_state ref) (keys:char list) =
+  match keys with
+  | 'e'::_ -> raise End
+  | _ -> (game := Update.main_update !game keys;
+           draw_player s !game.player_position;
+           draw_monster s (List.hd !game.monster_position))
 
 let t_end s () =
   Graphics.close_graph();
@@ -224,8 +240,6 @@ let create_grid (s:display) (board: bool list list) (data:box_data) =
 
 let t_key (s:display) c =
   (*draw_point s.x s.y s.scale s.fc;*)
-  let _ = draw_player s (3,3) in
-  let _ = draw_monster s (0,0) in
 
   (match c with
   | '8' -> if s.y < s.maxy then s.y <- s.y + 1;
@@ -258,16 +272,15 @@ let initialize_display board =
 
 
 let slate (disp:display) =
-  skel (t_init disp) (t_end disp) (t_key disp)
+  skel (t_init disp) (t_loop disp) (t_end disp) (t_key disp)
   (t_mouse disp) (t_except disp)
 
 
 
-let test_board = [[false; false; false; true; false; false; false; false; true];
-                  [false; false; false; true; false; false; false; false; true];
-                  [true;  false; false; true; false; false; false; false; true];
-                  [true;  true;  true;  true; false; false; false; false; true]]
 
+let start_level lvl =
+  let board= match (Constants.get_master lvl) with | Some x -> x
+                                                   | _ -> failwith "no board" in
+  slate (initialize_display board)
 
-
-let _ = slate (initialize_display test_board)
+let _ = start_level 1

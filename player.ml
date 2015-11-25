@@ -15,10 +15,10 @@ let update_player_position (p:position)  (k_list:key list) (m_board: master_boar
           let dir = match keys with
                     |[] -> Stay
                     | h::t -> (match h with
-                              |'w' |'W' -> Up
-                              |'a' |'A' -> Left
-                              |'s' | 'S' -> Down
-                              |'d'|'D' -> Right
+                              |'w' |'W' -> print_string "UP"; Up
+                              |'a' |'A' -> print_string "LEFT"; Left
+                              |'s' | 'S' -> print_string "DOWN"; Down
+                              |'d'|'D' -> print_string "RIGHT"; Right
                               | _ -> Stay
                             )
 
