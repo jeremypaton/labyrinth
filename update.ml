@@ -15,7 +15,10 @@ type game_state= {level_number: int;
                   monster_postiion: position;
                   time: int}
 
-let update_play game =
+let update_play game keys =
+  if List.mem 'p' keys 
+  then {game with game_progress = Unstarted}
+  else
   let master_b = Constants.get_master game.level_number in
   let level_b = Constants.get_level game.level_number in
   let p_pos = Player.update_player_position game.player_position
@@ -28,31 +31,30 @@ let update_play game =
                                               game.level_number in
   let t = game.time - 1 in
   let state = if t <= 0 then Lost else In_progress in
-
   {game with game_progress = state;
              player_position = p_pos;
              monster_position = m_pos;
              time = t}
 
-let update_won game =
-  match List.mem 'r' Input.get_keypresses with
+let update_won game keys =
+  match List.mem 'r' keys with
   | false -> game
   | true -> Constants.init_game 0
 
-let update_lost game =
-    match List.mem 'r' Input.get_keypresses with
+let update_lost game keys =
+    match List.mem 'r' keys with
   | false -> game
   | true -> Constants.init_game game.level_number
 
-let update_paused game =
-  match List.mem ' ' Input.get_keypresses with
+let update_paused game keys =
+  match List.mem ' ' keys with
   | false -> game
   | true -> {game with game_progress = In_progress}
 
 
-let main_update game =
+let main_update game keys =
   match game.game_progress with
-  | In_progress -> update_play game
-  | Won -> update_won game
-  | Lost -> update_lost game
-  | Unstarted -> update_paused game
+  | In_progress -> update_play game keys
+  | Won -> update_won game keys
+  | Lost -> update_lost game keys
+  | Unstarted -> update_paused game keys
