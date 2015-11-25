@@ -117,4 +117,4 @@ let dijkstra (monster:Constants.position) (player:Constants.position)
              (board: Constants.levels_board)=
   let working_board= put_everything_together board monster in
   let explored= helper_dijkstra working_board [(monster,0.)] [] in
-  fst (List.nth explored 0)
+  fst (List.nth explored 1)
