@@ -170,36 +170,58 @@ let go () = skel
 
 
 
-
+(* Draw a rectangle with coordinates [(s*x) (s*y) s s] and color c *)
 let draw_point x y s c =
   Graphics.set_color c;
   Graphics.fill_rect (s*x) (s*y) s s
 
 
+(* Initialize the board in the display (i.e. draw the grid). Player and
+ * monsters are not drawn *)
 let t_init (s:display) () =
   Graphics.open_graph (" " ^ (string_of_int (s.scale*s.maxx)) ^
   "x" ^ (string_of_int (s.scale*s.maxy)));
   Graphics.set_color s.bc;
   Graphics.fill_rect 0 0 (s.scale*s.maxx+1) (s.scale*s.maxy+1);
   (*draw_point s.x s.y s.scale s.pc*)
-
   Array.iter draw_block s.grid
 
 
+let get_master_board lvl=
+  match (Constants.get_master lvl) with
+  | Some x -> x
+  | _ -> failwith "no board"
+
+let flip_y pos board=
+  let columns = (List.length (List.hd board)) in
+  (fst pos, (columns-snd pos)-1)
+
+(* Loop function to be called every frame and after each key press after
+ * initialization. Updates player and monsters positions *)
 let t_loop (s:display) (game:game_state ref) (keys:char list) =
   match keys with
-  | 'e'::_ -> raise End
-  | _ -> (game := Update.main_update !game keys;
-           draw_player s !game.player_position;
-           draw_monster s (List.hd !game.monster_position))
+  (* exit program if 'e'/'E' is pressed *)
+  | 'e'::_ | 'E'::_ -> raise End
+  (* run the main update function on key input otherwise *)
+  | _ -> game := Update.main_update !game keys;
+          let board = get_master_board !game.level_number in
+          let pp = flip_y !game.player_position board in
+          let mp = flip_y (List.hd !game.monster_position) board in
+           draw_player s pp;
+           draw_monster s mp
 
+
+(* Exits the program *)
 let t_end s () =
   Graphics.close_graph();
   print_string "Game ended by user"; print_newline()
 
 
+(* Function to execute on mouse clicks *)
 let t_mouse s x y = ()
 
+
+(* Function to execute on exceptions, unless exceptions is [End], i.e close *)
 let t_except s ex = ()
 
 
@@ -279,8 +301,7 @@ let slate (disp:display) =
 
 
 let start_level lvl =
-  let board= match (Constants.get_master lvl) with | Some x -> x
-                                                   | _ -> failwith "no board" in
+  let board= get_master_board lvl in
   slate (initialize_display board)
 
 let _ = start_level 1
