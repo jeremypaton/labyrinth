@@ -88,8 +88,8 @@ let gray1= set_gray 170 and gray2= set_gray 100 and gray3= set_gray 240
 let pos_to_boxdata (s:display) (pos: int*int) (scaling: float) (border: float) =
   let w' = int_of_float ((float_of_int s.x_sep)/.scaling) in
   let h' = int_of_float ((float_of_int s.y_sep)/.scaling) in
-  let float_x = float_of_int (fst pos) in
-  let float_y = float_of_int (snd pos) in
+  let float_y = float_of_int (fst pos) in
+  let float_x = float_of_int (snd pos) in
   let cent_x = int_of_float ((float_x+.0.5)*.(float_of_int s.x_sep)) in
   let cent_y = int_of_float ((float_y+.0.5)*.(float_of_int s.y_sep)) in
   let x' = cent_x - (w'/2) in
@@ -125,22 +125,21 @@ let skel f_init f_loop f_end f_key f_mouse f_except =
                   | Some x -> x
                   | None -> failwith "display.ml : cannot access level") in
   try
-  while true do
-    try
-    let s = Graphics.wait_next_event [Graphics.Button_down;
-                                      Graphics.Key_pressed;
-                                      Graphics.Poll] in
-    if s.Graphics.keypressed then
-      f_loop game [s.Graphics.key]
-    else if s.Graphics.button then
-      f_mouse s.Graphics.mouse_x s.Graphics.mouse_y
-    else
-      f_loop game []
-
-  with
-  End -> raise End
-  | e -> f_except e
-  done
+    while true do
+      try
+        let s = Graphics.wait_next_event [Graphics.Button_down;
+                                          Graphics.Key_pressed; Graphics.Poll] in
+        if s.Graphics.keypressed then
+          let k = Graphics.read_key () in
+          f_loop game [k]
+        else if s.Graphics.button then
+          f_mouse s.Graphics.mouse_x s.Graphics.mouse_y
+        else
+          f_loop game []
+      with
+        End -> raise End
+        | e -> f_except e
+    done
   with
   End -> f_end ()
 
@@ -194,11 +193,12 @@ let get_master_board lvl=
 
 let flip_y pos board=
   let columns = (List.length (List.hd board)) in
-  (fst pos, (columns-snd pos)-1)
+  ((columns-fst pos)-1, snd pos)
 
 (* Loop function to be called every frame and after each key press after
  * initialization. Updates player and monsters positions *)
 let t_loop (s:display) (game:game_state ref) (keys:char list) =
+  Printf.printf "%s\n%!" ("t_loop is called with key "^(Char.escaped (List.hd keys)));
   match keys with
   (* exit program if 'e'/'E' is pressed *)
   | 'e'::_ | 'E'::_ -> raise End
@@ -261,7 +261,7 @@ let create_grid (s:display) (board: bool list list) (data:box_data) =
 
 
 let t_key (s:display) c =
-  (*draw_point s.x s.y s.scale s.fc;*)
+  draw_point s.x s.y s.scale s.fc;
 
   (match c with
   | '8' -> if s.y < s.maxy then s.y <- s.y + 1;
