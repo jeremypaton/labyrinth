@@ -277,7 +277,7 @@ let t_key (s:display) c =
 
 let initialize_display board =
   let maxx' = 1080 in
-  let maxy' = 720 in
+  let maxy' = 1080 in
   let scale' = 1 in
   let rows = (List.length board) in
   let columns = (List.length (List.hd board)) in
