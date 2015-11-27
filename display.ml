@@ -126,19 +126,19 @@ let skel f_init f_loop f_end f_key f_mouse f_except =
                   | None -> failwith "display.ml : cannot access level") in
   try
     while true do
-      try
+      (*try*)
         let s = Graphics.wait_next_event [Graphics.Button_down;
                                           Graphics.Key_pressed; Graphics.Poll] in
         if s.Graphics.keypressed then
           let k = Graphics.read_key () in
-          f_loop game [k]
+          f_init (); f_loop game [k]
         else if s.Graphics.button then
           f_mouse s.Graphics.mouse_x s.Graphics.mouse_y
-        else
-          f_loop game []
-      with
+        (*else
+          f_loop game []*)
+      (*with
         End -> raise End
-        | e -> f_except e
+        | e -> f_except e*)
     done
   with
   End -> f_end ()
@@ -198,7 +198,10 @@ let flip_y pos board=
 (* Loop function to be called every frame and after each key press after
  * initialization. Updates player and monsters positions *)
 let t_loop (s:display) (game:game_state ref) (keys:char list) =
-  Printf.printf "%s\n%!" ("t_loop is called with key "^(Char.escaped (List.hd keys)));
+  if (List.length keys)>0 then
+    Printf.printf "%s\n%!" ("t_loop is called with key "^(Char.escaped (List.hd keys)))
+  else
+    Printf.printf "%s\n%!" ("t_loop is called with no input");
   match keys with
   (* exit program if 'e'/'E' is pressed *)
   | 'e'::_ | 'E'::_ -> raise End
@@ -222,7 +225,7 @@ let t_mouse s x y = ()
 
 
 (* Function to execute on exceptions, unless exceptions is [End], i.e close *)
-let t_except s ex = ()
+let t_except s ex = Printf.printf "%s\n%!" ("EXCEPTION IN DISPLAY")
 
 
 
