@@ -9,8 +9,8 @@ let rec board_to_positions board row_n=
   | h::t -> (helper_for_row h row_n 0)::(board_to_positions t (row_n + 1))
 
 let rec weight_helper_for_row list position=
-  let x= fst position in
-  let y= snd position in
+  let y= fst position in
+  let x= snd position in
   match list with
   | [] -> []
   | ((a,b),c)::t -> ((a,b),c*.(sqrt(float_of_int((a-x)*(a-x)+(b-y)*(b-y)))))::
@@ -41,11 +41,11 @@ let get_neighbors_of_y x l y=
   [(x,y+1);(x,y-1)]
 
 let rec row_helper_neighbor_match neighbor list=
-  let x= fst neighbor in
-  let y= snd neighbor in
+  let y= fst neighbor in
+  let x= snd neighbor in
   match list with
   | [] -> []
-  | ((a,b),c)::t -> if (a==x && b==y) then [((a,b),c)]
+  | ((a,b),c)::t -> if (a==y && b==x) then [((a,b),c)]
                     else row_helper_neighbor_match neighbor t
 
 
@@ -61,8 +61,8 @@ let rec match_all_neighbors neighbors board=
   | h::t -> (match_neighbor_to_weights h board)::match_all_neighbors t board
 
 let get_neighbors position board=
-  let x= fst position in
-  let y= snd position in
+  let y= fst position in
+  let x= snd position in
   let l= List.length board in
   let list_of= List.append (get_neighbors_of_x x l y)
                            (get_neighbors_of_y x l y) in
@@ -77,21 +77,21 @@ let rec update_frontier frontier neighbors explored=
             update_frontier new_frontier t explored
 
 let rec row_helper_rem_elt list pos=
-  let x= fst pos in
-  let y= snd pos in
+  let y= fst pos in
+  let x= snd pos in
   match list with
   | [] -> []
-  | ((a,b),c)::t -> if (a==x && b==y) then [((a,b),c)] else row_helper_rem_elt t pos
+  | ((a,b),c)::t -> if (a==y && b==x) then [((a,b),c)] else row_helper_rem_elt t pos
 
 let rec rem_from_frontier (frontier: ((int*int)*float) list) pos board=
-  let x= fst pos in
-  let y= snd pos in
+  let y= fst pos in
+  let x= snd pos in
   match frontier with
   | [] -> []
   | h::t -> let posh= fst h in
-            let xh= fst posh in
-            let yh= snd posh in
-            if (xh==x  && yh==y) then t else
+            let yh= fst posh in
+            let xh= snd posh in
+            if (yh==y  && xh==x) then t else
             h::(rem_from_frontier t pos board)
 
 let rec find_closest frontier curr_smallest=
@@ -105,11 +105,11 @@ let add_to_explored (explored: ((int*int)*float) list) pos=
   List.rev(pos::explored)
 
 let rec row_helper_rem_elt list pos=
-  let x= fst pos in
-  let y= snd pos in
+  let y= fst pos in
+  let x= snd pos in
   match list with
   | [] -> []
-  | ((a,b),c)::t -> if (a==x && b==y) then [((a,b),c)] else
+  | ((a,b),c)::t -> if (a==y && b==x) then [((a,b),c)] else
                       row_helper_rem_elt t pos
 
 let rec find_elt_to_rem (board: ((int*int)*float) list list) pos=
