@@ -88,9 +88,9 @@ TEST "up down left right" =
 
 TEST "collisions" =
   Player.update_player_position (4,1) ['w'] (get (Constants.get_master 0)) = (4,1) &&
-  Player.update_player_position (4,2) ['a'] (get (Constants.get_master 0))  = (4,2) &&
+  Player.update_player_position (3,4) ['a'] (get (Constants.get_master 0))  = (3,4) &&
   Player.update_player_position (4,6) ['s'] (get (Constants.get_master 0)) = (4,6) &&
-  Player.update_player_position (4,7) ['d'] (get (Constants.get_master 0))  = (4,7)
+  Player.update_player_position (8,4) ['d'] (get (Constants.get_master 0))  = (8,4)
 
 (******************************************************************************
  ******************************************************************************
