@@ -303,4 +303,4 @@ let start_level lvl =
   let board= get_master_board lvl in
   slate lvl (initialize_display board)
 
-let _ = start_level 2
+let _ = start_level 1
