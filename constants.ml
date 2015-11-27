@@ -91,14 +91,14 @@ let p = Player
 
 let lvl0 =
   let design = [[x;x;x;x;o;x;x;x;x];
-                [x;x;x;x;o;x;o;o;x];
-                [x;o;o;o;o;x;x;o;x];
-                [x;o;x;x;o;x;x;o;x];
-                [m;o;o;o;o;o;o;o;o];
-                [x;o;x;x;o;x;x;o;x];
-                [x;o;x;x;o;o;o;p;x];
-                [x;o;o;o;o;x;x;o;x];
-                [x;x;x;x;o;x;x;o;x]]
+                [x;x;x;x;o;x;x;x;x];
+                [x;x;x;x;o;x;x;x;x];
+                [x;x;x;x;o;x;x;x;x];
+                [m;o;o;o;p;o;o;o;o];
+                [x;x;x;x;o;x;x;x;x];
+                [x;x;x;x;o;x;x;x;x];
+                [x;x;x;x;o;x;x;x;x];
+                [x;x;x;x;o;x;x;x;x]]
   in gen_lvl design 1000.0 20
 
 let lvl1 =
@@ -131,12 +131,12 @@ let lvl2 =
                 [o;o;o;o;o;o;o;o;x;x;o;x;o;o;o;o;o;o;o;o];
                 [x;o;o;x;x;x;o;x;o;o;o;x;x;o;x;x;o;x;x;x];
                 [x;o;o;x;x;x;o;o;o;x;o;x;x;o;x;o;o;o;x;x];
-                [x;o;o;o;o;o;o;x;x;x;o;x;x;o;x;o;x;o;x;x];
+                [x;o;o;o;o;o;p;x;x;x;o;x;x;o;x;o;x;o;x;x];
                 [x;o;o;x;x;o;x;o;o;o;o;x;x;o;o;o;o;o;o;o];
                 [x;o;o;x;x;x;x;o;x;x;x;o;o;o;x;x;x;o;x;o];
                 [x;o;x;x;x;o;o;o;o;x;x;x;x;o;x;x;x;o;x;o];
                 [o;o;o;x;x;x;x;x;o;x;x;x;x;o;x;x;x;o;o;o];
-                [x;x;o;o;o;o;p;x;o;o;o;o;o;o;x;x;x;x;x;x]]
+                [x;x;o;o;o;o;o;x;o;o;o;o;o;o;x;x;x;x;x;x]]
   in gen_lvl design 4.0 60
 
 let retrieve lvl =

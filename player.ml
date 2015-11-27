@@ -10,15 +10,14 @@ type direction = Up | Down| Left | Right | Stay
 
 let update_player_position (p:position)  (k_list:key list) (m_board: master_board): position =
           (*master_board = bool list list, key = char, position = (int*int) *)
-Printf.printf "%s\n%!" ("updating player position");
           let keys = k_list in
           let dir = match keys with
-                    |[] -> Printf.printf "%s\n%!" ("STAY"); Stay
+                    |[] -> Stay
                     | h::t -> (match h with
-                              |'w' |'W' -> Printf.printf "%s\n%!" ("UP"); Up
-                              |'a' |'A' -> Printf.printf "%s\n%!" ("LEFT"); Left
-                              |'s' |'S' -> Printf.printf "%s\n%!" ("DOWN"); Down
-                              |'d' |'D' -> Printf.printf "%s\n%!" ("RIGHT"); Right
+                              |'w' |'W' -> Up
+                              |'a' |'A' -> Left
+                              |'s' |'S' -> Down
+                              |'d' |'D' -> Right
                               | _ -> Stay
                             )
 
@@ -43,8 +42,8 @@ Printf.printf "%s\n%!" ("updating player position");
           if new_x< len_x && new_x>=0 &&  new_y < len_y && new_y>= 0 then
             if (List.nth ( List.nth m_board (new_y)) (new_x) )  (*Not a wall*)
               then (new_y,new_x)
-            else let _ = Printf.printf "%s\n%!" ("THERES A WALL AT "^(string_of_int new_x)^", "^(string_of_int new_y)) in p
-        else let _ = Printf.printf "%s\n%!" ("CAN'T RUN OFF THE BOARD") in p
+            else p
+        else p
       in
       new_pos_real
       (*Check wall*)

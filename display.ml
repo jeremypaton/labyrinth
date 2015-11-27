@@ -119,9 +119,9 @@ let draw_monster (s:display) (pos: int*int) =
 
 
 
-let skel f_init f_loop f_end f_key f_mouse f_except =
+let skel (lvl:int) f_init f_loop f_end f_key f_mouse f_except =
   f_init ();
-  let game = ref (match (Constants.init_level 0) with
+  let game = ref (match (Constants.init_level lvl) with
                   | Some x -> x
                   | None -> failwith "display.ml : cannot access level") in
   try
@@ -156,7 +156,7 @@ let handle_char c = match c with
   | '\r' -> next_line ()
   | _ -> Graphics.draw_char c
 
-let go () = skel
+let go () = skel 0
   (fun () -> Graphics.clear_graph (); Graphics.moveto 0 (Graphics.size_y() -12) )
   (fun x y -> ())
   (fun () -> Graphics.clear_graph() )
@@ -198,10 +198,6 @@ let flip_y pos board=
 (* Loop function to be called every frame and after each key press after
  * initialization. Updates player and monsters positions *)
 let t_loop (s:display) (game:game_state ref) (keys:char list) =
-  if (List.length keys)>0 then
-    Printf.printf "%s\n%!" ("t_loop is called with key "^(Char.escaped (List.hd keys)))
-  else
-    Printf.printf "%s\n%!" ("t_loop is called with no input");
   match keys with
   (* exit program if 'e'/'E' is pressed *)
   | 'e'::_ | 'E'::_ -> raise End
@@ -296,8 +292,8 @@ let initialize_display board =
   {temp_disp with grid=grid'}
 
 
-let slate (disp:display) =
-  skel (t_init disp) (t_loop disp) (t_end disp) (t_key disp)
+let slate (lvl:int) (disp:display) =
+  skel lvl (t_init disp) (t_loop disp) (t_end disp) (t_key disp)
   (t_mouse disp) (t_except disp)
 
 
@@ -305,6 +301,6 @@ let slate (disp:display) =
 
 let start_level lvl =
   let board= get_master_board lvl in
-  slate (initialize_display board)
+  slate lvl (initialize_display board)
 
-let _ = start_level 1
+let _ = start_level 2
