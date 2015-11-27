@@ -56,7 +56,7 @@ TEST "level 0" =
  ******************************************************************************
  ******************************************************************************)
 
-TEST "straight line" =
+TEST "Djikstra: straight line" =
   Dijkstra.dijkstra (4,0) (4,4) (get (Constants.get_weights 0)) = (4,1)
 
 (******************************************************************************
@@ -80,13 +80,13 @@ TEST "straight line" =
  ******************************************************************************
  ******************************************************************************)
 
-TEST "up down left right" =
+TEST "PLayer: up down left right" =
   Player.update_player_position (4,4) ['w'] (get (Constants.get_master 0)) = (3,4) &&
   Player.update_player_position (4,4) ['a'] (get (Constants.get_master 0)) = (4,3) &&
   Player.update_player_position (4,4) ['s'] (get (Constants.get_master 0))  = (5,4) &&
   Player.update_player_position (4,4) ['d'] (get (Constants.get_master 0)) = (4,5)
 
-TEST "collisions" =
+TEST "PLayer: collisions" =
   Player.update_player_position (4,1) ['w'] (get (Constants.get_master 0)) = (4,1) &&
   Player.update_player_position (3,4) ['a'] (get (Constants.get_master 0))  = (3,4) &&
   Player.update_player_position (4,6) ['s'] (get (Constants.get_master 0)) = (4,6) &&
