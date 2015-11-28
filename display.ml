@@ -205,7 +205,7 @@ let t_loop (s:display) (game:game_state ref) (keys:char list) =
   | _ -> game := Update.main_update !game keys;
           let board = get_master_board !game.level_number in
           let pp = flip_y !game.player_position board in
-          let mp = flip_y (List.hd !game.monster_position) board in
+          let mp = flip_y (snd (List.hd !game.monster_position)) board in
            draw_player s pp;
            draw_monster s mp
 

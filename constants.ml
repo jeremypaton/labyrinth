@@ -6,19 +6,33 @@ type position= (int*int)
 
 type game_progress= In_progress | Won | Lost | Unstarted
 
+type move_type= Chasing | Random | Up | Down | Left | Right
+
+type monster = (move_type * position)
+
 type game_state= {level_number: int;
                   game_progress: game_progress;
                   player_position: position;
-                  monster_position: position list;
+                  monster_position: monster list;
                   time: int}
+
 
 type level = {levels_board: levels_board;
               master_board: master_board;
               player_start: position list;
-              monster_start: position list;
+              monster_start: monster list;
               time: int}
 
-type element = Wall | Path | Monster | Player
+type element =
+|Wall | Path | Player
+|MChasing
+|MRandom
+|MUp
+|MDown
+|MLeft
+|MRight
+
+
 type design = element list list
 
 let gen_lvl_board design wall_weight =
@@ -62,15 +76,25 @@ let find_errors tentative =
   | _,_,false,_,_,_,_ -> failwith "masterboard must be non-empty"
   | _,_,_,false,_,_,_ -> failwith "masterboard must be rectangular"
   | _,_,_,_,false,_,_ -> failwith "there must be one (and only one) player"
-  | _,_,_,_,_,false,_ -> failwith "there must be a monster"
+  (*| _,_,_,_,_,false,_ -> failwith "there must be a monster"*)
   | _,_,_,_,_,_,false -> failwith "time must be greater than 0"
   | _,_,_,_,_,_,_     -> None
 
+let extract_monsters design m_type element =
+  List.map (fun x-> (m_type,x)) (get_element_positions design element)
+
 let gen_lvl design wall_weight time=
+  let mCs = extract_monsters design Chasing MChasing in
+  let mMms = extract_monsters design Random  MRandom  in
+  let mUs = extract_monsters design Up      MUp      in
+  let mDs = extract_monsters design Down    MDown    in
+  let mLs = extract_monsters design Left    MLeft    in
+  let mRs = extract_monsters design Right   MRight   in
+  let monsters = mCs @ mMms @ mUs @ mDs @ mLs @ mRs in
   let tentative_level = {levels_board= gen_lvl_board design wall_weight;
                          master_board= gen_master_board design;
                          player_start= get_element_positions design Player;
-                         monster_start= get_element_positions design Monster;
+                         monster_start= monsters;
                          time = time} in
   if find_errors tentative_level = None then tentative_level
                                         else failwith "invalid level"
@@ -82,21 +106,42 @@ let gen_lvl design wall_weight time=
  ****     remember to edit the "retrieve" match statement at the bottom    ****
  ******************************************************************************
  ******************************************************************************)
-
 (*alliases for designing boards*)
 let x = Wall
 let o = Path
-let m = Monster
+let mC = MChasing
+let mMm = MRandom
+let mU = MUp
+let mD = MDown
+let mL = MLeft
+let mR = MRight
 let p = Player
+
+let lvlminus3 =
+  let design = [[p]]
+  in gen_lvl design 1000.0 20
+
+let lvlminus2 =
+  let design = [[o;o;o];
+                [o;p;o];
+                [o;o;o]]
+  in gen_lvl design 1000.0 20
+
+let lvlminus1 =
+  let design = [[x;x;x];
+               [x;p;x];
+               [x;x;x]]
+  in gen_lvl design 1000.0 20
+
 
 let lvl0 =
   let design = [[x;x;x;x;o;x;x;x;x];
                 [x;x;x;x;o;x;x;x;x];
                 [x;x;x;x;o;x;x;x;x];
                 [x;x;x;x;o;x;x;x;x];
-                [m;o;o;o;p;o;o;o;o];
+                [mR;o;o;o;p;o;o;o;o];
                 [x;x;x;x;o;x;x;x;x];
-                [x;x;x;x;o;x;x;x;x];
+                [x;x;x;x;mU;x;x;x;x];
                 [x;x;x;x;o;x;x;x;x];
                 [x;x;x;x;o;x;x;x;x]]
   in gen_lvl design 1000.0 20
@@ -106,12 +151,12 @@ let lvl1 =
                 [x;x;x;x;o;x;o;o;x];
                 [x;o;o;o;o;x;x;o;x];
                 [x;o;x;x;o;x;x;o;x];
-                [m;o;o;o;o;o;o;o;o];
+                [mC;o;o;o;o;o;o;o;o];
                 [x;o;x;x;o;x;x;o;x];
                 [x;o;x;x;o;o;o;p;x];
                 [x;o;o;o;o;x;x;o;x];
                 [x;x;x;x;o;x;x;o;x]]
-  in gen_lvl design 2.0 15
+  in gen_lvl design 1000.0 15
 
 let lvl2 =
   let design = [[x;o;o;o;o;o;x;x;o;o;o;o;o;x;o;o;o;o;o;x];
@@ -125,7 +170,7 @@ let lvl2 =
                 [o;o;o;o;o;o;x;x;o;x;x;x;o;x;o;x;x;x;o;o];
                 [x;o;x;x;o;o;o;x;o;o;o;o;o;o;o;o;x;x;o;o];
                 [x;o;o;x;x;o;o;o;x;x;o;o;o;x;o;x;x;x;x;o];
-                [x;o;x;x;x;x;x;o;o;o;o;m;o;x;o;x;o;x;x;o];
+                [x;o;x;x;x;x;x;o;o;o;o;mC;o;x;o;x;o;x;x;o];
                 [o;o;x;x;x;x;x;o;x;x;o;o;o;x;o;o;o;x;x;o];
                 [o;x;x;x;x;x;x;x;x;o;o;o;x;x;x;x;o;x;x;o];
                 [o;o;o;o;o;o;o;o;x;x;o;x;o;o;o;o;o;o;o;o];
@@ -137,10 +182,13 @@ let lvl2 =
                 [x;o;x;x;x;o;o;o;o;x;x;x;x;o;x;x;x;o;x;o];
                 [o;o;o;x;x;x;x;x;o;x;x;x;x;o;x;x;x;o;o;o];
                 [x;x;o;o;o;o;o;x;o;o;o;o;o;o;x;x;x;x;x;x]]
-  in gen_lvl design 4.0 60
+  in gen_lvl design 1000.0 60
 
 let retrieve lvl =
   match lvl with
+  |(-3 )-> Some lvlminus3
+  |(-2 )-> Some lvlminus2
+  |(-1 )-> Some lvlminus1
   |0 -> Some lvl0
   |1 -> Some lvl1
   |2 -> Some lvl2

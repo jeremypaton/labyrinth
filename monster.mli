@@ -1,10 +1,6 @@
 open Constants
 open Dijkstra
 
-(** define variant type move_type: chasing, random. This designates whether
- ** whether the monster is moving randomly or actively chasing the player **)
-type move_type= Chasing | Random
-
 (** type wait_left is the duration of time left before the monster can move
  ** again - is an int ref, defined in .ml **)
 
@@ -14,5 +10,5 @@ val decision: unit -> unit **)
 
 (** a function update_monster_position that takes in current monster position,
  ** player position, move type, and returns a new monster position **)
-val update_monster_position: position -> position -> int ->
-                             levels_board -> position
+val update_monster_position: monster -> position -> master_board ->
+                             levels_board ->  monster

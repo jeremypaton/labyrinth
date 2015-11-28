@@ -16,12 +16,18 @@ type position= (int*int)
 (** game progress is a variant of strings: in_progress, win, lose, unstarted **)
 type game_progress= In_progress | Won | Lost | Unstarted
 
+(** define variant type move_type: chasing, random. This designates whether
+ ** whether the monster is moving randomly or actively chasing the player **)
+type move_type= Chasing | Random | Up | Down | Left | Right 
+
+type monster = (move_type * position)
+
 (** game_state is a record that holds the level number, game progress, monster
  **  position, player position, and time **)
 type game_state= {level_number: int;
                   game_progress: game_progress;
                   player_position: position;
-                  monster_position: position list;
+                  monster_position: monster list;
                   time: int}
 
 (** initialize a given level **)
