@@ -13,7 +13,7 @@ let rec weight_helper_for_row list position=
   let x= snd position in
   match list with
   | [] -> []
-  | ((a,b),c)::t -> ((a,b),c*.(sqrt(float_of_int((a-x)*(a-x)+(b-y)*(b-y)))))::
+  | ((a,b),c)::t -> ((a,b),c*.(sqrt(float_of_int((a-y)*(a-y)+(b-x)*(b-x)))))::
                     weight_helper_for_row t position
 
 let rec board_to_weights board position=
@@ -26,26 +26,26 @@ let put_everything_together board position=
 
 let get_neighbors_of_x x l y=
   if (x=0) then
-  [(x+1,y)]
+  [(y,x+1)]
   else if (x=l) then
-  [(x-1,y)]
+  [(y,x-1)]
   else
-  [(x+1,y);(x-1,y)]
+  [(y,x+1);(y,x-1)]
 
 let get_neighbors_of_y x l y=
   if (y=0) then
-  [(x,y+1)]
+  [(y+1,x)]
   else if (y=l) then
-  [(x,y-1)]
+  [(y-1,x)]
   else
-  [(x,y+1);(x,y-1)]
+  [(y+1,x);(y-1,x)]
 
 let rec row_helper_neighbor_match neighbor list=
   let y= fst neighbor in
   let x= snd neighbor in
   match list with
   | [] -> []
-  | ((a,b),c)::t -> if (a==y && b==x) then [((a,b),c)]
+  | ((a,b),c)::t -> if (a==y && b=x) then [((a,b),c)]
                     else row_helper_neighbor_match neighbor t
 
 
@@ -102,7 +102,7 @@ let rec find_closest frontier curr_smallest=
                       find_closest t curr_smallest
 
 let add_to_explored (explored: ((int*int)*float) list) pos=
-  List.rev(pos::explored)
+  if List.mem pos explored then explored else List.append explored [pos]
 
 let rec row_helper_rem_elt list pos=
   let y= fst pos in
@@ -122,7 +122,7 @@ let is_target_there board player frontier=
   if (List.mem target frontier) then true else false
 
 let rec helper_dijkstra board player frontier (explored: ((int*int)*float) list)=
-  if (List.length frontier == 0) || (is_target_there board player frontier)
+  if (List.length frontier == 0) || (is_target_there board player explored)
     then explored else
   (* get closest position from frontier *)
   let pos= find_closest frontier ((0,0),infinity) in
@@ -130,14 +130,14 @@ let rec helper_dijkstra board player frontier (explored: ((int*int)*float) list)
   let new_explored= add_to_explored explored pos in
   let pos_coord= fst pos in
   let neighbors= List.flatten(List.flatten(get_neighbors pos_coord board)) in
-  let add_frontier= update_frontier frontier neighbors explored in
+  let add_frontier= update_frontier frontier neighbors new_explored in
   let new_frontier= (rem_from_frontier add_frontier pos_coord board) in
   helper_dijkstra board player new_frontier new_explored
 
 
 let dijkstra (monster:Constants.position) (player:Constants.position)
              (board: Constants.levels_board)=
-  let working_board= put_everything_together board player in
+  let working_board= put_everything_together board monster in
   let monster_elt= List.flatten(find_elt_to_rem working_board monster) in
   let explored= helper_dijkstra working_board player monster_elt [] in
   fst (List.nth explored 1)
