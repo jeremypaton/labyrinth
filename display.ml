@@ -104,6 +104,7 @@ let draw_player (s:display) (pos: int*int) =
   let border = 2. in
   let tempbcf = pos_to_boxdata s pos scaling border in
   let bcf = {tempbcf with c1=Graphics.black; c2=gray2; c3=gray3} in
+  Printf.printf "%s\n%!" ("player pos is "^(string_of_int (fst pos))^", "^(string_of_int (snd pos)));
   draw_block bcf
 
 let draw_monster (s:display) (pos: int*int) =
@@ -124,6 +125,8 @@ let skel (lvl:int) f_init f_loop f_end f_key f_mouse f_except =
   let game = ref (match (Constants.init_level lvl) with
                   | Some x -> x
                   | None -> failwith "display.ml : cannot access level") in
+  let pos = !game.player_position in
+  Printf.printf "%s\n%!" ("player pos is "^(string_of_int (fst pos))^", "^(string_of_int (snd pos)));
   try
     while true do
       (*try*)
@@ -192,8 +195,8 @@ let get_master_board lvl=
   | _ -> failwith "no board"
 
 let flip_y pos board=
-  let columns = (List.length (List.hd board)) in
-  ((columns-fst pos)-1, snd pos)
+  let rows = (List.length board) in
+  ((rows-fst pos)-1, snd pos)
 
 (* Loop function to be called every frame and after each key press after
  * initialization. Updates player and monsters positions *)
@@ -203,11 +206,15 @@ let t_loop (s:display) (game:game_state ref) (keys:char list) =
   | 'e'::_ | 'E'::_ -> raise End
   (* run the main update function on key input otherwise *)
   | _ -> game := Update.main_update !game keys;
-          let board = get_master_board !game.level_number in
-          let pp = flip_y !game.player_position board in
-          let mp = flip_y (snd (List.hd !game.monster_position)) board in
-           draw_player s pp;
+         let board = get_master_board !game.level_number in
+         (* draw player at new position *)
+         let pp = flip_y !game.player_position board in
+         draw_player s pp;
+         (* draw monsters at new positions *)
+         for i = 0 to (List.length !game.monster_position)-1 do
+           let mp = flip_y (snd (List.nth !game.monster_position i)) board in
            draw_monster s mp
+         done
 
 
 (* Exits the program *)
@@ -303,4 +310,4 @@ let start_level lvl =
   let board= get_master_board lvl in
   slate lvl (initialize_display board)
 
-let _ = start_level 1
+let _ = start_level 2
