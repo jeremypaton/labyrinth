@@ -29,8 +29,14 @@ let update_play (game:game_state) keys =
   let f m = Monster.update_monster_position m p_pos master_b level_b in
   let updated_monsters = List.map f game.monster_position in
   let t = game.time - 1 in
-  let state = Constants.In_progress(*if t <= 0 then Constants.Won else Constants.In_progress*) in
-  {game with game_progress = state;
+  let state = if t <= 0
+      then let _ = Printf.printf "%s\n%!" ("Game Won") in Constants.Won
+      else Constants.In_progress in
+  let func a b = a || ((snd b) = p_pos)in
+  {game with game_progress = (if (List.fold_left func false (updated_monsters))
+                             then let _ = Printf.printf "%s\n%!" ("Game Lost"); in
+                                  Constants.Lost
+                             else state);
              player_position = p_pos;
              monster_position = updated_monsters;
              time = t}
