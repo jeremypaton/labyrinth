@@ -18,7 +18,7 @@ type game_progress= In_progress | Won | Lost | Unstarted
 
 (** define variant type move_type: chasing, random. This designates whether
  ** whether the monster is moving randomly or actively chasing the player **)
-type move_type= Chasing | Random | Up | Down | Left | Right 
+type move_type= Chasing | Random | Up | Down | Left | Right
 
 type monster = (move_type * position)
 
@@ -38,3 +38,5 @@ val get_master: int -> master_board option
 
 (** get a given level's weight board **)
 val get_weights: int -> levels_board option
+
+val is_level: int -> bool
