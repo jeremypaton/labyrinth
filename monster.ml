@@ -61,23 +61,23 @@ let update_random y x l w=
     else (Constants.Random,(x,y-1))
 
 let update_up y x l (master_board: Constants.master_board)=
-  if ((y==l) || (List.nth (List.nth master_board (y+1)) x == false)) then
-    (Constants.Down, (y-1,x))
-  else (Constants.Up, (y+1,x))
+  if ((y==0) || (y > 0 && (List.nth (List.nth master_board (y-1)) x == false))) then
+    (Constants.Down, (y,x))
+  else (Constants.Up, (y-1,x))
 
 let update_down y x l master_board=
-  if ((y==0) || (List.nth (List.nth master_board (y-1)) x == false)) then
-    (Constants.Up, (y+1,x))
-  else (Constants.Down, (y-1,x))
+  if ((y==l) || (y < l && (List.nth (List.nth master_board (y+1)) x == false))) then
+    (Constants.Up, (y,x))
+  else (Constants.Down, (y+1,x))
 
 let update_left y x l master_board=
-  if ((x==0) || (List.nth (List.nth master_board y) (x-1) == false)) then
-    (Constants.Right, (y,x+1))
+  if ((x==0) || (x > 0 && (List.nth (List.nth master_board y) (x-1) == false))) then
+    (Constants.Right, (y,x))
   else (Constants.Left, (y,x-1))
 
 let update_right y x l master_board=
-  if ((x==l) || (List.nth (List.nth master_board y) (x+1) == false)) then
-    (Constants.Left, (y,x-1))
+  if ((x==l) || (x < l && (List.nth (List.nth master_board y) (x+1) == false))) then
+    (Constants.Left, (y,x))
   else (Constants.Right, (y,x+1))
 
 let update_monster_position (monster:Constants.monster) player master_board
