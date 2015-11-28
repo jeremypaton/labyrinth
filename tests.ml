@@ -69,8 +69,35 @@ TEST "Djikstra: straight line" =
 
 TEST "Monster: up" =
 Monster.update_monster_position
-(Up,(2,2)) (0,0) (get (Constants.get_master (-2))) (get(Constants.get_weights (-1))) =  (Up,(2,3))
+(Up,(2,2)) (0,0) (get (Constants.get_master (-2))) (get(Constants.get_weights (-2))) =  (Up,(1,2))
 
+TEST "Monster: up switch" =
+Monster.update_monster_position
+(Up,(0,0)) (2,2) (get (Constants.get_master (-2))) (get(Constants.get_weights (-2))) =  (Down,(0,0))
+
+TEST "Monster: down" =
+Monster.update_monster_position
+(Down,(0,0)) (2,2) (get (Constants.get_master (-2))) (get(Constants.get_weights (-2))) =  (Down,(1,0))
+
+TEST "Monster: down switch" =
+Monster.update_monster_position
+(Down,(2,2)) (0,0) (get (Constants.get_master (-2))) (get(Constants.get_weights (-2))) =  (Up,(2,2))
+
+TEST "Monster: left" =
+Monster.update_monster_position
+(Left,(2,2)) (0,0) (get (Constants.get_master (-2))) (get(Constants.get_weights (-2))) =  (Left,(2,1))
+
+TEST "Monster: left switch" =
+Monster.update_monster_position
+(Left,(0,0)) (2,2) (get (Constants.get_master (-2))) (get(Constants.get_weights (-2))) =  (Right,(0,0))
+
+TEST "Monster: right" =
+Monster.update_monster_position
+(Right,(0,0)) (2,2) (get (Constants.get_master (-2))) (get(Constants.get_weights (-2))) =  (Right,(0,1))
+
+TEST "Monster: right switch" =
+Monster.update_monster_position
+(Right,(2,2)) (0,0) (get (Constants.get_master (-2))) (get(Constants.get_weights (-2))) =  (Left,(2,2))
 
 (******************************************************************************
  ******************************************************************************
