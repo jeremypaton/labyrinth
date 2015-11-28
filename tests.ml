@@ -67,9 +67,9 @@ TEST "Djikstra: straight line" =
  ******************************************************************************
  ******************************************************************************)
 
-(* currently non-deterministic.
-   needs way of accessing monsters with constant intelligence for testing
- *)
+TEST "Monster: up" =
+Monster.update_monster_position
+(Up,(3,3)) (0,0) (get (Constants.get_master (-1))) (get(Constants.get_weights (-1))) =  (Up,(2,3))
 
 
 (******************************************************************************
