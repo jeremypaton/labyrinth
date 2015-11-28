@@ -69,7 +69,7 @@ TEST "Djikstra: straight line" =
 
 TEST "Monster: up" =
 Monster.update_monster_position
-(Up,(3,3)) (0,0) (get (Constants.get_master (-1))) (get(Constants.get_weights (-1))) =  (Up,(2,3))
+(Up,(2,2)) (0,0) (get (Constants.get_master (-2))) (get(Constants.get_weights (-1))) =  (Up,(2,3))
 
 
 (******************************************************************************
