@@ -76,14 +76,14 @@ let find_errors tentative =
   | _,_,false,_,_,_,_ -> failwith "masterboard must be non-empty"
   | _,_,_,false,_,_,_ -> failwith "masterboard must be rectangular"
   | _,_,_,_,false,_,_ -> failwith "there must be one (and only one) player"
-  (*| _,_,_,_,_,false,_ -> failwith "there must be a monster"*)
+  | _,_,_,_,_,false,_ -> failwith "there must be a monster"
   | _,_,_,_,_,_,false -> failwith "time must be greater than 0"
   | _,_,_,_,_,_,_     -> None
 
 let extract_monsters design m_type element =
   List.map (fun x-> (m_type,x)) (get_element_positions design element)
 
-let gen_lvl design wall_weight time=
+let gen_test design wall_weight time=
   let mCs = extract_monsters design Chasing MChasing in
   let mMms = extract_monsters design Random  MRandom  in
   let mUs = extract_monsters design Up      MUp      in
@@ -91,11 +91,14 @@ let gen_lvl design wall_weight time=
   let mLs = extract_monsters design Left    MLeft    in
   let mRs = extract_monsters design Right   MRight   in
   let monsters = mCs @ mMms @ mUs @ mDs @ mLs @ mRs in
-  let tentative_level = {levels_board= gen_lvl_board design wall_weight;
+  {levels_board= gen_lvl_board design wall_weight;
                          master_board= gen_master_board design;
                          player_start= get_element_positions design Player;
                          monster_start= monsters;
-                         time = time} in
+                         time = time}
+
+let gen_lvl design wall_weight time =
+  let tentative_level = gen_test design wall_weight time in
   if find_errors tentative_level = None then tentative_level
                                         else failwith "invalid level"
 
@@ -119,19 +122,19 @@ let p = Player
 
 let lvlminus3 =
   let design = [[p]]
-  in gen_lvl design 1000.0 20
+  in gen_test design 1000.0 20
 
 let lvlminus2 =
   let design = [[o;o;o];
                 [o;p;o];
                 [o;o;o]]
-  in gen_lvl design 1000.0 20
+  in gen_test design 1000.0 20
 
 let lvlminus1 =
   let design = [[x;x;x];
                [x;p;x];
                [x;x;x]]
-  in gen_lvl design 1000.0 20
+  in gen_test design 1000.0 20
 
 
 let lvl0 =
@@ -221,3 +224,8 @@ let init_level lvl =
                   monster_position= l.monster_start;
                   time= l.time}
   | None -> None
+
+let is_level lvl =
+  match retrieve lvl with
+  | None -> false
+  |_ -> true
