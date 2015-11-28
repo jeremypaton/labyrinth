@@ -109,6 +109,7 @@ let rec helper_dijkstra board player frontier (explored: ((int*int)*float) list)
 
 let dijkstra (monster:Constants.position) (player:Constants.position)
              (board: Constants.levels_board)=
+  if monster = player then player else
   let working_board= put_everything_together board player in
   let monster_elt= find_elt_in_board working_board monster in
   let explored= helper_dijkstra working_board player [monster_elt] [] in
