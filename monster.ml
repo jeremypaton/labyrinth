@@ -16,12 +16,12 @@ let curr_move_type= ref Chasing *)
      else curr_move_type := Random *)
 
 
-let update_random y x l=
+let update_random y x l w=
   if (y==0 && x==0) then
     let r= Random.int 2 in
     if (r==0) then (Constants.Random,(y, x+1))
     else (Constants.Random,(y+1,x))
-  else if (y==0 && x==l) then
+  else if (y==0 && x==w) then
     let r= Random.int 2 in
     if (r==0) then (Constants.Random,(y,x-1))
     else (Constants.Random, (y+1,x))
@@ -29,7 +29,7 @@ let update_random y x l=
     let r= Random.int 2 in
     if (r==0) then (Constants.Random,(y,x+1))
     else (Constants.Random, (y-1,x))
-  else if (y==l && x==l) then
+  else if (y==l && x==w) then
     let r= Random.int 2 in
     if (r==0) then (Constants.Random,(y,x-1))
     else (Constants.Random, (y-1,x))
@@ -43,7 +43,7 @@ let update_random y x l=
     if (r==0) then (Constants.Random,(y,x-1))
     else if (r==1) then (Constants.Random,(y,x+1))
     else (Constants.Random, (y+1, x))
-  else if (x==l) then
+  else if (x==w) then
     let r= Random.int 3 in
     if (r==0) then (Constants.Random,(y,x-1))
     else if (r==1) then (Constants.Random,(y+1,x))
@@ -87,8 +87,9 @@ let update_monster_position (monster:Constants.monster) player master_board
   let monster_y= fst pos in
   let monster_x= snd pos in
   let l= List.length (levels_board) in
+  let w= List.length (List.nth levels_board 0) in
   if (move_type == Constants.Random) then
-    update_random monster_y monster_x l
+    update_random monster_y monster_x l w
   else if (move_type == Constants.Chasing) then
     let monster_pos= Dijkstra.dijkstra pos player levels_board in
     (Constants.Chasing, monster_pos)
@@ -97,5 +98,5 @@ let update_monster_position (monster:Constants.monster) player master_board
   else if (move_type == Constants.Down) then
     update_down monster_y monster_x l master_board
   else if (move_type == Constants.Left) then
-    update_left monster_y monster_x l master_board
-  else update_right monster_y monster_x l master_board
+    update_left monster_y monster_x w master_board
+  else update_right monster_y monster_x w master_board
