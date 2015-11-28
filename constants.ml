@@ -76,7 +76,7 @@ let find_errors tentative =
   | _,_,false,_,_,_,_ -> failwith "masterboard must be non-empty"
   | _,_,_,false,_,_,_ -> failwith "masterboard must be rectangular"
   | _,_,_,_,false,_,_ -> failwith "there must be one (and only one) player"
-  | _,_,_,_,_,false,_ -> failwith "there must be a monster"
+  (*| _,_,_,_,_,false,_ -> failwith "there must be a monster"*)
   | _,_,_,_,_,_,false -> failwith "time must be greater than 0"
   | _,_,_,_,_,_,_     -> None
 
@@ -116,6 +116,23 @@ let mD = MDown
 let mL = MLeft
 let mR = MRight
 let p = Player
+
+let lvlminus3 =
+  let design = [[p]]
+  in gen_lvl design 1000.0 20
+
+let lvlminus2 =
+  let design = [[o;o;o];
+                [o;p;o];
+                [o;o;o]]
+  in gen_lvl design 1000.0 20
+
+let lvlminus1 =
+  let design = [[x;x;x];
+               [x;p;x];
+               [x;x;x]]
+  in gen_lvl design 1000.0 20
+
 
 let lvl0 =
   let design = [[x;x;x;x;o;x;x;x;x];
@@ -169,6 +186,9 @@ let lvl2 =
 
 let retrieve lvl =
   match lvl with
+  |(-3 )-> Some lvlminus3
+  |(-2 )-> Some lvlminus2
+  |(-1 )-> Some lvlminus1
   |0 -> Some lvl0
   |1 -> Some lvl1
   |2 -> Some lvl2
