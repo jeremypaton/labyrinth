@@ -10,5 +10,5 @@ val decision: unit -> unit **)
 
 (** a function update_monster_position that takes in current monster position,
  ** player position, move type, and returns a new monster position **)
-val update_monster_position: monster -> position -> master_board
+val update_monster_position: monster -> position -> master_board ->
                              levels_board ->  monster
