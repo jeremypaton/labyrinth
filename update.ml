@@ -26,15 +26,13 @@ let update_play (game:game_state) keys =
   let p_pos = Player.update_player_position game.player_position
                                            (keys)
                                             master_b in
-  let m_pos = Monster.update_monster_position (List.hd game.monster_position)
-                                              p_pos (*maybe game.player_position*)
-                                              game.level_number
-                                              level_b in
+  let f m = Monster.update_monster_position m p_pos master_b level_b in
+  let updated_monsters = List.map f game.monster_position in
   let t = game.time - 1 in
   let state = Constants.In_progress(*if t <= 0 then Constants.Won else Constants.In_progress*) in
   {game with game_progress = state;
              player_position = p_pos;
-             monster_position = [m_pos];
+             monster_position = updated_monsters;
              time = t}
 
 let update_won (game:game_state) keys =
