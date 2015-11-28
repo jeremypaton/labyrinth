@@ -50,10 +50,23 @@ let update_lost (game:game_state) keys =
             | None -> failwith "no level to reset"
 
 let update_paused (game:game_state) keys =
-  match List.mem ' ' keys with
-  | false -> game
-  | true -> Printf.printf "%s\n%!" ("Game Started"); {game with game_progress = In_progress}
+  match (List.mem ' ' keys), (List.mem '[' keys), (List.mem ']' keys)  with
+  | true,_,_ -> Printf.printf "%s\n%!" ("Game Started");
+                {game with game_progress = In_progress}
+  | _,true,_ -> let i = game.level_number - 1 in
+                let lvl = if is_level i then i else game.level_number in
+                Printf.printf "%s\n%!" ("Level " ^ (string_of_int lvl));
+                (match (Constants.init_level lvl) with
+                | Some x -> x
+                | None -> failwith "no level to reset")
 
+  | _,_,true -> let i = game.level_number + 1 in
+                let lvl = if is_level i then i else game.level_number in
+                Printf.printf "%s\n%!" ("Level " ^ (string_of_int lvl));
+                (match (Constants.init_level lvl) with
+                | Some x -> x
+                | None -> failwith "no level to reset")
+  |_,_,_ -> game
 
 let main_update (game:game_state) keys =
   match game.game_progress with
