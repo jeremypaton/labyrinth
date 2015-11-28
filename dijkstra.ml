@@ -137,7 +137,7 @@ let rec helper_dijkstra board player frontier (explored: ((int*int)*float) list)
 
 let dijkstra (monster:Constants.position) (player:Constants.position)
              (board: Constants.levels_board)=
-  let working_board= put_everything_together board monster in
+  let working_board= put_everything_together board player in
   let monster_elt= List.flatten(find_elt_to_rem working_board monster) in
   let explored= helper_dijkstra working_board player monster_elt [] in
   fst (List.nth explored 1)
