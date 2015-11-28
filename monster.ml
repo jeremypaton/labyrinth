@@ -86,8 +86,8 @@ let update_monster_position (monster:Constants.monster) player master_board
   let pos= snd monster in
   let monster_y= fst pos in
   let monster_x= snd pos in
-  let l= List.length (levels_board) in
-  let w= List.length (List.nth levels_board 0) in
+  let l= (List.length (levels_board))-1 in
+  let w= (List.length (List.nth levels_board 0))-1 in
   if (move_type == Constants.Random) then
     update_random monster_y monster_x l w
   else if (move_type == Constants.Chasing) then
