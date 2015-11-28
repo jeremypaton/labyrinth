@@ -121,10 +121,10 @@ let draw_monster (s:display) (pos: int*int) =
 
 
 let skel (lvl:int) f_draw_board f_loop f_end f_key f_mouse f_except =
-  f_draw_board ();
   let game = ref (match (Constants.init_level lvl) with
                   | Some x -> x
                   | None -> failwith "display.ml : cannot access level") in
+  f_loop game [];
   (*Printf.printf "%s\n%!" ("player pos is "^(string_of_int (fst pos))^", "^(string_of_int (snd pos)));*)
   try
     while true do
@@ -181,9 +181,10 @@ let draw_point x y s c =
  * monsters are not drawn *)
 let t_draw_board (s':display ref) () =
   let s = !s' in
+  (* draw background *)
   Graphics.set_color s.bc;
   Graphics.fill_rect 0 0 (s.scale*s.maxx+1) (s.scale*s.maxy+1);
-  (*draw_point s.x s.y s.scale s.pc*)
+  (* draw grid *)
   Array.iter draw_block s.grid
 
 
@@ -253,18 +254,27 @@ let t_loop (s':display ref) (game:game_state ref) (keys:char list) =
   (* exit program if 'e'/'E' is pressed *)
   | 'e'::_ | 'E'::_ -> raise End
   (* otherwise, run the main update function on key input *)
-  | _ -> (* call main update and change level if appropriate *)
+  | _ -> (* update game by one frame, and change level if appropriate *)
          let cur_lvl = !game.level_number in
          game := Update.main_update !game keys;
          if !game.level_number <> cur_lvl then
            start_level s' !game.level_number game;
-         (* do all drawing on screen *)
+         (* 1. draw background and board *)
          t_draw_board s' ();
+         (* 2. draw text for game state, or time left if game in progress *)
+         Graphics.moveto (!s'.maxx/2) (!s'.maxy-20);
+         let _ = match !game.game_progress with
+                 | In_progress -> Graphics.draw_string ("Time left: "^
+                                                     (string_of_int !game.time))
+                 | Won -> Graphics.draw_string ("Game Won!")
+                 | Lost -> Graphics.draw_string ("Game Lost :(")
+                 | Unstarted -> Graphics.draw_string ("Game Paused.")
+         in
+         (* 3. draw player *)
          let board = get_master_board !game.level_number in
-         (* draw player at new position *)
          let pp = flip_y !game.player_position board in
          draw_player !s' pp;
-         (* draw monsters at new positions *)
+         (* 4. draw monsters *)
          for i = 0 to (List.length !game.monster_position)-1 do
            let mp = flip_y (snd (List.nth !game.monster_position i)) board in
            draw_monster !s' mp
