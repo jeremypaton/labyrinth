@@ -6,7 +6,8 @@ exception End
 
 type relief = Top | Bot | Flat
 type box_data = { x:int; y:int; w:int; h:int; bw:int; mutable r:relief;
-  c1:Graphics.color; c2:Graphics.color; c3:Graphics.color}
+  cmid:Graphics.color; ctop:Graphics.color; cbot:Graphics.color;
+  cleft:Graphics.color; cright:Graphics.color}
 (* stores info about the displayed image, including number of possible x and
  * y positions, the scaling of these positions for viewability, and the current
  * x and y positions of the mouse *)
@@ -44,37 +45,8 @@ let draw_box_outline (bcf:box_data) col =
 
 
 let draw_box (bcf:box_data) =
-  Graphics.set_color bcf.c1;
+  Graphics.set_color bcf.cmid;
   Graphics.fill_rect bcf.x bcf.y bcf.w bcf.h;
-  draw_box_outline bcf Graphics.black
-
-let draw_block (bcf:box_data) =
-  let x1 = bcf.x and y1 = bcf.y in
-  let x2 = x1+bcf.w and y2 = y1+bcf.h in
-  let ix1 = x1+bcf.bw and ix2 = x2-bcf.bw
-  and iy1 = y1+bcf.bw and iy2 = y2-bcf.bw in
-  let border1 g =
-  Graphics.set_color g;
-  Graphics.fill_poly
-  [| (x1,y1);(ix1,iy1);(ix2,iy1);(ix2,iy2);(x2,y2);(x2,y1) |]
-  in
-  let border2 g =
-  Graphics.set_color g;
-  Graphics.fill_poly
-  [| (x1,y1);(ix1,iy1);(ix1,iy2);(ix2,iy2);(x2,y2);(x1,y2) |]
-  in
-  Graphics.set_color bcf.c1;
-  ( match bcf.r with
-  Top ->
-  Graphics.fill_rect ix1 iy1 (ix2-ix1) (iy2-iy1);
-  border1 bcf.c2;
-  border2 bcf.c3
-  | Bot ->
-  Graphics.fill_rect ix1 iy1 (ix2-ix1) (iy2-iy1);
-  border1 bcf.c3;
-  border2 bcf.c2
-  | Flat ->
-  Graphics.fill_rect x1 y1 bcf.w bcf.h );
   draw_box_outline bcf Graphics.black
 
 
@@ -82,7 +54,68 @@ let draw_block (bcf:box_data) =
 
 
 let set_gray x = (Graphics.rgb x x x)
-let gray1= set_gray 170 and gray2= set_gray 100 and gray3= set_gray 240
+let gray1= set_gray 140 and gray2= set_gray 70 and gray3= set_gray 200
+
+
+let draw_block (bcf:box_data) =
+  let x1 = bcf.x and y1 = bcf.y in
+  let x2 = x1+bcf.w and y2 = y1+bcf.h in
+  let ix1 = x1+bcf.bw and ix2 = x2-bcf.bw
+  and iy1 = y1+bcf.bw and iy2 = y2-bcf.bw in
+
+  Graphics.set_color bcf.cbot;
+  Graphics.fill_poly
+  [| (x1,y1);(ix1,iy1);(ix2,iy1);(ix2,iy2);(x2,y2);(x2,y1) |];
+
+  Graphics.set_color bcf.ctop;
+  Graphics.fill_poly
+  [| (x1,y1);(ix1,iy1);(ix1,iy2);(ix2,iy2);(x2,y2);(x1,y2) |];
+
+  Graphics.set_color bcf.cmid;
+  Graphics.fill_rect ix1 iy1 (ix2-ix1) (iy2-iy1);
+
+  draw_box_outline bcf Graphics.black
+
+
+
+
+let draw_pointer (bcf:box_data) invis =
+  let x1 = bcf.x and y1 = bcf.y in
+  let x2 = x1+bcf.w and y2 = y1+bcf.h in
+  let ix1 = x1+bcf.bw and ix2 = x2-bcf.bw
+  and iy1 = y1+bcf.bw and iy2 = y2-bcf.bw
+  and mx = x1+((x2-x1)/2) and my = y1+((y2-y1)/2) in
+
+  let w' = (ix2-ix1)/3 and h' = (iy2-iy1)/3 in
+  let x1' = ix1 + w' and x2' = ix2 - w' and y1' = iy1 + h' and y2' = iy2 - h' in
+  Graphics.set_color gray3;
+  Graphics.fill_poly [|(ix1, iy1); (ix1, iy2); (ix2, iy2)|];
+  Graphics.set_color gray2;
+  Graphics.fill_poly [|(ix1, iy1); (ix2, iy2); (ix2, iy1)|];
+  Graphics.set_color bcf.cmid;
+  Graphics.fill_rect x1' y1' (x2'-x1') (y2'-y1');
+  draw_box_outline bcf (Graphics.rgb 130 40 40);
+
+  if bcf.ctop <> invis then
+    let _ = Graphics.set_color bcf.ctop in
+    Graphics.fill_poly [|(ix1, iy2); (ix2, iy2); (mx, y2)|]
+
+  else if bcf.cbot <> invis then
+    let _ = Graphics.set_color bcf.cbot in
+     Graphics.fill_poly [|(ix1, iy1); (ix2, iy1); (mx, y1)|]
+
+  else if bcf.cleft <> invis then
+    let _ = Graphics.set_color bcf.cleft in
+     Graphics.fill_poly [|(x1, my); (ix1, iy1); (ix1, iy2)|]
+
+  else if bcf.cright <> invis then
+    let _ = Graphics.set_color bcf.cright in
+    Graphics.fill_poly [|(x2, my); (ix2, iy1); (ix2, iy2)|]
+
+
+
+
+
 
 
 let pos_to_boxdata (s:display) (pos: int*int) (scaling: float) (border: float) =
@@ -96,27 +129,36 @@ let pos_to_boxdata (s:display) (pos: int*int) (scaling: float) (border: float) =
   let y' = cent_y - (h'/2) in
   let bw' = int_of_float (float_of_int ((min w' h'))/.border) in
   {x=x'; y=y'; w=w'; h=h'; bw=bw'; r=Top;
-  c1=Graphics.black; c2=Graphics.black; c3=Graphics.black}
+  cmid=Graphics.black; ctop=Graphics.black; cbot=Graphics.black; cleft=Graphics.black; cright=Graphics.black}
 
 
 let draw_player (s:display) (pos: int*int) =
   let scaling = 2.75 in
-  let border = 2. in
+  let border = 2.5 in
   let tempbcf = pos_to_boxdata s pos scaling border in
-  let bcf = {tempbcf with c1=Graphics.black; c2=gray2; c3=gray3} in
+  let bcf = {tempbcf with cmid=Graphics.rgb 100 200 100;
+                          ctop=Graphics.rgb 140 240 170;
+                          cbot=Graphics.rgb 80 120 80} in
   (*Printf.printf "%s\n%!" ("player pos is "^(string_of_int (fst pos))^", "^(string_of_int (snd pos)));*)
   draw_block bcf
 
 let draw_monster (s:display) (pos: int*int) (m_type: move_type)=
   let scaling = 1.5 in
-  let border = 8. in
+  let border = 4. in
   let tempbcf = pos_to_boxdata s pos scaling border in
-  let bcf = ref tempbcf in
-  let _ = match m_type with
-          | Chasing -> bcf := {tempbcf with c1=Graphics.red; c2=gray1; c3=gray3}
-          | _ -> bcf := {tempbcf with c1=Graphics.blue; c2=gray1; c3=gray3}
-  in
-  draw_block !bcf
+  match m_type with
+          | Chasing -> draw_block {tempbcf with cmid=Graphics.red; ctop=gray1; cbot=gray2}
+          | Random -> draw_block {tempbcf with cmid=Graphics.magenta; ctop = gray1; cbot=gray2}
+          | x -> let invis = gray1 in
+                 let visible = Graphics.blue in
+                 let tempbcf = pos_to_boxdata s pos 1.1 3.5 in
+                 let no_edge = {tempbcf with cmid = gray1; ctop = invis; cbot = invis;
+                                cleft = invis; cright = invis} in
+                 match x with
+                 | Up -> draw_pointer {no_edge with ctop=visible} invis
+                 | Down -> draw_pointer {no_edge with cbot=visible} invis
+                 | Left -> draw_pointer {no_edge with cleft=visible} invis
+                 | Right -> draw_pointer {no_edge with cright=visible} invis
 
 
 
@@ -129,7 +171,7 @@ let skel (lvl:int) f_draw_board f_loop f_end f_key f_mouse f_except =
                   | Some x -> x
                   | None -> failwith "display.ml : cannot access level") in
   f_loop game [];
-  (*Printf.printf "%s\n%!" ("player pos is "^(string_of_int (fst pos))^", "^(string_of_int (snd pos)));*)
+  (*Printf.printf "%s\n%!" ("there are "^(string_of_int (List.length !game.monster_position))^" monsters");*)
   try
     while true do
       (*try*)
@@ -239,8 +281,8 @@ let initialize_display (s':display ref) board =
   let temp_disp = {grid=[||]; maxx=maxx'; maxy=maxy'; x=60; y=60; scale=scale';
                    bc=Graphics.rgb 130 130 130; fc=Graphics.black;
                    pc=Graphics.red; x_sep=x_sep'; y_sep=y_sep'} in
-  let wall_data = {x=0; y=0; w=0;h=0; bw=5; c1=gray1; c2=gray3;
-                   c3=gray2; r=Top} in
+  let wall_data = {x=0; y=0; w=0;h=0; bw=5; cmid=gray1; ctop=gray3;
+                   cbot=gray2; cleft=gray1; cright=gray1; r=Top} in
   let grid' = Array.of_list (create_grid temp_disp board wall_data) in
   s' := {temp_disp with grid=grid'}
 
@@ -284,7 +326,7 @@ let t_loop (s':display ref) (game:game_state ref) (keys:char list) =
          for i = 0 to (List.length !game.monster_position)-1 do
            let monster = List.nth !game.monster_position i in
            let mp = flip_y (snd monster) board in
-           draw_monster !s' mp (fst monster)
+           draw_monster !s' mp (fst monster);
          done
 
 
