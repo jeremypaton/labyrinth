@@ -33,7 +33,8 @@ let update_play (game:game_state) keys =
       then let _ = Printf.printf "%s\n%!" ("Game Won") in Constants.Won
       else Constants.In_progress in
   let func a b = a || ((snd b) = p_pos)in
-  {game with game_progress = (if (List.fold_left func false (updated_monsters))
+  {game with previous = Some game;
+             game_progress = (if (List.fold_left func false (updated_monsters))
                              then let _ = Printf.printf "%s\n%!" ("Game Lost"); in
                                   Constants.Lost
                              else state);
@@ -60,26 +61,31 @@ let update_paused (game:game_state) keys =
   game
 
 let main_update (game:game_state) keys =
-  match (List.mem ' ' keys),  (List.mem '[' keys), (List.mem ']' keys),(List.mem 'r' keys)  with
-  | true,_,_ ,_-> Printf.printf "%s\n%!" ("Game Started");
+  match (List.mem ' ' keys),  (List.mem '[' keys), (List.mem ']' keys),
+  (List.mem 'r' keys) , (List.mem 'z' keys)  with
+  | true,_,_ ,_,_-> Printf.printf "%s\n%!" ("Game Started");
                 {game with game_progress = if game.game_progress = Unstarted then In_progress else Unstarted}
-  | _,true,_,_ -> let i = game.level_number - 1 in
+  | _,true,_,_,_ -> let i = game.level_number - 1 in
                 let lvl = if is_level i then i else game.level_number in
                 Printf.printf "%s\n%!" ("Level " ^ (string_of_int lvl));
                 (match (Constants.init_level lvl) with
                 | Some x -> x
                 | None -> failwith "no level to reset")
 
-  | _,_,true,_ -> let i = game.level_number + 1 in
+  | _,_,true,_,_ -> let i = game.level_number + 1 in
                 let lvl = if is_level i then i else game.level_number in
                 Printf.printf "%s\n%!" ("Level " ^ (string_of_int lvl));
                 (match (Constants.init_level lvl) with
                 | Some x -> x
                 | None -> failwith "no level to reset")
-  |_,_,_ ,true -> (match (Constants.init_level game.level_number) with
+  |_,_,_ ,true,_ -> (match (Constants.init_level game.level_number) with
             | Some x -> x
             | None -> failwith "no level to reset")
-  |_,_,_,_ ->  (match game.game_progress with
+  |_,_,_,_,true -> (match game.previous with
+                |Some g -> g
+               | None -> game)
+
+  |_,_,_,_ ,_->  (match game.game_progress with
                 | In_progress -> update_play game keys
                 | Won -> update_won game keys
                 | Lost -> update_lost game keys
