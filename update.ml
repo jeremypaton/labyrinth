@@ -57,15 +57,12 @@ let update_lost (game:game_state) keys =
 
 let update_paused (game:game_state) keys =
   let _ = Printf.printf "%s\n%!" ("Pause Level" ^ (string_of_int game.level_number)) in
-  match List.mem ' ' keys with
-  | true -> Printf.printf "%s\n%!" ("Game Started");
-                {game with game_progress = In_progress}
-  |false -> game
+  game
 
 let main_update (game:game_state) keys =
   match (List.mem ' ' keys),  (List.mem '[' keys), (List.mem ']' keys),(List.mem 'r' keys)  with
   | true,_,_ ,_-> Printf.printf "%s\n%!" ("Game Started");
-                {game with game_progress = In_progress}
+                {game with game_progress = if game.game_progress = Unstarted then In_progress else Unstarted}
   | _,true,_,_ -> let i = game.level_number - 1 in
                 let lvl = if is_level i then i else game.level_number in
                 Printf.printf "%s\n%!" ("Level " ^ (string_of_int lvl));
