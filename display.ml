@@ -107,12 +107,16 @@ let draw_player (s:display) (pos: int*int) =
   (*Printf.printf "%s\n%!" ("player pos is "^(string_of_int (fst pos))^", "^(string_of_int (snd pos)));*)
   draw_block bcf
 
-let draw_monster (s:display) (pos: int*int) =
+let draw_monster (s:display) (pos: int*int) (m_type: move_type)=
   let scaling = 1.5 in
   let border = 8. in
   let tempbcf = pos_to_boxdata s pos scaling border in
-  let bcf = {tempbcf with c1=Graphics.red; c2=gray1; c3=gray3} in
-  draw_block bcf
+  let bcf = ref tempbcf in
+  let _ = match m_type with
+          | Chasing -> bcf := {tempbcf with c1=Graphics.red; c2=gray1; c3=gray3}
+          | _ -> bcf := {tempbcf with c1=Graphics.blue; c2=gray1; c3=gray3}
+  in
+  draw_block !bcf
 
 
 
@@ -278,8 +282,9 @@ let t_loop (s':display ref) (game:game_state ref) (keys:char list) =
          draw_player !s' pp;
          (* 4. draw monsters *)
          for i = 0 to (List.length !game.monster_position)-1 do
-           let mp = flip_y (snd (List.nth !game.monster_position i)) board in
-           draw_monster !s' mp
+           let monster = List.nth !game.monster_position i in
+           let mp = flip_y (snd monster) board in
+           draw_monster !s' mp (fst monster)
          done
 
 
