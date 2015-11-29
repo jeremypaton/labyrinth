@@ -44,7 +44,7 @@ let update_play (game:game_state) keys =
 let update_won (game:game_state) keys =
   match List.mem 'r' keys with
   | false -> game
-  | true -> match (Constants.init_level 0) with
+  | true -> match (Constants.init_level game.level_number) with
             | Some x -> x
             | None -> failwith "no level 0"
 
