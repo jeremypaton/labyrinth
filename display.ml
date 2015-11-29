@@ -263,13 +263,15 @@ let t_loop (s':display ref) (game:game_state ref) (keys:char list) =
          t_draw_board s' ();
          (* 2. draw text for game state, or time left if game in progress *)
          Graphics.moveto (!s'.maxx/2) (!s'.maxy-20);
+         let text = ref ("Level "^(string_of_int !game.level_number)^" ") in
          let _ = match !game.game_progress with
-                 | In_progress -> Graphics.draw_string ("Time left: "^
-                                                     (string_of_int !game.time))
-                 | Won -> Graphics.draw_string ("Game Won!")
-                 | Lost -> Graphics.draw_string ("Game Lost :(")
-                 | Unstarted -> Graphics.draw_string ("Game Paused.")
+                 | In_progress -> text:= !text^("Time Left: "^
+                                               (string_of_int !game.time))
+                 | Won -> text:= !text^"Won!"
+                 | Lost -> text:= !text^"Lost :("
+                 | Unstarted -> text:= !text^"Paused."
          in
+         Graphics.draw_string !text;
          (* 3. draw player *)
          let board = get_master_board !game.level_number in
          let pp = flip_y !game.player_position board in
@@ -345,4 +347,4 @@ let launch_game lvl =
   initialize_display temp_disp board;
   slate lvl temp_disp
 
-let _ = launch_game 2
+let _ = launch_game 3

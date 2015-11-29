@@ -173,7 +173,7 @@ let lvl2 =
                 [o;o;o;o;o;o;x;x;o;x;x;x;o;x;o;x;x;x;o;o];
                 [x;o;x;x;o;o;o;x;o;o;o;o;o;o;o;o;x;x;o;o];
                 [x;o;o;x;x;o;o;o;x;x;o;o;o;x;o;x;x;x;x;o];
-                [x;o;x;x;x;x;x;o;o;o;o;mC;o;x;o;x;o;x;x;o];
+                [x;o;x;x;x;x;x;o;o;o;o;mR;o;x;o;x;o;x;x;o];
                 [o;o;x;x;x;x;x;o;x;x;o;o;o;x;o;o;o;x;x;o];
                 [o;x;x;x;x;x;x;x;x;o;o;o;x;x;x;x;o;x;x;o];
                 [o;o;o;o;o;o;o;o;x;x;o;x;o;o;o;o;o;o;o;o];
@@ -187,6 +187,35 @@ let lvl2 =
                 [x;x;o;o;o;o;o;x;o;o;o;o;o;o;x;x;x;x;x;x]]
   in gen_lvl design 1000.0 60
 
+
+let lvl3 =
+  let design = [[mC;o; x; x; x; x; x; x; x; x; x; x; x; x; x; x; x; x; x; x; x; x; x; x; x; x; x; x; x; x];
+                [o; p; o; o; o; o; o; o; o; o; o; o; o; o; o; o; o; o; o; o; o;mL; o; o; o; o; o; o; o; o];
+                [o; o; o; o; o; o; o; o; o; o; o; o; o; o; o; o; o; o; o; o; o;mL; o; o; o; o; o; o; o; o];
+                [o; x; x; x; x; x; x; x; x; x; o; x; x; x; x; x; x; x; x; x; x; x; x; x; x; x; x; x; x; o];
+                [o;mD; o; o; o; o; o; o; o; o; o; o; o; o; o;mL; o; o; o; o; o; o; o; o; o; o; o; o; o;mR];
+                [o; o; x; x; o; x; x; x; x; x; o; x; x; o; x; x; x; x; x; x; x; x; x; x; x; x; x; x; x; o];
+                [o; o; x; x; o; x; x; x; x; x; o; x; x; o; o; o; o; o; o; o; o; o; o; o; o; o; o; o; o; o];
+                [o; o; x; x; o; x; x; x; x; x; o; x; x; o; x; x; x; x; x; x; x; x; x; x; x; x; x; x; x; x];
+                [o;mD; o; o; o; x; x; x; x; x; o; x; x; o; o; o; o; o; o; o; o; o; o; o; o; o;mR; o; x;mD];
+                [o; x; x; x; x; x; x; x; x; x; o; x; x; o; x; o; x; x; o; x; x; o; x; x; o; x; x; o; x; o];
+                [o; x; x; x;mD; x; o; x; x; x;mU; x; x; o; x; o; o; o; o;mR; o; o; o; o; o; o; o; o; x; o];
+                [o; o; o; o; o; o;mU; o; o; x; o; x; x; o; x; o; x; x; o; x; x; o; x; x; o; x; x;mD; x; o];
+                [x; x; x; o; x; o; x; o; x; x; o; x; x; o; x; o; o; o; o; o; o; o; o; o; o; o; o; o; x; o];
+                [x; x;mR; o; x; o; x;mL; o; x; o; x; x; o; x; o; x; x; o; x; x; o; x; x; o; x; x; o; x; o];
+                [x; x; x; o; x;mD; x; o; x; x; o; x; x; o; x; o; o; o; o; o; o; o; o; o; o; o; o; o; x; o];
+                [x; x;mR; o; x; o; x; o;mR; x; o; x; x;mD; x;mU; x; x; o; x; x; o; x; x; o; x; x; o; x; o];
+                [x; x; x; o; x; o; x; o; x; x; o; x; x; o; x; o; o; o;mU; o; o; o; o;mR; o; o;mR; o; x; o];
+                [x; x;mR; o; x; o; x;mL; o; x;mU; x; x; o; x; o; x; x; o; x; x;mU; x; x; o; x; x; o; x; o];
+                [x; x; x; o; x; o; x; o; x; x; o; x; x; o; x; o; o; o; o; o; o;mL; o;mL;mU; o;mL; o; x; o];
+                [x; x; o; o; o;mU; o; o; o;mR; o; o; o; o; x; o; o; o; o; o; o; o; o; o; o;mL; o;mU; o; o];
+                [x; x; x; x; o; x; o; x; x; x; o; x; x; o; x; x; x; x; x; x; x; x; x; x; x; x; x; x; x; o];
+                [x; x; x; x; x; x; x; x; x; x;mR; o; o; o; o; o; o; o; o; o; o; o; o; o; o; o; o; o; o; o]]
+  in gen_lvl design 1000.0 140
+
+
+
+
 let retrieve lvl =
   match lvl with
   |(-3 )-> Some lvlminus3
@@ -195,6 +224,7 @@ let retrieve lvl =
   |0 -> Some lvl0
   |1 -> Some lvl1
   |2 -> Some lvl2
+  |3 -> Some lvl3
   |_ -> None
 
 (******************************************************************************
