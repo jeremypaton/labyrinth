@@ -42,7 +42,8 @@ TEST "level 0" =
                 [1000.;1000.;1000.;1000.;1.;1000.;1000.;1000.;1000.]]
   && Constants.init_level 0 =
    Some
-                  {level_number = 0; game_progress = Unstarted;
+                  {previous = None;
+                  level_number = 0; game_progress = Unstarted;
                   player_position = (4, 4);
                   monster_position = [(Up, (6, 4)); (Right, (4, 0))];
                   time = 20}
