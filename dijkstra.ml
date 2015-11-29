@@ -50,8 +50,8 @@ let rec match_all_neighbors neighbors board=
 let get_neighbors position board=
   let y= fst position in
   let x= snd position in
-  let l= List.length board in
-  let w= List.length(List.nth board 0) in
+  let l= (List.length board)-1 in
+  let w= (List.length(List.nth board 0))-1 in
   let list_of= List.append (get_neighbors_of_x x w y)
                            (get_neighbors_of_y x l y) in
   match_all_neighbors list_of board
