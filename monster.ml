@@ -82,21 +82,23 @@ let update_right y x l master_board=
 
 let update_monster_position (monster:Constants.monster) player master_board
                             levels_board : Constants.monster=
-  let move_type= fst monster in
+
+
   let pos= snd monster in
+  if pos = player
+  then monster
+  else
+
+  let move_type= fst monster in
   let monster_y= fst pos in
   let monster_x= snd pos in
   let l= (List.length (levels_board))-1 in
   let w= (List.length (List.nth levels_board 0))-1 in
-  if (move_type == Constants.Random) then
-    update_random monster_y monster_x l w
-  else if (move_type == Constants.Chasing) then
-    let monster_pos= Dijkstra.dijkstra pos player levels_board in
-    (Constants.Chasing, monster_pos)
-  else if (move_type == Constants.Up) then
-    update_up monster_y monster_x l master_board
-  else if (move_type == Constants.Down) then
-    update_down monster_y monster_x l master_board
-  else if (move_type == Constants.Left) then
-    update_left monster_y monster_x w master_board
-  else update_right monster_y monster_x w master_board
+  match move_type with
+  | Constants.Random -> update_random monster_y monster_x l w
+  | Constants.Chasing -> let monster_pos= Dijkstra.dijkstra pos player
+                                          levels_board in (Chasing, monster_pos)
+  | Constants.Up -> update_up monster_y monster_x l master_board
+  | Constants.Down -> update_down monster_y monster_x l master_board
+  | Constants.Left -> update_left monster_y monster_x w master_board
+  | Constants.Right -> update_right monster_y monster_x w master_board
