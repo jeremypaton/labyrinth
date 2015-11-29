@@ -10,7 +10,8 @@ type move_type= Chasing | Random | Up | Down | Left | Right
 
 type monster = (move_type * position)
 
-type game_state= {level_number: int;
+type game_state= {previous : game_state option;
+                  level_number: int;
                   game_progress: game_progress;
                   player_position: position;
                   monster_position: monster list;
@@ -248,7 +249,8 @@ let get_weights lvl =
 let init_level lvl =
   match retrieve lvl with
   | Some l -> Some
-                 {level_number= lvl;
+                 {previous = None;
+                  level_number= lvl;
                   game_progress= Unstarted;
                   player_position= List.hd l.player_start;
                   monster_position= l.monster_start;
