@@ -24,7 +24,8 @@ type monster = (move_type * position)
 
 (** game_state is a record that holds the level number, game progress, monster
  **  position, player position, and time **)
-type game_state= {level_number: int;
+type game_state= {previous: game_state option;
+                  level_number: int;
                   game_progress: game_progress;
                   player_position: position;
                   monster_position: monster list;
