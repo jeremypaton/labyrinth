@@ -214,6 +214,22 @@ let lvl3 =
                 [x; x; x; x; x; x; x; x; x; x;mR; o; o; o; o; o; o; o; o; o; o; o; o; o; o; o; o; o; o; o]]
   in gen_lvl design 1000.0 140
 
+  let lvl4 =
+  let design = [[p; o; o; o; o; o; o; o; o; o; o;mR; o];
+                [o; x; x; o; x; x; o; x; x; o; x; x; o];
+                [o; o; o; o;mR; o; o; o; o; o; o; o; o];
+                [o; x; x; o; x; x; o; x; x; o; x; x;mD];
+                [o; o; o; o; o; o; o; o; o; o; o; o; o];
+                [o; x; x; o; x; x; o; x; x; o; x; x; o];
+                [o; o; o; o; o; o; o; o; o; o; o; o; o];
+                [mU; x; x; o; x; x; o; x; x; o; x; x; o];
+                [o; o; o;mU; o; o; o; o;mR; o; o;mR; o];
+                [o; x; x; o; x; x;mU; x; x; o; x; x; o];
+                [o; o; o; o; o; o;mL; o;mL;mU; o;mL; mC];
+                [o; o; o; o; o; o; o; o; o; o;mL; o;mU]]
+
+  in gen_lvl design 1000.0 140
+
 
 
 
@@ -226,6 +242,7 @@ let retrieve lvl =
   |1 -> Some lvl1
   |2 -> Some lvl2
   |3 -> Some lvl3
+  |4 -> Some lvl4
   |_ -> None
 
 (******************************************************************************
