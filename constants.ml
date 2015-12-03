@@ -1,6 +1,7 @@
 let start_level = 0
 let resolution_x = 540
 let resolution_y = 360
+let monster_radius = 5.
 
 type master_board= bool list list
 
@@ -11,6 +12,7 @@ type position= (int*int)
 type game_progress= In_progress | Won | Lost | Unstarted
 
 type move_type= Chasing | Random | Up | Down | Left | Right
+                | Circle of position | Radius of position
 
 type monster = (move_type * position)
 
@@ -36,7 +38,8 @@ type element =
 |MDown
 |MLeft
 |MRight
-
+|MCircle
+|MRadius
 
 type design = element list list
 
@@ -89,6 +92,10 @@ let find_errors tentative =
 
 let extract_monsters design m_type element =
   List.map (fun x-> (m_type,x)) (get_element_positions design element)
+let extract_circle_monsters design =
+  List.map (fun x-> (Circle x,x)) (get_element_positions design MCircle)
+  let extract_radius_monsters design =
+  List.map (fun x-> (Radius x,x)) (get_element_positions design MRadius)
 
 let gen_test design wall_weight time=
   let mCs = extract_monsters design Chasing MChasing in
@@ -97,7 +104,9 @@ let gen_test design wall_weight time=
   let mDs = extract_monsters design Down    MDown    in
   let mLs = extract_monsters design Left    MLeft    in
   let mRs = extract_monsters design Right   MRight   in
-  let monsters = mCs @ mMms @ mUs @ mDs @ mLs @ mRs in
+  let mCircles = extract_circle_monsters design in
+  let mRads = extract_radius_monsters design in
+  let monsters = mCs @ mMms @ mUs @ mDs @ mLs @ mRs @mCircles @ mRads in
   {levels_board= gen_lvl_board design wall_weight;
                          master_board= gen_master_board design;
                          player_start= get_element_positions design Player;
@@ -125,6 +134,8 @@ let mU = MUp
 let mD = MDown
 let mL = MLeft
 let mR = MRight
+let mCi = MCircle
+let mRa = MRadius
 let p = Player
 
 let lvlminus3 =
@@ -172,7 +183,7 @@ let lvl2 =
   let design = [[x;o;o;o;o;o;x;x;o;o;o;o;o;x;o;o;o;o;o;x];
                 [x;o;x;x;x;o;x;x;x;o;x;x;o;x;o;x;o;x;o;x];
                 [x;o;o;o;o;o;x;x;x;o;x;x;o;x;o;x;o;x;o;o];
-                [x;x;x;x;x;o;o;o;o;o;o;x;o;x;o;o;o;o;o;x];
+                [x;x;x;x;x;mRa;o;o;o;o;o;x;o;x;o;o;o;o;o;x];
                 [x;x;x;x;x;o;x;x;x;x;o;x;o;o;o;o;x;x;x;x];
                 [x;x;x;x;x;o;x;o;o;o;o;o;o;x;x;o;o;x;x;x];
                 [x;o;o;x;x;o;x;x;o;x;x;x;o;x;x;x;o;o;x;x];
@@ -180,7 +191,7 @@ let lvl2 =
                 [o;o;o;o;o;o;x;x;o;x;x;x;o;x;o;x;x;x;o;o];
                 [x;o;x;x;o;o;o;x;o;o;o;o;o;o;o;o;x;x;o;o];
                 [x;o;o;x;x;o;o;o;x;x;o;o;o;x;o;x;x;x;x;o];
-                [x;o;x;x;x;x;x;o;o;o;o;mR;o;x;o;x;o;x;x;o];
+                [x;o;x;x;x;x;x;o;o;o;o;mCi;o;x;o;x;o;x;x;o];
                 [o;o;x;x;x;x;x;o;x;x;o;o;o;x;o;o;o;x;x;o];
                 [o;x;x;x;x;x;x;x;x;o;o;o;x;x;x;x;o;x;x;o];
                 [o;o;o;o;o;o;o;o;x;x;o;x;o;o;o;o;o;o;o;o];
