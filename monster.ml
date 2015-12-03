@@ -83,7 +83,7 @@ let update_right y x l master_board=
   else (Constants.Right, (y,x+1))
 
 let update_radius m_pos m_center player l w master_board levels_board =
-  if distance_between m_pos player <= Constans.monster_radius
+  if distance_between m_pos player <= Constants.monster_radius
   then
     let monster_pos= Dijkstra.dijkstra m_pos player
                      levels_board in (Constants.Radius m_center, monster_pos)
@@ -92,7 +92,7 @@ let update_radius m_pos m_center player l w master_board levels_board =
                      levels_board in (Constants.Radius m_center, monster_pos)
 
 let update_circle m_pos m_center player l w master_board levels_board=
-  if distance_between m_pos (m_center) <= Constans.monster_radius
+  if distance_between m_pos (m_center) <= Constants.monster_radius
   then
     let monster_pos= Dijkstra.dijkstra m_pos player
                      levels_board in (Constants.Circle m_center, monster_pos)
