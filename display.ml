@@ -145,6 +145,8 @@ let draw_monster (s:display) (pos: int*int) (m_type: move_type)=
   match m_type with
           | Chasing -> draw_block {tempbcf with cmid=Graphics.red; ctop=gray1; cbot=gray2}
           | Random -> draw_block {tempbcf with cmid=Graphics.magenta; ctop = gray1; cbot=gray2}
+          | Circle x -> draw_block {tempbcf with cmid=Graphics.green; ctop = gray1; cbot=gray2}
+          | Radius x-> draw_block {tempbcf with cmid=Graphics.cyan; ctop = gray1; cbot=gray2}
           | x -> let invis = gray1 in
                  let visible = Graphics.blue in
                  let tempbcf = pos_to_boxdata s pos 1.1 3.5 in
