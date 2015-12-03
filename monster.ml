@@ -97,7 +97,7 @@ let update_monster_position (monster:Constants.monster) player master_board
   match move_type with
   | Constants.Random -> update_random monster_y monster_x l w
   | Constants.Chasing -> let monster_pos= Dijkstra.dijkstra pos player
-                                          levels_board in (Chasing, monster_pos)
+                                          levels_board in (Constants.Chasing, monster_pos)
   | Constants.Up -> update_up monster_y monster_x l master_board
   | Constants.Down -> update_down monster_y monster_x l master_board
   | Constants.Left -> update_left monster_y monster_x w master_board
