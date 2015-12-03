@@ -15,6 +15,8 @@ let curr_move_type= ref Chasing *)
   if r<75 then curr_move_type := Chasing
      else curr_move_type := Random *)
 
+let distance_between (a,b) (x,y) =
+  Pervasives.sqrt(float_of_int (((a-x)*(a-x))+((b-y)*(b-y))))
 
 let update_random y x l w=
   if (y==0 && x==0) then
@@ -80,6 +82,25 @@ let update_right y x l master_board=
     (Constants.Left, (y,x))
   else (Constants.Right, (y,x+1))
 
+let update_radius m_pos m_center player l w master_board levels_board =
+  if distance_between m_pos player <= Constans.monster_radius
+  then
+    let monster_pos= Dijkstra.dijkstra m_pos player
+                     levels_board in (Constants.Radius m_center, monster_pos)
+  else
+    let monster_pos= Dijkstra.dijkstra m_pos m_center
+                     levels_board in (Constants.Radius m_center, monster_pos)
+
+let update_circle m_pos m_center player l w master_board levels_board=
+  if distance_between m_pos (m_center) <= Constans.monster_radius
+  then
+    let monster_pos= Dijkstra.dijkstra m_pos player
+                     levels_board in (Constants.Circle m_center, monster_pos)
+  else
+    let monster_pos= Dijkstra.dijkstra m_pos m_center
+                     levels_board in (Constants.Circle m_center, monster_pos)
+
+
 let update_monster_position (monster:Constants.monster) player master_board
                             levels_board : Constants.monster=
 
@@ -102,3 +123,7 @@ let update_monster_position (monster:Constants.monster) player master_board
   | Constants.Down -> update_down monster_y monster_x l master_board
   | Constants.Left -> update_left monster_y monster_x w master_board
   | Constants.Right -> update_right monster_y monster_x w master_board
+  | Constants.Circle m_center -> update_circle pos
+                                       m_center player l w master_board  levels_board
+  | Constants.Radius m_center -> update_radius pos
+                                       m_center player l w master_board levels_board
