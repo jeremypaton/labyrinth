@@ -19,6 +19,7 @@ type game_progress= In_progress | Won | Lost | Unstarted
 (** define variant type move_type: chasing, random. This designates whether
  ** whether the monster is moving randomly or actively chasing the player **)
 type move_type= Chasing | Random | Up | Down | Left | Right
+               | Circle of position | Radius of position
 
 type monster = (move_type * position)
 
@@ -45,4 +46,4 @@ val is_level: int -> bool
 val start_level : int
 val resolution_x : int
 val resolution_y : int
-
+val monster_radius: float
