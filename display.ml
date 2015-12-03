@@ -15,10 +15,6 @@ type display = {mutable grid:box_data array; maxx:int; maxy:int; x_sep:int; y_se
                 mutable x : int; mutable y :int; scale:int; bc : Graphics.color;
                 fc: Graphics.color; pc : Graphics.color}
 
-
-
-
-
 let draw_rect x0 y0 w h =
   let (a,b) = Graphics.current_point()
   and x1 = x0+w and y1 = y0+h
@@ -270,8 +266,8 @@ let create_grid (s:display) (board: bool list list) (data:box_data) =
 
 
 let initialize_display (s':display ref) board =
-  let maxx' = 1080 in
-  let maxy' = 720 in
+  let maxx' = Constants.resolution_x in
+  let maxy' = Constants.resolution_y in
   let scale' = 1 in
   let rows = (List.length board) in
   let columns = (List.length (List.hd board)) in
@@ -394,4 +390,4 @@ let launch_game lvl =
   initialize_display temp_disp board;
   slate lvl temp_disp
 
-let _ = launch_game 3
+let _ = launch_game Constants.start_level
