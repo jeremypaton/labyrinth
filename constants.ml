@@ -1,3 +1,7 @@
+let start_level = 0
+let resolution_x = 540
+let resolution_y = 360
+
 type master_board= bool list list
 
 type levels_board= float list list
@@ -35,6 +39,8 @@ type element =
 
 
 type design = element list list
+
+
 
 let gen_lvl_board design wall_weight =
   List.map (List.map (fun x -> if x = Wall then wall_weight else 1.0)) design
