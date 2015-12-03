@@ -41,3 +41,8 @@ val get_master: int -> master_board option
 val get_weights: int -> levels_board option
 
 val is_level: int -> bool
+
+val start_level : int
+val resolution_x : int
+val resolution_y : int
+
