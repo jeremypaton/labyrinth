@@ -206,6 +206,9 @@ let lvl2 =
   in gen_lvl design 1000.0 60
 
 
+
+(*NOTE: going beyond the 80char limit actually makes it clearer to see the
+board since it is layed out visually. breaking lines would not help *)
 let lvl3 =
   let design = [[mC;o; x; x; x; x; x; x; x; x; x; x; x; x; x; x; x; x; x; x; x; x; x; x; x; x; x; x; x; x];
                 [o; p; o; o; o; o; o; o; o; o; o; o; o; o; o; o; o; o; o; o; o;mL; o; o; o; o; o; o; o; o];
