@@ -203,7 +203,7 @@ let lvl2 =
                 [x;o;x;x;x;o;o;o;o;x;x;x;x;o;x;x;x;o;x;o];
                 [o;o;o;x;x;x;x;x;o;x;x;x;x;o;x;x;x;o;o;o];
                 [x;x;o;o;o;o;o;x;o;o;o;o;o;o;x;x;x;x;x;x]]
-  in gen_lvl design 1000.0 60
+  in gen_lvl design 1000.0 200
 
 
 
