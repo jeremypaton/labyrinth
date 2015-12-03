@@ -19,48 +19,36 @@ let distance_between (a,b) (x,y) =
   Pervasives.sqrt(float_of_int (((a-x)*(a-x))+((b-y)*(b-y))))
 
 let update_random y x l w=
-  if (y==0 && x==0) then
-    let r= Random.int 2 in
-    if (r==0) then (Constants.Random,(y, x+1))
-    else (Constants.Random,(y+1,x))
-  else if (y==0 && x==w) then
-    let r= Random.int 2 in
-    if (r==0) then (Constants.Random,(y,x-1))
-    else (Constants.Random, (y+1,x))
-  else if (y==l && x==0) then
-    let r= Random.int 2 in
-    if (r==0) then (Constants.Random,(y,x+1))
-    else (Constants.Random, (y-1,x))
-  else if (y==l && x==w) then
-    let r= Random.int 2 in
-    if (r==0) then (Constants.Random,(y,x-1))
-    else (Constants.Random, (y-1,x))
-  else if (y==l) then
-    let r= Random.int 3 in
-    if (r==0) then (Constants.Random,(y,x-1))
-    else if (r==1) then (Constants.Random,(y,x+1))
-    else (Constants.Random, (y-1, x))
-  else if (y==0) then
-    let r= Random.int 3 in
-    if (r==0) then (Constants.Random,(y,x-1))
-    else if (r==1) then (Constants.Random,(y,x+1))
-    else (Constants.Random, (y+1, x))
-  else if (x==w) then
-    let r= Random.int 3 in
-    if (r==0) then (Constants.Random,(y,x-1))
-    else if (r==1) then (Constants.Random,(y+1,x))
-    else (Constants.Random, (y-1,x))
-  else if (x==0) then
-    let r= Random.int 3 in
-    if (r==0) then (Constants.Random,(y,x+1))
-    else if (r==1) then (Constants.Random,(y+1,x))
-    else (Constants.Random, (y-1,x))
-  else
-    let r= Random.int 4 in
-    if (r == 0) then (Constants.Random,(x+1, y))
-    else if (r==1) then (Constants.Random,(x-1,y))
-    else if (r==2) then (Constants.Random,(x,y+1))
-    else (Constants.Random,(x,y-1))
+  let r2= Random.int 2 in
+  let r3= Random.int 3 in
+  let r4= Random.int 4 in
+  let pos =
+  (match y,x with
+  |0,0 -> if (r2==0) then (y, x+1)
+          else (y+1,x)
+  |0,x when x = w -> if (r2==0) then (y,x-1)
+                     else (y+1,x)
+  |y,0 when y = l -> if (r2==0) then (y,x+1)
+                     else  (y-1,x)
+  |y,x when y=l && x=w -> if (r2==0) then (y,x-1)
+                          else (y-1,x)
+  |y,_ when y = l -> if (r3==0) then (y,x-1)
+                     else if (r3==1) then (y,x+1)
+                     else (y-1, x)
+  |0,_-> if (r3==0) then (y,x-1)
+         else if (r3==1) then (y,x+1)
+         else  (y+1, x)
+  |_,x when x = w -> if (r3==0) then (y,x-1)
+                     else if (r3==1) then (y+1,x)
+                     else (y-1,x)
+  |_,0 -> if (r3==0) then (y,x+1)
+          else if (r3==1) then (y+1,x)
+          else (y-1,x)
+  |_,_ -> if (r4 == 0) then (x+1, y)
+          else if (r4==1) then (x-1,y)
+          else if (r4==2) then (x,y+1)
+         else (x,y-1)
+  ) in (Constants.Random,pos)
 
 let update_up y x l (master_board: Constants.master_board)=
   if ((y==0) || (y > 0 && (List.nth (List.nth master_board (y-1)) x == false))) then
