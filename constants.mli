@@ -41,9 +41,15 @@ val get_master: int -> master_board option
 (** get a given level's weight board **)
 val get_weights: int -> levels_board option
 
+
+(** whether a level exists **)
 val is_level: int -> bool
 
 val start_level : int
+
+(** screen resolutions **)
 val resolution_x : int
 val resolution_y : int
+
+(** monster radii **)
 val monster_radius: float
