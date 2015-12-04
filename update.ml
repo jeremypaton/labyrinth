@@ -7,12 +7,8 @@ let update_play (game:game_state) keys =
   then let _ = Printf.printf "%s\n%!" ("Game Paused") in
   {game with game_progress = Unstarted}
   else
-    let master_b = match (Constants.get_master game.level_number) with
-                 | Some x -> x
-                 | None -> failwith "update.ml : no master board!" in
-    let level_b = match (Constants.get_weights game.level_number) with
-                 | Some x -> x
-                 | None -> failwith "update.ml : no level board!" in
+    let master_b = Constants.get_master game.level_number in
+    let level_b = Constants.get_weights game.level_number in
     let p_pos = Player.update_player_position game.player_position
                                            (keys)
                                             master_b in
@@ -35,16 +31,12 @@ let update_play (game:game_state) keys =
 let update_won (game:game_state) keys =
   match List.mem 'r' keys with
   | false -> game
-  | true -> match (Constants.init_level game.level_number) with
-            | Some x -> x
-            | None -> failwith "no level 0"
+  | true -> Constants.init_level game.level_number
 
 let update_lost (game:game_state) keys =
     match List.mem 'r' keys with
   | false -> game
-  | true -> match (Constants.init_level game.level_number) with
-            | Some x -> x
-            | None -> failwith "no level to reset"
+  | true -> Constants.init_level game.level_number
 
 let update_paused (game:game_state) keys =
   let _ = Printf.printf "%s\n%!"
@@ -60,18 +52,12 @@ let main_update (game:game_state) keys =
   | _,true,_,_,_ -> let i = game.level_number - 1 in
                     let lvl = if is_level i then i else game.level_number in
                     Printf.printf "%s\n%!" ("Level " ^ (string_of_int lvl));
-                    (match (Constants.init_level lvl) with
-                    | Some x -> x
-                    | None -> failwith "no level to reset")
+                    Constants.init_level lvl
   | _,_,true,_,_ -> let i = game.level_number + 1 in
                 let lvl = if is_level i then i else game.level_number in
                 Printf.printf "%s\n%!" ("Level " ^ (string_of_int lvl));
-                (match (Constants.init_level lvl) with
-                | Some x -> x
-                | None -> failwith "no level to reset")
-  |_,_,_ ,true,_ -> (match (Constants.init_level game.level_number) with
-            | Some x -> x
-            | None -> failwith "no level to reset")
+                Constants.init_level lvl
+  |_,_,_ ,true,_ -> Constants.init_level game.level_number
   |_,_,_,_,true -> (match game.previous with
                 |Some g -> g
                | None -> game)
