@@ -250,6 +250,52 @@ let lvl3 =
 
   in gen_lvl design 1000.0 140
 
+let lvl5 =
+  let design = [[o;o;o;o;o;o;o;o;o;o;o;o;o];
+                [o;x;o;x;o;x;o;x;o;x;o;x;o];
+                [o;o;o;o;o;o;o;o;o;o;o;o;o];
+                [o;x;o;o;o;o;o;o;o;o;o;x;o];
+                [o;o;o;o;o;o;o;o;o;o;o;o;o];
+                [o;x;o;o;o;o;o;o;o;o;o;x;o];
+                [o;o;o;o;o;o;mCi;o;o;o;o;o;o];
+                [o;x;o;o;o;o;o;o;o;o;o;x;o];
+                [o;o;o;o;o;o;o;o;o;o;o;o;o];
+                [o;x;o;o;o;o;o;o;o;o;o;x;o];
+                [o;o;o;o;o;o;o;o;o;o;o;o;o];
+                [o;x;o;x;o;x;o;x;o;x;o;x;o];
+                [o;o;o;o;o;o;p;o;o;o;o;o;o]]
+
+  in gen_lvl design 1000.0 50
+
+let lvl6 =
+  let design = [[o;o;o;o;o;o;o;o;o;o;o;o;o];
+                [o;x;o;x;o;x;o;x;o;x;o;x;o];
+                [o;o;o;o;o;o;o;o;o;o;o;o;o];
+                [o;x;o;o;o;o;o;o;o;o;o;x;o];
+                [o;o;o;o;o;o;o;o;o;o;o;o;o];
+                [o;x;o;o;o;o;o;o;o;o;o;x;o];
+                [o;o;o;o;o;o;mRa;o;o;o;o;o;o];
+                [o;x;o;o;o;o;o;o;o;o;o;x;o];
+                [o;o;o;o;o;o;o;o;o;o;o;o;o];
+                [o;x;o;o;o;o;o;o;o;o;o;x;o];
+                [o;o;o;o;o;o;o;o;o;o;o;o;o];
+                [o;x;o;x;o;x;o;x;o;x;o;x;o];
+                [o;o;o;o;o;o;p;o;o;o;o;o;o]]
+
+  in gen_lvl design 1000.0 50
+(*
+let x = Wall
+let o = Path
+let mC = MChasing
+let mMm = MRandom
+let mU = MUp
+let mD = MDown
+let mL = MLeft
+let mR = MRight
+let mCi = MCircle
+let mRa = MRadius
+let p = Player
+*)
 
 
 
@@ -263,6 +309,8 @@ let retrieve lvl =
   |2 -> Some lvl2
   |3 -> Some lvl3
   |4 -> Some lvl4
+  |5 -> Some lvl5
+  |6 -> Some lvl6
   |_ -> None
 
 (******************************************************************************
