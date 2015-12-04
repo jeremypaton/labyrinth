@@ -141,22 +141,22 @@ let draw_player (s:display) (pos: int*int) =
 let draw_monster (s:display) (pos: int*int) (m_type: move_type)=
   let scaling = 1.5 in
   let border = 4. in
-  let tempbcf = pos_to_boxdata s pos scaling border in
+  (*let tempbcf = pos_to_boxdata s pos scaling border in*)
+
+  let invis = gray1 in
+  let visible = Graphics.blue in
+  let tempbcf = pos_to_boxdata s pos 1.1 3.5 in
+  let no_edge = {tempbcf with cmid = gray1; ctop = invis; cbot = invis;
+                                cleft = invis; cright = invis} in
   match m_type with
           | Chasing -> draw_block {tempbcf with cmid=Graphics.red; ctop=gray1; cbot=gray2}
           | Random -> draw_block {tempbcf with cmid=Graphics.magenta; ctop = gray1; cbot=gray2}
-          | Circle x -> draw_block {tempbcf with cmid=Graphics.green; ctop = gray1; cbot=gray2}
-          | Radius x-> draw_block {tempbcf with cmid=Graphics.cyan; ctop = gray1; cbot=gray2}
-          | x -> let invis = gray1 in
-                 let visible = Graphics.blue in
-                 let tempbcf = pos_to_boxdata s pos 1.1 3.5 in
-                 let no_edge = {tempbcf with cmid = gray1; ctop = invis; cbot = invis;
-                                cleft = invis; cright = invis} in
-                 match x with
-                 | Up -> draw_pointer {no_edge with ctop=visible} invis
-                 | Down -> draw_pointer {no_edge with cbot=visible} invis
-                 | Left -> draw_pointer {no_edge with cleft=visible} invis
-                 | Right -> draw_pointer {no_edge with cright=visible} invis
+          | Circle _-> draw_block {tempbcf with cmid=Graphics.green; ctop = gray1; cbot=gray2}
+          | Radius _-> draw_block {tempbcf with cmid=Graphics.cyan; ctop = gray1; cbot=gray2}
+          | Up -> draw_pointer {no_edge with ctop=visible} invis
+          | Down -> draw_pointer {no_edge with cbot=visible} invis
+          | Left -> draw_pointer {no_edge with cleft=visible} invis
+         | Right -> draw_pointer {no_edge with cright=visible} invis
 
 
 
@@ -165,9 +165,7 @@ let draw_monster (s:display) (pos: int*int) (m_type: move_type)=
 
 
 let skel (lvl:int) f_draw_board f_loop f_end f_key f_mouse f_except =
-  let game = ref (match (Constants.init_level lvl) with
-                  | Some x -> x
-                  | None -> failwith "display.ml : cannot access level") in
+  let game = ref (Constants.init_level lvl) in
   f_loop game [];
   (*Printf.printf "%s\n%!" ("there are "^(string_of_int (List.length !game.monster_position))^" monsters");*)
   try
@@ -231,12 +229,6 @@ let t_draw_board (s':display ref) () =
   (* draw grid *)
   Array.iter draw_block s.grid
 
-
-let get_master_board lvl=
-  match (Constants.get_master lvl) with
-  | Some x -> x
-  | _ -> failwith "no board"
-
 let flip_y pos board=
   let rows = (List.length board) in
   ((rows-fst pos)-1, snd pos)
@@ -286,10 +278,8 @@ let initialize_display (s':display ref) board =
 
 
 let start_level (s':display ref) lvl game =
-  game := (match (Constants.init_level lvl) with
-          | Some x -> x
-          | None -> failwith "display.ml : cannot access level");
-  initialize_display s' (get_master_board lvl)
+  game := (Constants.init_level lvl);
+  initialize_display s' (Constants.get_master lvl)
 
 (* Loop function to be called every frame and after each key press after
  * initialization. Updates player and monsters positions *)
@@ -317,7 +307,7 @@ let t_loop (s':display ref) (game:game_state ref) (keys:char list) =
          in
          Graphics.draw_string !text;
          (* 3. draw player *)
-         let board = get_master_board !game.level_number in
+         let board = Constants.get_master !game.level_number in
          let pp = flip_y !game.player_position board in
          draw_player !s' pp;
          (* 4. draw monsters *)
@@ -385,7 +375,7 @@ let slate (lvl:int) (disp:display ref) =
 
 
 let launch_game lvl =
-  let board= get_master_board lvl in
+  let board= Constants.get_master lvl in
   let temp_disp = ref {grid=[||]; maxx=100; maxy=100; x=60; y=60; scale=1;
                    bc=Graphics.rgb 130 130 130; fc=Graphics.black;
                    pc=Graphics.red; x_sep=1; y_sep=1} in
