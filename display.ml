@@ -283,8 +283,11 @@ let draw_loop (disp_ref:display ref) (game:game_state ref) (keys:char list) =
                                                (string_of_int !game.time))
                  | Won -> text:= !text^"Won!"
                  | Lost -> text:= !text^"Lost :("
-                 | Unstarted -> text:= !text^"Paused."
+                 | Unstarted -> text:= !text^"Paused. "
+                   ^(Constants.get_level_description !game.level_number)
          in
+         Graphics.set_color Graphics.red;
+         Graphics.moveto 0 0;
          Graphics.draw_string !text;
          draw_new_positions !disp_ref game
 
