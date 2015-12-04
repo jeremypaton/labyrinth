@@ -141,11 +141,10 @@ let draw_player (s:display) (pos: int*int) =
 let draw_monster (s:display) (pos: int*int) (m_type: move_type)=
   let scaling = 1.5 in
   let border = 4. in
-  (*let tempbcf = pos_to_boxdata s pos scaling border in*)
 
   let invis = gray1 in
   let visible = Graphics.blue in
-  let tempbcf = pos_to_boxdata s pos 1.1 3.5 in
+  let tempbcf = pos_to_boxdata s pos scaling border in
   let no_edge = {tempbcf with cmid = gray1; ctop = invis; cbot = invis;
                                 cleft = invis; cright = invis} in
   match m_type with
@@ -156,7 +155,7 @@ let draw_monster (s:display) (pos: int*int) (m_type: move_type)=
           | Up -> draw_pointer {no_edge with ctop=visible} invis
           | Down -> draw_pointer {no_edge with cbot=visible} invis
           | Left -> draw_pointer {no_edge with cleft=visible} invis
-         | Right -> draw_pointer {no_edge with cright=visible} invis
+          | Right -> draw_pointer {no_edge with cright=visible} invis
 
 
 
@@ -164,28 +163,7 @@ let draw_monster (s:display) (pos: int*int) (m_type: move_type)=
 
 
 
-let skel (lvl:int) f_draw_board f_loop f_end f_key f_mouse f_except =
-  let game = ref (Constants.init_level lvl) in
-  f_loop game [];
-  (*Printf.printf "%s\n%!" ("there are "^(string_of_int (List.length !game.monster_position))^" monsters");*)
-  try
-    while true do
-      (*try*)
-        let s = Graphics.wait_next_event [Graphics.Button_down;
-                                          Graphics.Key_pressed; Graphics.Poll] in
-        if s.Graphics.keypressed then
-          let k = Graphics.read_key () in
-          f_loop game [k]
-        else if s.Graphics.button then
-          f_mouse s.Graphics.mouse_x s.Graphics.mouse_y
-        (*else
-          f_loop game []*)
-      (*with
-        End -> raise End
-        | e -> f_except e*)
-    done
-  with
-  End -> f_end ()
+
 
 
 let next_line () =
@@ -199,14 +177,6 @@ let handle_char c = match c with
   | '\n' -> next_line ()
   | '\r' -> next_line ()
   | _ -> Graphics.draw_char c
-
-let go () = skel 0
-  (fun () -> Graphics.clear_graph (); Graphics.moveto 0 (Graphics.size_y() -12) )
-  (fun x y -> ())
-  (fun () -> Graphics.clear_graph() )
-  handle_char
-  (fun x y -> Graphics.moveto x y)
-  (fun e -> () )
 
 
 
@@ -253,8 +223,6 @@ let create_grid (s:display) (board: bool list list) (data:box_data) =
         acc := !acc@[new_box]
     done
   done;
-  (*let _ = print_string "\ncreate_grid personalized is running\n" in
-  let _ = print_int (List.length !acc) in*)
   !acc
 
 
@@ -277,13 +245,27 @@ let initialize_display (s':display ref) board =
   s' := {temp_disp with grid=grid'}
 
 
-let start_level (s':display ref) lvl game =
+let begin_the_level (s':display ref) lvl game =
   game := (Constants.init_level lvl);
   initialize_display s' (Constants.get_master lvl)
 
+
+let draw_new_positions (disp:display) game=
+
+         (* 3. draw player *)
+         let board = Constants.get_master !game.level_number in
+         let pp = flip_y !game.player_position board in
+         draw_player disp pp;
+         (* 4. draw monsters *)
+         for i = 0 to (List.length !game.monster_position)-1 do
+           let monster = List.nth !game.monster_position i in
+           let mp = flip_y (snd monster) board in
+           draw_monster disp mp (fst monster);
+         done
+
 (* Loop function to be called every frame and after each key press after
  * initialization. Updates player and monsters positions *)
-let t_loop (s':display ref) (game:game_state ref) (keys:char list) =
+let draw_loop (s':display ref) (game:game_state ref) (keys:char list) =
   match keys with
   (* exit program if 'e'/'E' is pressed *)
   | 'e'::_ | 'E'::_ -> raise End
@@ -292,7 +274,7 @@ let t_loop (s':display ref) (game:game_state ref) (keys:char list) =
          let cur_lvl = !game.level_number in
          game := Update.main_update !game keys;
          if !game.level_number <> cur_lvl then
-           start_level s' !game.level_number game;
+            begin_the_level s' !game.level_number game;
          (* 1. draw background and board *)
          t_draw_board s' ();
          (* 2. draw text for game state, or time left if game in progress *)
@@ -306,80 +288,55 @@ let t_loop (s':display ref) (game:game_state ref) (keys:char list) =
                  | Unstarted -> text:= !text^"Paused."
          in
          Graphics.draw_string !text;
-         (* 3. draw player *)
-         let board = Constants.get_master !game.level_number in
-         let pp = flip_y !game.player_position board in
-         draw_player !s' pp;
-         (* 4. draw monsters *)
-         for i = 0 to (List.length !game.monster_position)-1 do
-           let monster = List.nth !game.monster_position i in
-           let mp = flip_y (snd monster) board in
-           draw_monster !s' mp (fst monster);
-         done
+         draw_new_positions !s' game
 
-
-(* Exits the program *)
-let t_end s () =
-  Graphics.close_graph();
-  print_string "Game ended by user"; print_newline()
 
 
 (* Function to execute on mouse clicks *)
-let t_mouse s x y = ()
-
-
-(* Function to execute on exceptions, unless exceptions is [End], i.e close *)
-let t_except s ex = Printf.printf "%s\n%!" ("EXCEPTION IN DISPLAY")
+let func_mouse disp mous_pos =
+  Printf.printf "%s\n%!" ("Mouse input detected")
 
 
 
 
 
-(*let rec create_grid' nb_col n sep (b:box_data) =
-  if n < 0 then []
-  else
-  let px = n mod nb_col and py = n / nb_col in
-  let nx = b.x +sep + px*(b.w+sep)
-  and ny = b.y +sep + py*(b.h+sep) in
-  let b1 = {b with x=nx; y=ny} in
-  b1 :: (create_grid' nb_col (n-1) sep b)*)
+
+(* Function to be called every frame to draw the GUI by managing each frame's
+ * input (keys, mouse). Note the function is NOT recursive. *)
+let main_loop game (disp:display ref) =
+  try
+    while true do
+        let s = Graphics.wait_next_event [Graphics.Button_down;
+                                          Graphics.Key_pressed; Graphics.Poll] in
+        if s.Graphics.keypressed then
+          let k = Graphics.read_key () in
+          draw_loop disp game [k]
+        else if s.Graphics.button then
+          func_mouse disp Graphics.mouse_pos
+    done
+  with
+    | End -> Graphics.close_graph(); print_string "Game ended by user\n"
+    | _ -> Printf.printf "%s\n%!" ("EXCEPTION IN DISPLAY")
 
 
 
-let t_key (s':display ref) c =
-  let s = !s' in
-  draw_point s.x s.y s.scale s.fc;
-
-  (match c with
-  | '8' -> if s.y < s.maxy then s.y <- s.y + 1;
-  | '2' -> if s.y > 0 then s.y <- s.y - 1
-  | '4' -> if s.x > 0 then s.x <- s.x - 1
-  | '6' -> if s.x < s.maxx then s.x <- s.x + 1
-  | 'c' -> Graphics.set_color s.bc;
-  Graphics.fill_rect 0 0 (s.scale*s.maxx+1) (s.scale*s.maxy+1);
-  Graphics.clear_graph()
-  | 'e' -> raise End
-  | _ -> () );
-  draw_point s.x s.y s.scale s.pc
-
-
-
-let slate (lvl:int) (disp:display ref) =
-  let s = !disp in
-  Graphics.open_graph (" " ^ (string_of_int (s.scale*s.maxx)) ^
-  "x" ^ (string_of_int (s.scale*s.maxy)));
-  skel lvl (t_draw_board disp) (t_loop disp) (t_end disp) (t_key disp)
-  (t_mouse disp) (t_except disp)
-
-
-
-
-let launch_game lvl =
-  let board= Constants.get_master lvl in
-  let temp_disp = ref {grid=[||]; maxx=100; maxy=100; x=60; y=60; scale=1;
+(* Begins GUI drawing by setting up a display for the first level and opening
+ * a graphics library graph, and then calling the main_loop *)
+let launch_game (start_level:int) =
+  (* setup display for first level *)
+  let board = Constants.get_master start_level in
+  let disp = ref {grid=[||]; maxx=100; maxy=100; x=60; y=60; scale=1;
                    bc=Graphics.rgb 130 130 130; fc=Graphics.black;
                    pc=Graphics.red; x_sep=1; y_sep=1} in
-  initialize_display temp_disp board;
-  slate lvl temp_disp
+  initialize_display disp board;
+  (* open GUI *)
+  Graphics.open_graph (" " ^ (string_of_int (!disp.maxx)) ^
+                       "x" ^ (string_of_int (!disp.maxy)));
+  (* draw first frame *)
+  let game = ref (Constants.init_level start_level) in
+  draw_loop disp game [];
+  (* being main drawing loop *)
+  main_loop game disp
+
 
 let _ = launch_game Constants.start_level
