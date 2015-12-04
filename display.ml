@@ -12,7 +12,7 @@ type box_data = { x:int; y:int; w:int; h:int; bw:int; mutable r:relief;
  * y positions, the scaling of these positions for viewability, and the current
  * x and y positions of the mouse *)
 type display = {mutable grid:box_data array; maxx:int; maxy:int; x_sep:int; y_sep:int;
-                mutable x : int; mutable y :int; scale:int; bc : Graphics.color;
+                mutable x : int; mutable y :int; bc : Graphics.color;
                 fc: Graphics.color; pc : Graphics.color}
 
 let draw_rect x0 y0 w h =
@@ -191,13 +191,13 @@ let draw_point x y s c =
 
 (* Initialize the board in the display (i.e. draw the grid). Player and
  * monsters are not drawn *)
-let t_draw_board (s':display ref) () =
-  let s = !s' in
+let t_draw_board (disp_ref:display ref) () =
+  let disp = !disp_ref in
   (* draw background *)
-  Graphics.set_color s.bc;
-  Graphics.fill_rect 0 0 (s.scale*s.maxx+1) (s.scale*s.maxy+1);
+  Graphics.set_color disp.bc;
+  Graphics.fill_rect 0 0 (disp.maxx+1) (disp.maxy+1);
   (* draw grid *)
-  Array.iter draw_block s.grid
+  Array.iter draw_block disp.grid
 
 let flip_y pos board=
   let rows = (List.length board) in
@@ -230,13 +230,12 @@ let create_grid (s:display) (board: bool list list) (data:box_data) =
 let initialize_display (s':display ref) board =
   let maxx' = Constants.resolution_x in
   let maxy' = Constants.resolution_y in
-  let scale' = 1 in
   let rows = (List.length board) in
   let columns = (List.length (List.hd board)) in
-  let x_sep' = (scale'*maxx')/columns in
-  let y_sep' = (scale'*maxy')/rows in
+  let x_sep' = (maxx')/columns in
+  let y_sep' = (maxy')/rows in
 
-  let temp_disp = {grid=[||]; maxx=maxx'; maxy=maxy'; x=60; y=60; scale=scale';
+  let temp_disp = {grid=[||]; maxx=maxx'; maxy=maxy'; x=60; y=60;
                    bc=Graphics.rgb 130 130 130; fc=Graphics.black;
                    pc=Graphics.red; x_sep=x_sep'; y_sep=y_sep'} in
   let wall_data = {x=0; y=0; w=0;h=0; bw=5; cmid=gray1; ctop=gray3;
@@ -251,12 +250,11 @@ let begin_the_level (s':display ref) lvl game =
 
 
 let draw_new_positions (disp:display) game=
-
-         (* 3. draw player *)
+         (* draw player *)
          let board = Constants.get_master !game.level_number in
          let pp = flip_y !game.player_position board in
          draw_player disp pp;
-         (* 4. draw monsters *)
+         (* draw monsters *)
          for i = 0 to (List.length !game.monster_position)-1 do
            let monster = List.nth !game.monster_position i in
            let mp = flip_y (snd monster) board in
@@ -265,7 +263,7 @@ let draw_new_positions (disp:display) game=
 
 (* Loop function to be called every frame and after each key press after
  * initialization. Updates player and monsters positions *)
-let draw_loop (s':display ref) (game:game_state ref) (keys:char list) =
+let draw_loop (disp_ref:display ref) (game:game_state ref) (keys:char list) =
   match keys with
   (* exit program if 'e'/'E' is pressed *)
   | 'e'::_ | 'E'::_ -> raise End
@@ -274,11 +272,11 @@ let draw_loop (s':display ref) (game:game_state ref) (keys:char list) =
          let cur_lvl = !game.level_number in
          game := Update.main_update !game keys;
          if !game.level_number <> cur_lvl then
-            begin_the_level s' !game.level_number game;
+            begin_the_level disp_ref !game.level_number game;
          (* 1. draw background and board *)
-         t_draw_board s' ();
+         t_draw_board disp_ref ();
          (* 2. draw text for game state, or time left if game in progress *)
-         Graphics.moveto (!s'.maxx/2) (!s'.maxy-20);
+         Graphics.moveto (!disp_ref.maxx/2) (!disp_ref.maxy-20);
          let text = ref ("Level "^(string_of_int !game.level_number)^" ") in
          let _ = match !game.game_progress with
                  | In_progress -> text:= !text^("Time Left: "^
@@ -288,7 +286,7 @@ let draw_loop (s':display ref) (game:game_state ref) (keys:char list) =
                  | Unstarted -> text:= !text^"Paused."
          in
          Graphics.draw_string !text;
-         draw_new_positions !s' game
+         draw_new_positions !disp_ref game
 
 
 
@@ -325,7 +323,7 @@ let main_loop game (disp:display ref) =
 let launch_game (start_level:int) =
   (* setup display for first level *)
   let board = Constants.get_master start_level in
-  let disp = ref {grid=[||]; maxx=100; maxy=100; x=60; y=60; scale=1;
+  let disp = ref {grid=[||]; maxx=100; maxy=100; x=60; y=60;
                    bc=Graphics.rgb 130 130 130; fc=Graphics.black;
                    pc=Graphics.red; x_sep=1; y_sep=1} in
   initialize_display disp board;
