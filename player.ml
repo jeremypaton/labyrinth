@@ -1,8 +1,7 @@
 open Constants
-type key = char
 
 (*column-order matrix co-ordinates *)
-let update_player_position ((i,j):position)  (keys:key list)
+let update_player_position ((i,j):position)  (keys:char list)
                            (m_board: master_board): position =
           let (new_i,new_j) = match keys with
                     |[] -> (i,j)
