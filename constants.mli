@@ -33,13 +33,12 @@ type game_state= {previous: game_state option;
                   time: int}
 
 (** initialize a given level **)
-val init_level: int -> game_state option
+val init_level: int -> game_state
 
 (** get a given level's master board **)
-val get_master: int -> master_board option
-
+val get_master: int -> master_board
 (** get a given level's weight board **)
-val get_weights: int -> levels_board option
+val get_weights: int -> levels_board
 
 
 (** whether a level exists **)
