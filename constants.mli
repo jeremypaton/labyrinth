@@ -40,6 +40,7 @@ val get_master: int -> master_board
 (** get a given level's weight board **)
 val get_weights: int -> levels_board
 
+val get_level_description: int -> bytes
 
 (** whether a level exists **)
 val is_level: int -> bool
