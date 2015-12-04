@@ -1,52 +1,26 @@
 open Constants
 type key = char
 
-(* let get_keys () = *)
-      (* get_keypresses () *)
-type direction = Up | Down| Left | Right | Stay
-
-
-(*Assumption- Top left corner of board is (0,0) *)
-
-let update_player_position (p:position)  (k_list:key list) (m_board: master_board): position =
-          (*master_board = bool list list, key = char, position = (int*int) *)
-          let keys = k_list in
-          let dir = match keys with
-                    |[] -> Stay
+(*column-order matrix co-ordinates *)
+let update_player_position ((i,j):position)  (keys:key list)
+                           (m_board: master_board): position =
+          let (new_i,new_j) = match keys with
+                    |[] -> (i,j)
                     | h::t -> (match h with
-                              |'w' |'W' -> Up
-                              |'a' |'A' -> Left
-                              |'s' |'S' -> Down
-                              |'d' |'D' -> Right
-                              | _ -> Stay
-                            )
-
+                              |'w' |'W' -> (i-1,j) (*up*)
+                              |'s' |'S' -> (i+1,j) (*down*)
+                              |'a' |'A' -> (i,j-1) (*left*)
+                              |'d' |'D' -> (i,j+1) (*right*)
+                              | _ -> (i,j))
                   in
-                  (*Calculate mathematically new_pos, later check if there
-                  is oath there*)
-          let (new_y,new_x) = match p with
-          |(y,x) -> (match dir with
-                    |Up -> (y-1,x)
-                    |Down-> (y+1,x)
-                    |Left -> (y,x-1)
-                    |Right -> (y,x+1)
-                    |Stay-> (y,x)
+      (*check on board and not a wall*)
+      let height =List.length m_board in
+      let width = List.length (List.hd m_board) in
+        if new_i< height && new_i>=0 &&  new_j< width && new_j>= 0
+                          && (List.nth (List.nth m_board (new_i)) (new_j))
+        then (new_i,new_j)
+        else (i,j)
 
-        )
-        in
-        (*Check if the movement to that pos is actually possible, i.e, if it is
-        on board, and not a wall*)
-      let len_y =List.length m_board in
-      let len_x = List.length (List.hd m_board) in
-      let new_pos_real =
-          if new_x< len_x && new_x>=0 &&  new_y < len_y && new_y>= 0 then
-            if (List.nth ( List.nth m_board (new_y)) (new_x) )  (*Not a wall*)
-              then (new_y,new_x)
-            else p
-        else p
-      in
-      new_pos_real
-      (*Check wall*)
 
 
 
