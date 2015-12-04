@@ -267,7 +267,7 @@ let lvl5 =
                 [o;x;o;x;o;x;o;x;o;x;o;x;o];
                 [o;o;o;o;o;o;p;o;o;o;o;o;o]]
 
-  in gen_lvl design 1000.0 50 "this is a level"
+  in gen_lvl design 1000.0 50  "blue monsters chase if you get too close and wake them from slumber"
 
 let lvl6 =
   let design = [[o;o;o;o;o;o;o;o;o;o;o;o;o];
