@@ -28,7 +28,8 @@ type level = {levels_board: levels_board;
               master_board: master_board;
               player_start: position list;
               monster_start: monster list;
-              time: int}
+              time: int;
+              description: bytes}
 
 type element =
 |Wall | Path | Player
@@ -97,7 +98,7 @@ let extract_circle_monsters design =
   let extract_radius_monsters design =
   List.map (fun x-> (Radius x,x)) (get_element_positions design MRadius)
 
-let gen_test design wall_weight time=
+let gen_test design wall_weight time description=
   let mCs = extract_monsters design Chasing MChasing in
   let mMms = extract_monsters design Random  MRandom  in
   let mUs = extract_monsters design Up      MUp      in
@@ -111,10 +112,11 @@ let gen_test design wall_weight time=
                          master_board= gen_master_board design;
                          player_start= get_element_positions design Player;
                          monster_start= monsters;
-                         time = time}
+                         time = time;
+                         description = description}
 
-let gen_lvl design wall_weight time =
-  let tentative_level = gen_test design wall_weight time in
+let gen_lvl design wall_weight time description=
+  let tentative_level = gen_test design wall_weight time description in
   if find_errors tentative_level = None then tentative_level
                                         else failwith "invalid level"
 
@@ -140,19 +142,19 @@ let p = Player
 
 let lvlminus3 =
   let design = [[p]]
-  in gen_test design 1000.0 20
+  in gen_test design 1000.0 20 "this is a level"
 
 let lvlminus2 =
   let design = [[o;o;o];
                 [o;p;o];
                 [o;o;o]]
-  in gen_test design 1000.0 20
+  in gen_test design 1000.0 20 "this is a level"
 
 let lvlminus1 =
   let design = [[x;x;x];
                [x;p;x];
                [x;x;x]]
-  in gen_test design 1000.0 20
+  in gen_test design 1000.0 20 "this is a level"
 
 
 let lvl0 =
@@ -165,7 +167,7 @@ let lvl0 =
                 [x;x;x;x;mU;x;x;x;x];
                 [x;x;x;x;o;x;x;x;x];
                 [x;x;x;x;o;x;x;x;x]]
-  in gen_lvl design 1000.0 20
+  in gen_lvl design 1000.0 20 "this is a level"
 
 let lvl1 =
   let design = [[x;x;x;x;o;x;x;x;x];
@@ -177,7 +179,7 @@ let lvl1 =
                 [x;o;x;x;o;o;o;p;x];
                 [x;o;o;o;o;x;x;o;x];
                 [x;x;x;x;o;x;x;o;x]]
-  in gen_lvl design 1000.0 15
+  in gen_lvl design 1000.0 15 "this is a level"
 
 let lvl2 =
   let design = [[x;o;o;o;o;o;x;x;o;o;o;o;o;x;o;o;o;o;o;x];
@@ -203,7 +205,7 @@ let lvl2 =
                 [x;o;x;x;x;o;o;o;o;x;x;x;x;o;x;x;x;o;x;o];
                 [o;o;o;x;x;x;x;x;o;x;x;x;x;o;x;x;x;o;o;o];
                 [x;x;o;o;o;o;o;x;o;o;o;o;o;o;x;x;x;x;x;x]]
-  in gen_lvl design 1000.0 200
+  in gen_lvl design 1000.0 200 "this is a level"
 
 
 
@@ -232,7 +234,7 @@ let lvl3 =
                 [x; x; o; o; o;mU; o; o; o;mR; o; o; o; o; x; o; o; o; o; o; o; o; o; o; o;mL; o;mU; o; o];
                 [x; x; x; x; o; x; o; x; x; x; o; x; x; o; x; x; x; x; x; x; x; x; x; x; x; x; x; x; x; o];
                 [x; x; x; x; x; x; x; x; x; x;mR; o; o; o; o; o; o; o; o; o; o; o; o; o; o; o; o; o; o; o]]
-  in gen_lvl design 1000.0 140
+  in gen_lvl design 1000.0 140 "this is a level"
 
   let lvl4 =
   let design = [[p; o; o; o; o; o; o; o; o; o; o;mR; o];
@@ -248,7 +250,7 @@ let lvl3 =
                 [o; o; o; o; o; o;mL; o;mL;mU; o;mL; mC];
                 [o; o; o; o; o; o; o; o; o; o;mL; o;mU]]
 
-  in gen_lvl design 1000.0 140
+  in gen_lvl design 1000.0 140 "this is a level"
 
 let lvl5 =
   let design = [[o;o;o;o;o;o;o;o;o;o;o;o;o];
@@ -265,7 +267,7 @@ let lvl5 =
                 [o;x;o;x;o;x;o;x;o;x;o;x;o];
                 [o;o;o;o;o;o;p;o;o;o;o;o;o]]
 
-  in gen_lvl design 1000.0 50
+  in gen_lvl design 1000.0 50 "this is a level"
 
 let lvl6 =
   let design = [[o;o;o;o;o;o;o;o;o;o;o;o;o];
@@ -282,7 +284,7 @@ let lvl6 =
                 [o;x;o;x;o;x;o;x;o;x;o;x;o];
                 [o;o;o;o;o;o;p;o;o;o;o;o;o]]
 
-  in gen_lvl design 1000.0 50
+  in gen_lvl design 1000.0 50 "this is a level"
 (*
 let x = Wall
 let o = Path
@@ -340,6 +342,12 @@ let init_level lvl =
                monster_position= l.monster_start;
                time= l.time}
   | None -> failwith "no level"
+
+
+let get_level_description lvl =
+  match retrieve lvl with
+  | None -> ""
+  | Some l -> l.description
 
 let is_level lvl =
   match retrieve lvl with
