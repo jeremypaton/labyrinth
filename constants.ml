@@ -275,24 +275,23 @@ let retrieve lvl =
 
 let get_master lvl =
   match retrieve lvl with
-  | Some l -> Some l.master_board
-  | None -> None
+  | Some l -> l.master_board
+  | None -> failwith "no master'"
 
 let get_weights lvl =
   match retrieve lvl with
-  | Some l -> Some l.levels_board
-  | None -> None
+  | Some l -> l.levels_board
+  | None -> failwith "no weights"
 
 let init_level lvl =
   match retrieve lvl with
-  | Some l -> Some
-                 {previous = None;
-                  level_number= lvl;
-                  game_progress= Unstarted;
-                  player_position= List.hd l.player_start;
-                  monster_position= l.monster_start;
-                  time= l.time}
-  | None -> None
+  | Some l -> {previous = None;
+               level_number= lvl;
+               game_progress= Unstarted;
+               player_position= List.hd l.player_start;
+               monster_position= l.monster_start;
+               time= l.time}
+  | None -> failwith "no level"
 
 let is_level lvl =
   match retrieve lvl with
