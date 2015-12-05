@@ -228,7 +228,8 @@ board since it is layed out visually. breaking lines would not help *)
                 [o; o; o;mU; o; o; o; o;mR; o; o;mR; o];
                 [o; x; x; o; x; x;mU; x; x; o; x; x; o];
                 [o; o; o; o; o; o;mL; o;mL;mU; o;mL; mC];
-                [o; o; o; o; o; o; o; o; o; o;mL; o;mU]]
+                [o; o; o; o; o; o; o; o; o; o;mL; o;mU];
+                [x; x; x; x; x; x; x; x; x; x; x; x; x]]
 
   in gen_lvl design 1000.0 140 "these monsters move horizontally & vertically,as shown by blue arrows"
 
