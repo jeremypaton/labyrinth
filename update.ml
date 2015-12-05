@@ -40,7 +40,7 @@ let update_lost (game:game_state) keys =
 
 let update_paused (game:game_state) keys =
   let _ = Printf.printf "%s\n%!"
-  ("Pause Level" ^ (string_of_int game.level_number)) in game
+  ("Pause Level " ^ (string_of_int game.level_number)) in game
 
 let main_update (game:game_state) keys =
   match (List.mem ' ' keys),  (List.mem '[' keys), (List.mem ']' keys),

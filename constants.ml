@@ -349,7 +349,7 @@ let lvl5 =
                 [x; o; o; o; o; x; o; o; o; o; o; o; o; o; o; mL; x];
                 [x; o; o; o; o; x; o; o; o; o; o; o; o; o; o; mL; x];
                 [x; o; o; o; x; x; o; o; o; o; o; o; o; o; o; mL; x];
-                [x; o; o; o; o; x; o;mMm; x; o; o; o; o; o; o; mL; x];
+                [x; o; o; o; o; x; o; o; x; o; o; o; o; o; o; mL; x];
                 [x; o; o; o; o; x; o; o; o; o; o; o; o; o; o; mL; x];
                 [x; o; o; o; o; x; o; o; o; o; o; o; o; o; o; mL; x];
               [mRa; o; o; o; o; o; o; o; p; o; o; o; o; o; o; mC; x];
