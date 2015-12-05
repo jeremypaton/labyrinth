@@ -324,7 +324,8 @@ let lvl7 =
                     [x;x;x;x;x;x;x;x;x;x;x;x;x;x;x;x;x;x]]
       in gen_lvl design 1000.0 20 "this is a level"
       (*15 x 12*)
-      let lvl9 =
+
+  let lvl9 =
       let design = [[x;o;o;o;x;x;x;x;x;x;x;x;x;x;x];
                     [x;o;x;o;x;x;o;x;x;x;o;o;o;o;x];
                     [x;o;o;o;o;mCi;o;o;o;o;o;x;x;o;x];
@@ -340,6 +341,41 @@ let lvl7 =
                     ]
         in gen_lvl design 1000.0 20 "this is level 9"
 
+  let lvl10 =
+  let design = [[x;x;x;x;o;x;x;x;x;x;x;x;o;x;x;x;x;x];
+                [x;mRa;o;o;o;o;o;o;o;o;o;x;o;x;x;x;x;x];
+                [x;o;x;x;x;x;x;x;x;x;o;o;o;o;o;o;o;x];
+                [o;o;o;o;o;o;o;o;o;x;x;o;x;x;o;o;o;x];
+                [x;o;o;o;o;p;o;o;o;o;o;o;o;x;o;o;o;x];
+                [x;o;x;x;x;x;o;x;x;x;x;o;x;x;x;o;o;x];
+                [o;o;o;o;o;x;o;o;o;o;o;o;o;o;o;mC;o;x];
+                [x;o;x;o;o;x;x;x;x;x;x;o;o;o;o;o;o;x];
+                [x;o;x;o;o;o;o;o;o;o;x;o;x;x;o;o;o;x];
+                [x;o;x;o;o;x;x;x;x;o;x;o;o;x;x;x;o;x];
+                [x;o;x;mU;o;o;o;o;o;o;o;o;o;o;o;mRa;o;x];
+                [x;o;x;o;o;x;x;o;x;x;x;o;x;x;x;x;o;x];
+                [x;mL;o;o;o;o;o;mR;o;o;o;o;o;x;o;o;o;x];
+                [x;x;x;x;x;x;x;x;x;x;x;x;x;x;x;x;x;x];
+                ]
+              in gen_lvl design 1000.0 40 "This is level 10"
+
+let lvl11 =
+let design = [[x;x;x;x;x;x;x;x;x;x;x;x;x;x;x;x;x;x];
+              [x;o;o;o;o;mU;o;o;o;o;o;o;o;mCi;o;o;o;o];
+              [x;o;x;o;x;x;x;o;x;x;x;x;o;x;x;o;x;o];
+              [x;o;x;o;o;o;o;o;x;o;o;o;o;o;o;o;o;o];
+              [x;o;o;o;x;o;x;o;x;o;x;x;o;x;x;o;x;x];
+              [x;x;x;o;x;o;x;o;x;o;x;x;p;o;o;o;x;x];
+              [x;mL;o;mC;o;o;o;o;o;o;x;x;o;o;o;o;o;x];
+              [x;o;o;x;o;x;x;o;x;o;o;o;o;o;o;o;o;x];
+              [x;o;o;x;o;x;x;o;x;x;o;x;x;x;o;mU;o;x];
+              [x;o;o;x;o;x;x;o;x;x;o;o;o;o;o;o;o;x];
+              [o;o;o;o;mL;o;o;o;o;o;o;x;x;o;x;x;o;x];
+              [x;o;x;x;o;x;x;o;x;x;mRa;o;o;o;o;o;o;x];
+              [x;o;o;o;o;mC;o;o;o;o;o;o;x;x;x;x;o;x];
+              [x;x;x;x;x;x;x;x;x;x;x;o;o;o;o;o;o;x];
+              ]
+      in gen_lvl design 1000.0 20 "This is level 11"
 (*
 let x = Wall
 let o = Path
@@ -371,6 +407,8 @@ let retrieve lvl =
   |7 -> Some lvl7
   |8 -> Some lvl8
   |9 -> Some lvl9
+  |10 -> Some lvl10
+  |11 -> Some lvl11
   |_ -> None
 
 (******************************************************************************
