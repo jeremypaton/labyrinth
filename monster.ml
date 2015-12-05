@@ -25,19 +25,24 @@ let get_neighbors y x l w=
   List.append (get_neighbors_of_x x w y) (get_neighbors_of_y x l y)
 
 (* updates a random monster position (y,x) with board length l and width w *)
-let update_random y x l w=
+let update_random y x l w m_board=
   let neighbors= get_neighbors y x l w in
   let r2= Random.int 2 in
   let r3= Random.int 3 in
   let r4= Random.int 4 in
-  let pos=
+  let (new_i,new_j)=
   (match List.length neighbors with
   | 0 -> (y,x)
   | 1 -> List.nth neighbors 0
   | 2 -> List.nth neighbors r2
   | 3 -> List.nth neighbors r3
   | _ -> List.nth neighbors r4) in
-  (Constants.Random, pos)
+  let height =List.length m_board in
+      let width = List.length (List.hd m_board) in
+        if new_i< height && new_i>=0 &&  new_j< width && new_j>= 0
+                          && (List.nth (List.nth m_board (new_i)) (new_j))
+  then (Constants.Random, (new_i,new_j))
+  else (Constants.Random, (y,x))
 
 (* updates up moving monster *)
 let update_up y x l (master_board: Constants.master_board)=
@@ -115,7 +120,7 @@ let update_monster_position (monster:Constants.monster) player master_board
   let l= (List.length (levels_board))-1 in
   let w= (List.length (List.nth levels_board 0))-1 in
   match move_type with
-  | Constants.Random -> update_random monster_y monster_x l w
+  | Constants.Random -> update_random monster_y monster_x l w master_board
   | Constants.Chasing -> let monster_pos= Dijkstra.dijkstra pos player
                                           levels_board in
                          (Constants.Chasing, monster_pos)
