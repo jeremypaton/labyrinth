@@ -361,7 +361,7 @@ let lvl5 =
                 [x; o; o; o; o; x; o; o; o; o; o; o; o; o; o; mL; x];
                 [x;mMm; o; o; o; x; o; o; o; o; o; o; o; o; o; mL; x];
                 [x; x; x; x; x; x; x; x; x; x; x; x; x; x; x; x; x]]
-  in gen_lvl design 1000.0 42
+  in gen_lvl design 1000.0 39
   "level 5: HARD"
 
 (*NOTE: going beyond the 80char limit actually makes it clearer to see the
