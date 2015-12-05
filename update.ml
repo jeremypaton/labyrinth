@@ -59,9 +59,8 @@ let main_update (game:game_state) keys =
                 Constants.init_level lvl
   |_,_,_ ,true,_ -> Constants.init_level game.level_number
   |_,_,_,_,true -> (match game.previous with
-                |Some g -> Constants.move_ctr:= !(Constants.move_ctr)-1;
-                           g
-                | None -> game)
+                |Some g -> g
+               | None -> game)
   |_,_,_,_ ,_->  (match game.game_progress with
                 | In_progress -> update_play game keys
                 | Won -> update_won game keys

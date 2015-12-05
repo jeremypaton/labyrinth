@@ -7,8 +7,6 @@ type master_board= bool list list
 
 type levels_board= float list list
 
-type move_list_types = Mv_up | Mv_dn | Mv_lt | Mv_rt
-
 type position= (int*int)
 
 type game_progress= In_progress | Won | Lost | Unstarted
@@ -24,7 +22,6 @@ type game_state= {previous : game_state option;
                   player_position: position;
                   monster_position: monster list;
                   time: int}
-
 
 
 type level = {levels_board: levels_board;
@@ -46,20 +43,6 @@ type element =
 |MRadius
 
 type design = element list list
-
-let move_ctr = ref 0
-
-let move_list = [Mv_lt;Mv_lt;Mv_up;Mv_up;Mv_dn;Mv_up;Mv_lt;Mv_rt;Mv_rt;Mv_dn;
-                Mv_dn;Mv_dn;Mv_rt;Mv_rt;Mv_rt;Mv_up;Mv_dn;Mv_up;Mv_rt;Mv_lt;
-                Mv_lt;Mv_lt;Mv_dn;Mv_dn;Mv_dn;Mv_dn;Mv_dn;Mv_rt;Mv_lt;Mv_dn;Mv_up;Mv_up;
-                Mv_up;Mv_up;Mv_up;Mv_rt;Mv_up;Mv_rt;Mv_lt;Mv_dn;Mv_lt;Mv_rt;Mv_dn;Mv_dn;
-                Mv_rt;Mv_dn;Mv_up;Mv_up;Mv_up;Mv_lt;Mv_rt;Mv_lt;Mv_dn;Mv_dn;Mv_up;Mv_rt;
-                Mv_up;
-                Mv_up;Mv_up;Mv_up;Mv_lt;Mv_lt;Mv_rt;Mv_dn;Mv_dn;Mv_rt;Mv_dn;Mv_rt;Mv_lt;
-                Mv_up;Mv_lt;Mv_rt;Mv_lt;Mv_rt;Mv_up;Mv_up;Mv_up;Mv_dn;Mv_dn;Mv_dn;Mv_lt;
-                Mv_lt;Mv_lt;Mv_lt;Mv_rt;Mv_rt;Mv_rt;Mv_up;Mv_up;Mv_dn;Mv_up;Mv_up;Mv_rt;
-                Mv_lt;Mv_lt;Mv_rt;Mv_dn;Mv_up;Mv_lt;Mv_dn;Mv_rt;Mv_up;Mv_rt;Mv_lt;Mv_up;
-                ]
 
 
 
