@@ -303,8 +303,10 @@ let draw_loop (disp_ref:display ref) (game:game_state ref) (keys:char list) =
          Graphics.draw_string !text
 
 
-(* Function to be called every frame to draw the GUI by managing each frame's
- * input (keys, mouse). Note the function is NOT recursive. *)
+(* Function to be called every frame to draw the GUI related to [disp].
+ * Processes any input keys to determine what to draw, and gets the game info
+ * from [game].
+ * Note the function is NOT recursive. *)
 let main_loop game (disp:display ref) =
   try
     while true do
@@ -318,8 +320,8 @@ let main_loop game (disp:display ref) =
     | _ -> () (*Printf.printf "%s\n%!" ("EXCEPTION IN DISPLAY")*)
 
 
-(* Begins GUI drawing by setting up a display for the first level and opening
- * a graphics library graph, and then calling the main_loop *)
+(* Begins GUI drawing by setting up a display for the level [start_level] and
+ * opening a graphics library graph, and then calling the main_loop *)
 let launch_game (start_level:int) =
   (* setup display for first level *)
   let board = Constants.get_master start_level in
