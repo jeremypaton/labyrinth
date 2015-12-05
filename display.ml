@@ -150,8 +150,8 @@ let draw_monster (s:display) (pos: int*int) (m_type: move_type)=
   match m_type with
           | Chasing -> draw_block {tempbcf with cmid=Graphics.red; ctop=gray1; cbot=gray2}
           | Random -> draw_block {tempbcf with cmid=Graphics.magenta; ctop = gray1; cbot=gray2}
-          | Circle _-> draw_block {tempbcf with cmid=Graphics.green; ctop = gray1; cbot=gray2}
-          | Radius _-> draw_block {tempbcf with cmid=Graphics.cyan; ctop = gray1; cbot=gray2}
+          | Circle _-> draw_block {tempbcf with cmid=Graphics.cyan; ctop = gray1; cbot=gray2}
+          | Radius _-> draw_block {tempbcf with cmid=Graphics.green; ctop = gray1; cbot=gray2}
           | Up -> draw_pointer {no_edge with ctop=visible} invis
           | Down -> draw_pointer {no_edge with cbot=visible} invis
           | Left -> draw_pointer {no_edge with cleft=visible} invis
