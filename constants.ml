@@ -167,7 +167,8 @@ let lvl0 =
                 [x;x;x;x;mU;x;x;x;x];
                 [x;x;x;x;o;x;x;x;x];
                 [x;x;x;x;o;x;x;x;x]]
-  in gen_lvl design 1000.0 20 "this is a level"
+  in gen_lvl design 1000.0 20 "Dummy level.Movement-w,a,s,d. [,]-toggle
+  levels,r-restart,space-start"
 
 let lvl1 =
   let design = [[x;x;x;x;o;x;x;x;x];
@@ -179,7 +180,7 @@ let lvl1 =
                 [x;o;x;x;o;o;o;p;x];
                 [x;o;o;o;o;x;x;o;x];
                 [x;x;x;x;o;x;x;o;x]]
-  in gen_lvl design 1000.0 15 "avoid the red monster- he'll chase you!"
+  in gen_lvl design 1000.0 15 "Avoid the red monster- he'll chase you!. z-step back"
 
 let lvl2 =
   let design = [[x;o;o;o;o;o;x;x;o;o;o;o;o;x;o;o;o;o;o;x];
@@ -205,7 +206,7 @@ let lvl2 =
                 [x;o;x;x;x;o;o;o;o;x;x;x;x;o;x;x;x;o;x;o];
                 [o;o;o;x;x;x;x;x;o;x;x;x;x;o;x;x;x;o;o;o];
                 [x;x;o;o;o;o;o;x;o;o;o;o;o;o;x;x;x;x;x;x]]
-  in gen_lvl design 1000.0 200 "these monsters chase if you get too close!"
+  in gen_lvl design 1000.0 200 "Blue- chases you within territory. Green- chases if you go too close"
 
 
 
@@ -226,7 +227,7 @@ board since it is layed out visually. breaking lines would not help *)
                 [o; o; o; o; o; o;mL; o;mL;mU; o;mL; mC];
                 [o; o; o; o; o; o; o; o; o; o;mL; o;mU]]
 
-  in gen_lvl design 1000.0 140 "these monsters move horizontally and vertically"
+  in gen_lvl design 1000.0 140 "these monsters move horizontally & vertically,as shown by blue arrows"
 
 let lvl4 =
   let design = [[o;o;o;o;o;o;o;o;o;o;o;o;o];
@@ -243,7 +244,7 @@ let lvl4 =
                 [o;x;o;x;o;x;o;x;o;x;o;x;o];
                 [o;o;o;o;o;o;p;o;o;o;o;o;o]]
 
-  in gen_lvl design 1000.0 50  "blue monsters chase if you get too close and wake them from slumber"
+  in gen_lvl design 1000.0 50  "Green monsters start chasing if you get too close & wake them from slumber"
 
 let lvl5 =
   let design = [[o;o;o;o;o;o;o;o;o;o;o;o;o];
@@ -260,7 +261,7 @@ let lvl5 =
                 [o;x;o;x;o;x;o;x;o;x;o;x;o];
                 [o;o;o;o;o;o;p;o;o;o;o;o;o]]
 
-  in gen_lvl design 1000.0 50 "this monster moves randomly"
+  in gen_lvl design 1000.0 50 "this monster chases you in it's territory, but wont step out of it"
 
 let lvl6 =
   let design = [[x; x; p; x; x; o; x; x; x; x; x; o; x; x];
@@ -280,7 +281,7 @@ let lvl6 =
                 [x; o; x; x; x; o; o; mC; o; o; o; x; x; x];
                 [o; o; o; o; o; x; x; o; x; x; o; x; x; x];
                 [x; x; x; x; o; x; x; o; x; x; o; x; x; x]]
-  in gen_lvl design 1000.0 50 "this is a level to play"
+  in gen_lvl design 1000.0 50 "Two smart monsters are going to chase you in this level"
 
 let lvl7 =
   let design = [[mC;o; x; x; x; x; x; x; x; x; x; x; x; x; x; x; x; x; x; x; x; x; x; x; x; x; x; x; x; x];
@@ -305,7 +306,7 @@ let lvl7 =
                 [x; x; o; o; o;mU; o; o; o;mR; o; o; o; o; x; o; o; o; o; o; o; o; o; o; o;mL; o;mU; o; o];
                 [x; x; x; x; o; x; o; x; x; x; o; x; x; o; x; x; x; x; x; x; x; x; x; x; x; x; x; x; x; o];
                 [x; x; x; x; x; x; x; x; x; x;mR; o; o; o; o; o; o; o; o; o; o; o; o; o; o; o; o; o; o; o]]
-  in gen_lvl design 1000.0 140 "this is a level"
+  in gen_lvl design 1000.0 140 "each step requires meticulous planning. Use z to take a step back"
 
   let lvl8 =
       let design = [[x;x;x;x;o;x;x;x;x;x;x;x;o;x;x;x;x;x];
@@ -322,7 +323,7 @@ let lvl7 =
                     [x;o;x;x;o;x;x;o;x;x;x;o;x;x;x;x;o;x];
                     [x;mU;o;o;o;o;o;o;o;o;o;p;o;o;o;o;mL;x];
                     [x;x;x;x;x;x;x;x;x;x;x;x;x;x;x;x;x;x]]
-      in gen_lvl design 1000.0 20 "this is a level"
+      in gen_lvl design 1000.0 20 "Evade the monsters for 20 turns. Blue is territorial monster"
       (*15 x 12*)
 
   let lvl9 =
@@ -339,7 +340,7 @@ let lvl7 =
                     [o;mL;o;o;o;o;o;o;o;o;o;x;o;x;o];
                     [x;x;x;x;x;x;x;x;x;x;x;x;x;x;x];
                     ]
-        in gen_lvl design 1000.0 20 "this is level 9"
+        in gen_lvl design 1000.0 20 "Evade two chasing and one sleeping monster"
 
   let lvl10 =
   let design = [[x;x;x;x;o;x;x;x;x;x;x;x;o;x;x;x;x;x];
@@ -352,12 +353,12 @@ let lvl7 =
                 [x;o;x;o;o;x;x;x;x;x;x;o;o;o;o;o;o;x];
                 [x;o;x;o;o;o;o;o;o;o;x;o;x;x;o;o;o;x];
                 [x;o;x;o;o;x;x;x;x;o;x;o;o;x;x;x;o;x];
-                [x;o;x;mU;o;o;o;o;o;o;o;o;o;o;o;mRa;o;x];
+                [x;o;x;mU;o;o;o;o;o;o;o;o;o;o;o;mMm;o;x];
                 [x;o;x;o;o;x;x;o;x;x;x;o;x;x;x;x;o;x];
                 [x;mL;o;o;o;o;o;mR;o;o;o;o;o;x;o;o;o;x];
                 [x;x;x;x;x;x;x;x;x;x;x;x;x;x;x;x;x;x];
                 ]
-              in gen_lvl design 1000.0 40 "This is level 10"
+              in gen_lvl design 1000.0 40 "Avoid the chasing and sleeping monsters"
 
 let lvl11 =
 let design = [[x;x;x;x;x;x;x;x;x;x;x;x;x;x;x;x;x;x];
@@ -375,7 +376,7 @@ let design = [[x;x;x;x;x;x;x;x;x;x;x;x;x;x;x;x;x;x];
               [x;o;o;o;o;mC;o;o;o;o;o;o;x;x;x;x;o;x];
               [x;x;x;x;x;x;x;x;x;x;x;o;o;o;o;o;o;x];
               ]
-      in gen_lvl design 1000.0 20 "This is level 11"
+      in gen_lvl design 1000.0 20 "Two chasers, one sleeping and one territorial monster."
 (*
 let x = Wall
 let o = Path
