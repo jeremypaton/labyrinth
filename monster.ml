@@ -2,38 +2,42 @@
 let distance_between (a,b) (x,y) =
   Pervasives.sqrt(float_of_int (((a-x)*(a-x))+((b-y)*(b-y))))
 
+(* gets neighbors of (x,y) given board length l and width w *)
+(* gets left-right neighboring positions *)
+let get_neighbors_of_x x l y=
+  if (x=0) then
+  [(y,x+1)]
+  else if (x=l) then
+  [(y,x-1)]
+  else
+  [(y,x+1);(y,x-1)]
+
+(* gets vertically neighboring positions *)
+let get_neighbors_of_y x l y=
+  if (y=0) then
+  [(y+1,x)]
+  else if (y=l) then
+  [(y-1,x)]
+  else
+  [(y+1,x);(y-1,x)]
+
+let get_neighbors y x l w=
+  List.append (get_neighbors_of_x x w y) (get_neighbors_of_y x l y)
+
 (* updates a random monster position (y,x) with board length l and width w *)
 let update_random y x l w=
+  let neighbors= get_neighbors y x l w in
   let r2= Random.int 2 in
   let r3= Random.int 3 in
   let r4= Random.int 4 in
-  let pos =
-  (match y,x with
-  |0,0 -> if (r2=0) then (y, x+1)
-          else (y+1,x)
-  |0,w -> if (r2=0) then (y,x-1)
-                    else (y+1,x)
-  |l,0 -> if (r2=0) then (y,x+1)
-                    else  (y-1,x)
-  |l,w -> if (r2=0) then (y,x-1)
-                    else (y-1,x)
-  |l,_ -> if (r3=0) then (y,x-1)
-                    else if (r3=1) then (y,x+1)
-                    else (y-1, x)
-  |0,_-> if (r3=0) then (y,x-1)
-         else if (r3=1) then (y,x+1)
-         else  (y+1, x)
-  |_,w -> if (r3=0) then (y,x-1)
-                    else if (r3=1) then (y+1,x)
-                    else (y-1,x)
-  |_,0 -> if (r3=0) then (y,x+1)
-          else if (r3=1) then (y+1,x)
-          else (y-1,x)
-  |_,_ -> if (r4 =0) then (x+1, y)
-          else if (r4=1) then (x-1,y)
-          else if (r4=2) then (x,y+1)
-          else (x,y-1)
-  ) in (Constants.Random,pos)
+  let pos=
+  (match List.length neighbors with
+  | 0 -> (y,x)
+  | 1 -> List.nth neighbors 0
+  | 2 -> List.nth neighbors r2
+  | 3 -> List.nth neighbors r3
+  | _ -> List.nth neighbors r4) in
+  (Constants.Random, pos)
 
 (* updates up moving monster *)
 let update_up y x l (master_board: Constants.master_board)=
