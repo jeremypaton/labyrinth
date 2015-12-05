@@ -196,19 +196,19 @@ let tut2=
   "tutorial 1: it's a wandering monster... watch out!"
 
 let tut3 =
-    let design = [[o;mR;o;o;o;o;o;o;o;o;o;mL;o];
-                [mD;x;x;o;x;o;x;o;x;o;x;x;mD];
+    let design = [[mR;o;o;o;o;o;o;o;o;o;o;o;mD];
+                [o;x;x;o;x;o;x;o;x;o;x;x;o];
                 [o;x;mD;o;o;o;o;o;o;o;mL;x;o];
                 [o;o;o;o;o;o;o;o;o;o;o;o;o];
                 [o;x;o;o;o;o;o;o;o;o;o;x;o];
-                [o;o;o;o;o;o;o;o;o;o;o;o;mD];
+                [o;o;o;o;o;o;o;o;o;o;o;o;o];
                 [o;x;o;o;o;o;o;o;o;o;o;x;o];
-                [o;o;o;o;o;o;o;o;o;o;o;o;mU];
+                [o;o;o;o;o;o;o;o;o;o;o;o;o];
                 [o;x;o;o;o;o;o;o;o;o;o;x;o];
                 [o;o;o;o;o;o;o;o;o;o;o;o;o];
                 [o;x;mR;o;o;o;o;o;o;o;mU;x;o];
-                [mU;x;x;o;x;o;x;o;x;o;x;x;mU];
-                [o;mR;o;o;o;o;p;o;o;o;o;mL;o]]
+                [o;x;x;o;x;o;x;o;x;o;x;x;o];
+                [mU;o;o;o;o;o;p;o;o;o;o;o;mL]]
 
   in gen_lvl design 1000.0 50
   "tutorial 2: zombies move back and forth in straight lines"
@@ -261,7 +261,7 @@ let tut6=
                 [o;o;o;o;o;o;o;o;o;o;o;o;o];
                 [o;x;o;o;o;o;o;o;o;o;o;x;o];
                 [o;o;o;o;o;o;o;o;o;o;o;o;o];
-                [o;x;o;o;o;o;mR;o;o;o;o;x;o];
+                [o;x;o;o;o;o;mRa;o;o;o;o;x;o];
                 [o;o;o;o;o;o;o;o;o;o;o;o;o];
                 [o;x;o;o;o;o;o;o;o;o;o;x;o];
                 [o;o;o;o;o;o;o;o;o;o;o;o;o];
@@ -544,12 +544,12 @@ let retrieve lvl =
   |4 -> Some tut4
   |5 -> Some tut5
   |6 -> Some tut6
-  |5 -> Some lvl1
-  |6 -> Some lvl2
-  |7 -> Some lvl3
-  |8 -> Some lvl4
-  |9 -> Some lvl5
-  |10 -> Some lvl6
+  |7 -> Some lvl1
+  |8 -> Some lvl2
+  |9 -> Some lvl3
+  |10 -> Some lvl4
+  |11 -> Some lvl5
+  |12 -> Some lvl6
   |_ -> None
 
 (******************************************************************************
