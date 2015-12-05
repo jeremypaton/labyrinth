@@ -289,12 +289,15 @@ let draw_loop (disp_ref:display ref) (game:game_state ref) (keys:char list) =
          let descr = (Constants.get_level_description !game.level_number) in
          let _ = match !game.game_progress with
                  | In_progress -> text:= !text^descr
-                 | Won -> text:= !text^"Won! :D   "^descr
-                 | Lost -> text:= !text^"Lost ¯\_(ツ)_/¯   "^descr
+                 | Won -> text:= !text^"YOU WON! :D   "^descr
+                 | Lost -> text:= !text^"YOU LOST D:   "^descr
                  | Unstarted -> text:= !text^"Paused. "^descr
          in
-         Graphics.set_color Graphics.red;
-         Graphics.moveto 0 0;
+         Graphics.set_color Graphics.white;
+         Graphics.moveto 0 2;
+         Graphics.draw_string !text;
+         Graphics.set_color Graphics.black;
+         Graphics.moveto 1 1;
          Graphics.draw_string !text;
          draw_new_positions !disp_ref game
 
