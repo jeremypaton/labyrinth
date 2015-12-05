@@ -156,8 +156,28 @@ let test3 =
                [x;x;x]]
   in gen_test design 1000.0 20 "this is a level"
 
-
 let tut1=
+    let design = [[o;o;o;o;o;o;o;o;o;o;o;o;o];
+                [o;x;x;o;x;o;x;o;x;o;x;x;o];
+                [o;x;o;o;o;o;o;o;o;o;o;x;o];
+                [o;o;o;o;o;o;o;o;o;o;o;o;o];
+                [o;x;o;o;o;o;o;o;o;o;o;x;o];
+                [o;o;o;o;o;o;o;o;o;o;o;o;o];
+                [o;x;o;o;o;o;o;o;o;o;o;x;o];
+                [o;o;o;o;o;o;o;o;o;o;o;o;o];
+                [o;x;o;o;o;o;o;o;o;o;o;x;o];
+                [o;o;o;o;o;o;o;o;o;o;o;o;o];
+                [o;x;o;o;o;o;o;o;o;o;o;x;o];
+                [o;x;x;o;x;o;x;o;x;o;x;x;o];
+                [o;o;o;o;o;o;p;o;o;o;o;o;o]]
+
+
+  in gen_test design 1000.0 50
+  "hey you! spacebar to play. wasd to move. ] for next level"
+
+
+
+let tut2=
     let design = [[o;o;o;o;o;o;o;o;o;o;o;o;o];
                 [o;x;x;o;x;o;x;o;x;o;x;x;o];
                 [o;x;o;o;o;o;o;o;o;o;o;x;o];
@@ -175,7 +195,7 @@ let tut1=
   in gen_lvl design 1000.0 50
   "tutorial 1: it's a wandering monster... watch out!"
 
-let tut2 =
+let tut3 =
     let design = [[o;mR;o;o;o;o;o;o;o;o;o;mL;o];
                 [mD;x;x;o;x;o;x;o;x;o;x;x;mD];
                 [o;x;mD;o;o;o;o;o;o;o;mL;x;o];
@@ -191,10 +211,10 @@ let tut2 =
                 [o;mR;o;o;o;o;p;o;o;o;o;mL;o]]
 
   in gen_lvl design 1000.0 50
-  "tutorial 2: zombies. D: they move back and forth in straight lines"
+  "tutorial 2: zombies move back and forth in straight lines"
 
 
-let tut3=
+let tut4=
     let design = [[o;o;o;o;o;o;o;o;o;o;o;o;o];
                 [o;x;x;o;x;o;x;o;x;o;x;x;o];
                 [o;x;o;o;o;o;o;o;o;o;o;x;o];
@@ -215,7 +235,7 @@ let tut3=
 
 
 
-let tut4=
+let tut5=
     let design = [[o;o;o;o;o;o;o;o;o;o;o;o;o];
                 [o;x;x;o;x;o;x;o;x;o;x;x;o];
                 [o;x;o;o;o;o;o;o;o;o;o;x;o];
@@ -232,10 +252,9 @@ let tut4=
 
 
   in gen_lvl design 1000.0 50
-  "tutorial 3: sleepers"
+  "tutorial 4: guard dogs never leave their territory"
 
-
-let tut3=
+let tut6=
     let design = [[o;o;o;o;o;o;o;o;o;o;o;o;o];
                 [o;x;x;o;x;o;x;o;x;o;x;x;o];
                 [o;x;o;o;o;o;o;o;o;o;o;x;o];
@@ -252,29 +271,7 @@ let tut3=
 
 
   in gen_lvl design 1000.0 50
-  "tutorial 3: red hounds are smart. they chase relentlessly"
-
-
-let tut3=
-    let design = [[o;o;o;o;o;o;o;o;o;o;o;o;o];
-                [o;x;x;o;x;o;x;o;x;o;x;x;o];
-                [o;x;o;o;o;o;o;o;o;o;o;x;o];
-                [o;o;o;o;o;o;o;o;o;o;o;o;o];
-                [o;x;o;o;o;o;o;o;o;o;o;x;o];
-                [o;o;o;o;o;o;o;o;o;o;o;o;o];
-                [o;x;o;o;o;o;mC;o;o;o;o;x;o];
-                [o;o;o;o;o;o;o;o;o;o;o;o;o];
-                [o;x;o;o;o;o;o;o;o;o;o;x;o];
-                [o;o;o;o;o;o;o;o;o;o;o;o;o];
-                [o;x;o;o;o;o;o;o;o;o;o;x;o];
-                [o;x;x;o;x;o;x;o;x;o;x;x;o];
-                [o;o;o;o;o;o;p;o;o;o;o;o;o]]
-
-
-  in gen_lvl design 1000.0 50
-  "tutorial 3: red hounds are smart. they chase relentlessly"
-
-
+  "tutorial 5: sleepers chase if you get too close and wake them up"
 
 (*EASY*)
 let lvl1 =
@@ -545,6 +542,8 @@ let retrieve lvl =
   |2 -> Some tut2
   |3 -> Some tut3
   |4 -> Some tut4
+  |5 -> Some tut5
+  |6 -> Some tut6
   |5 -> Some lvl1
   |6 -> Some lvl2
   |7 -> Some lvl3
