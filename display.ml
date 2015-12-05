@@ -338,4 +338,4 @@ let launch_game (start_level:int) =
 
 
 (* begin the game *)
-let _ = launch_game 11
+let _ = launch_game Constants.start_level
