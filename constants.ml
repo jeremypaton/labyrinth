@@ -344,23 +344,23 @@ let lvl3 =
 
 (*HARD*)
 let lvl5 =
-  let design = [[x; x; p; x; x; o; x; x; x; x; x; o; x; x];
-                [o; o; o; o; x; o; o; o; o; o; o; o; o; o];
-                [x; x; o; x; x; x; x; x; x; x; x; o; x; x];
-                [o; o; o; o; o; o; o; o; o; o; x; o; o; o];
-                [x; x; o; x; x; o; o; o; x; o; mD; x; x; x];
-                [x; x; o; x; x; o; x; x; x; x; o; x; x; x];
-                [x; x; o; x; x; o; x; x; x; x; o; x; x; x];
-                [x; x; o; x; x; o; x; o; o; x; o; o; mR; o];
-                [x; x; mU; x; x; o; x; o; o; o; o; x; x; x];
-                [o; o; o; o; o; o; x; o; x; x; x; o; o; o];
-                [x; o; x; x; x; o; x; o; x; x; x; o; o; o];
-                [x; o; o; o; x; o; x; x; x; o; o; x; x; x];
-                [x; mC; x; x; x; o; x; x; x; o; o; x; x; x];
-                [x; o; x; x; x; o; x; x; x; x; mR; o; o; o];
-                [x; o; x; x; x; o; o; mC; o; o; o; x; x; x];
-                [o; o; o; o; o; x; x; o; x; x; o; x; x; x];
-                [x; x; x; x; o; x; x; o; x; x; o; x; x; x]]
+  let design = [[x; x; x; x; x; x; x; x; x; x; x; x; x; x; x; x; x];
+                [x;mU;mL; o; o; o; o;mD; o;mD; o; o; o; o;mR;mU; x];
+                [x; o; x;mL; o; o; o; o; o; o; o; o; o;mR; x; o; x];
+                [x; o;mU; o; o; o; o; o; o; o; o; o; o; o;mU; o; x];
+                [x; o; o; o; x;mL; o; o;mC; o; o;mR; x; o; o; o; x];
+                [x; o; o; o;mU; x;mL; o; o; o; o; x;mU; o; o; o; x];
+                [x; o; o; o; o; x; o;mL; o; o; o; x; o; o; o; o; x];
+                [x; o; o; o; o; x; o; o;mL; o; o; x; o; o; o; o; x];
+               [x; o; o;mCi; o; x; o; o; p;mL; o; x; o;mCi; o; o; x];
+                [x; o; o; o; o; x; o; o; o; o;mL; x; o; o; o; o; x];
+                [x; o; o; o; o; x; o; o; o; o;mR; x; o; o; o; o; x];
+                [x; o; o; o;mD; o; o; o; o; o; o; o;mD; o; o; o; x];
+                [x; o; o; o; x;mL; o; o; o; o; o;mR; x; o; o; o; x];
+                [x; o;mD; o; o; o; o; o; o; o; o; o; o; o;mD; o; x];
+                [x; o; x;mL; o; o; o; o; o; o; o; o; o;mR; x; o; x];
+                [x;mD;mL; o; o; o; o; o;mU; o; o; o; o; o;mR;mD; x];
+                [x; x; x; x; x; x; x; x; x; x; x; x; x; x; x; x; x]]
   in gen_lvl design 1000.0 50
   "level 5: HARD"
 
