@@ -283,7 +283,9 @@ let draw_loop (disp_ref:display ref) (game:game_state ref) (keys:char list) =
             begin_the_level disp_ref !game.level_number game;
          (* 1. draw background and board *)
          draw_board disp_ref ();
-         (* 2. draw text for game state, or time left if game in progress *)
+         (* 2. drawn player and monsters at their new positions *)
+         draw_new_positions !disp_ref game;
+         (* 3. draw text for game state, or time left if game in progress *)
          Graphics.moveto (!disp_ref.maxx/2) (!disp_ref.maxy-20);
          let text = ref ("Time Left: "^(string_of_int !game.time)^". ") in
          let descr = (Constants.get_level_description !game.level_number) in
@@ -298,8 +300,7 @@ let draw_loop (disp_ref:display ref) (game:game_state ref) (keys:char list) =
          Graphics.draw_string !text;
          Graphics.set_color Graphics.white;
          Graphics.moveto 0 2;
-         Graphics.draw_string !text;
-         draw_new_positions !disp_ref game
+         Graphics.draw_string !text
 
 
 (* Function to be called every frame to draw the GUI by managing each frame's
