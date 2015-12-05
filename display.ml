@@ -287,7 +287,7 @@ let draw_loop (disp_ref:display ref) (game:game_state ref) (keys:char list) =
          draw_new_positions !disp_ref game;
          (* 3. draw text for game state, or time left if game in progress *)
          Graphics.moveto (!disp_ref.maxx/2) (!disp_ref.maxy-20);
-         let text = ref ("Time Left: "^(string_of_int !game.time)^". ") in
+         let text = ref ("Time Left: "^(string_of_int !game.time)^" - ") in
          let descr = (Constants.get_level_description !game.level_number) in
          let _ = match !game.game_progress with
                  | In_progress -> text:= !text^descr
@@ -338,4 +338,4 @@ let launch_game (start_level:int) =
 
 
 (* begin the game *)
-let _ = launch_game Constants.start_level
+let _ = launch_game 11
