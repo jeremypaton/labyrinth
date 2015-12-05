@@ -46,6 +46,7 @@ let rec find_closest neighbors curr_smallest=
   | ((a,b),c)::t -> if c < small then find_closest t ((a,b),c) else
                       find_closest t curr_smallest
 
+(* gets best local move- going to the neighbor that's closest to the player *)
 let greedy monster player board=
   let neighbors= get_neighbors monster board player in
   fst(find_closest neighbors ((0,0),infinity))
