@@ -302,7 +302,7 @@ let lvl1 =
                     [o;mL;o;o;o;o;o;o;o;o;o;x;o;x;o];
                     [x;x;x;x;x;x;x;x;x;x;x;x;x;x;x];
                     ]
-        in gen_lvl design 1000.0 20 "level 2: EASY-MEDIUM"
+        in gen_lvl design 1000.0 23 "level 2: EASY-MEDIUM"
 
 (*MEDIUM*)
 let lvl3 =
