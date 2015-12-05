@@ -285,14 +285,13 @@ let draw_loop (disp_ref:display ref) (game:game_state ref) (keys:char list) =
          draw_board disp_ref ();
          (* 2. draw text for game state, or time left if game in progress *)
          Graphics.moveto (!disp_ref.maxx/2) (!disp_ref.maxy-20);
-         let text = ref ("Level "^(string_of_int !game.level_number)^" ") in
+         let text = ref ("Time Left: "^(string_of_int !game.time)^". ") in
+         let descr = (Constants.get_level_description !game.level_number) in
          let _ = match !game.game_progress with
-                 | In_progress -> text:= !text^("Time Left: "^
-                                               (string_of_int !game.time))
-                 | Won -> text:= !text^"Won!"
-                 | Lost -> text:= !text^"Lost :("
-                 | Unstarted -> text:= !text^"Paused. "
-                   ^(Constants.get_level_description !game.level_number)
+                 | In_progress -> text:= !text^descr
+                 | Won -> text:= !text^"Won! :D   "^descr
+                 | Lost -> text:= !text^"Lost ¯\_(ツ)_/¯   "^descr
+                 | Unstarted -> text:= !text^"Paused. "^descr
          in
          Graphics.set_color Graphics.red;
          Graphics.moveto 0 0;
