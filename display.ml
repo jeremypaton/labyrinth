@@ -1,20 +1,26 @@
 (* heavily took example of http://caml.inria.fr/pub/docs/oreilly-book/pdf/chap5.pdf *)
 open Constants
 open Update
+
+(* Exception to be raised in order to close the graph *)
 exception End
 
-
-type relief = Top | Bot | Flat
-type box_data = { x:int; y:int; w:int; h:int; bw:int; mutable r:relief;
+(* stores information for a box to be drawn on screen, including x and y position,
+ * height, border width, and colors *)
+type box_data = { x:int; y:int; w:int; h:int; bw:int;
   cmid:Graphics.color; ctop:Graphics.color; cbot:Graphics.color;
   cleft:Graphics.color; cright:Graphics.color}
-(* stores info about the displayed image, including number of possible x and
- * y positions, the scaling of these positions for viewability, and the current
+  
+(* stores info about the displayed image, including resolution (screen size),
+ * the scaling of these positions for viewability, and the current
  * x and y positions of the mouse *)
 type display = {mutable grid:box_data array; maxx:int; maxy:int; x_sep:int; y_sep:int;
                 mutable x : int; mutable y :int; bc : Graphics.color;
                 fc: Graphics.color; pc : Graphics.color}
 
+
+(* draws a rectangle on screen with bottom left point at 
+ * (x0, y0) and with width and height w and h *)
 let draw_rect x0 y0 w h =
   let (a,b) = Graphics.current_point()
   and x1 = x0+w and y1 = y0+h
@@ -25,6 +31,8 @@ let draw_rect x0 y0 w h =
   Graphics.moveto a b
 
 
+(* draws a polygon on screen. The points are defined in the
+ * (int*int) array [r] *)
 let draw_poly r =
   let (a,b) = Graphics.current_point () in
   let (x0,y0) = r.(0) in Graphics.moveto x0 y0;
@@ -35,24 +43,28 @@ let draw_poly r =
   Graphics.moveto a b
 
 
+(* draw the outline of the box in the box_data [bcf] *)
 let draw_box_outline (bcf:box_data) col =
   Graphics.set_color col;
   draw_rect bcf.x bcf.y bcf.w bcf.h
 
 
+(* draw the fill of the box in box_data [bcf] *)
 let draw_box (bcf:box_data) =
   Graphics.set_color bcf.cmid;
   Graphics.fill_rect bcf.x bcf.y bcf.w bcf.h;
   draw_box_outline bcf Graphics.black
 
 
-
-
-
+(* returns a grey Graphics.rgb. The lower [x], the darker
+ * the image. 0 is black, 255 is white *)
 let set_gray x = (Graphics.rgb x x x)
 let gray1= set_gray 140 and gray2= set_gray 70 and gray3= set_gray 200
 
 
+(* draw a block on the screen using the given box_data [bcf]. A block
+ * has a "bevel" border which makes it look 2.5D. To be used for
+ * walls, monsterrs, and the player. *)
 let draw_block (bcf:box_data) =
   let x1 = bcf.x and y1 = bcf.y in
   let x2 = x1+bcf.w and y2 = y1+bcf.h in
@@ -74,7 +86,11 @@ let draw_block (bcf:box_data) =
 
 
 
-
+(* draw a block-like object with an arrow tip pointing up/down/right/left.
+ * To be used for the zombie monsters (walk in a straight path back
+ * and forth. Uses the box_data [bcf]. [invis] is used to determine which
+ * side the arrow is on: the arrows whose data is of color [invis] in the bcf
+ * will not be drawn. *)
 let draw_pointer (bcf:box_data) invis =
   let x1 = bcf.x and y1 = bcf.y in
   let x2 = x1+bcf.w and y2 = y1+bcf.h in
@@ -110,10 +126,12 @@ let draw_pointer (bcf:box_data) invis =
 
 
 
-
-
-
-
+(* takes a position [pos] to create a box_data to be drawn on display [s].
+ * The box_data's size is determined by [scaling] (value of 1 makes box
+ * take up an entire space on the grid. value > 1 takes more space. < 1 takes
+ * less space). [border] determines the border size of the box_data
+ * (drawn differently if it is ultimately drawn using draw_point, draw_block, etc).
+ * (value of 2 makes entire box/block a border. Higher is less border). *)
 let pos_to_boxdata (s:display) (pos: int*int) (scaling: float) (border: float) =
   let w' = int_of_float ((float_of_int s.x_sep)/.scaling) in
   let h' = int_of_float ((float_of_int s.y_sep)/.scaling) in
@@ -124,7 +142,7 @@ let pos_to_boxdata (s:display) (pos: int*int) (scaling: float) (border: float) =
   let x' = cent_x - (w'/2) in
   let y' = cent_y - (h'/2) in
   let bw' = int_of_float (float_of_int ((min w' h'))/.border) in
-  {x=x'; y=y'; w=w'; h=h'; bw=bw'; r=Top;
+  {x=x'; y=y'; w=w'; h=h'; bw=bw';
   cmid=Graphics.black; ctop=Graphics.black; cbot=Graphics.black; cleft=Graphics.black; cright=Graphics.black}
 
 
@@ -239,7 +257,7 @@ let initialize_display (s':display ref) board =
                    bc=Graphics.rgb 130 130 130; fc=Graphics.black;
                    pc=Graphics.red; x_sep=x_sep'; y_sep=y_sep'} in
   let wall_data = {x=0; y=0; w=0;h=0; bw=5; cmid=gray1; ctop=gray3;
-                   cbot=gray2; cleft=gray1; cright=gray1; r=Top} in
+                   cbot=gray2; cleft=gray1; cright=gray1} in
   let grid' = Array.of_list (create_grid temp_disp board wall_data) in
   s' := {temp_disp with grid=grid'}
 
