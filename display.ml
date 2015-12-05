@@ -15,7 +15,7 @@ type box_data = { x:int; y:int; w:int; h:int; bw:int;
   cmid:Graphics.color; ctop:Graphics.color; cbot:Graphics.color;
   cleft:Graphics.color; cright:Graphics.color}
 
-  
+
 (* stores info about the displayed image, including resolution (screen size),
  * the scaling of these positions for viewability, and the current
  * x and y positions of the mouse *)
@@ -24,7 +24,7 @@ type display = {mutable grid:box_data array; maxx:int; maxy:int; x_sep:int; y_se
                 fc: Graphics.color; pc : Graphics.color}
 
 
-(* draws a rectangle on screen with bottom left point at 
+(* draws a rectangle on screen with bottom left point at
  * (x0, y0) and with width and height w and h *)
 let draw_rect x0 y0 w h =
   let (a,b) = Graphics.current_point()
@@ -253,7 +253,7 @@ let begin_the_level (s':display ref) lvl game =
   initialize_display s' (Constants.get_master lvl)
 
 
-(* draw the "new" positions of the player and monster. 
+(* draw the "new" positions of the player and monster.
  * This function is to be called after updating the game_state, hence
  * "new" positions. Always call this after draw_board *)
 let draw_new_positions (disp:display) game=
@@ -293,11 +293,11 @@ let draw_loop (disp_ref:display ref) (game:game_state ref) (keys:char list) =
                  | Lost -> text:= !text^"YOU LOST D:   "^descr
                  | Unstarted -> text:= !text^"Paused. "^descr
          in
-         Graphics.set_color Graphics.white;
-         Graphics.moveto 0 2;
-         Graphics.draw_string !text;
          Graphics.set_color Graphics.black;
          Graphics.moveto 1 1;
+         Graphics.draw_string !text;
+         Graphics.set_color Graphics.white;
+         Graphics.moveto 0 2;
          Graphics.draw_string !text;
          draw_new_positions !disp_ref game
 
