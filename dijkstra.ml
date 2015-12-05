@@ -199,16 +199,9 @@ let rec add_to_path path elt explored=
               let new_path= x::path in
               add_to_path new_path new_elt explored
 
-(* makes Some 'a go from 'a Option -> 'a: SHOULDN'T USE ON NONE *)
-let remove_opt a=
-  match a with
-  | None -> failwith "shouldn't be using this on a None"
-  | Some x -> x
-
 let build_path explored finish=
   let finish_elt= find_elt_in_explored finish explored in
-  let first_elt= remove_opt finish_elt.back_pointer in
-  let path= add_to_path [first_elt] finish_elt explored in
+  let path= add_to_path [finish_elt.position] finish_elt explored in
   path
 
 (* gets first position move of path calculated by efficient path algorithm *)
