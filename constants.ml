@@ -193,7 +193,7 @@ let tut2=
                 [o;o;o;o;o;o;p;o;o;o;o;o;o]]
 
   in gen_lvl design 1000.0 50
-  "tutorial 1: it's a wandering monster... watch out!"
+  "Tutorial 1: it's a wandering monster... watch out!"
 
 let tut3 =
     let design = [[mR;o;o;o;o;o;o;o;o;o;o;o;mD];
@@ -211,7 +211,7 @@ let tut3 =
                 [mU;o;o;o;o;o;p;o;o;o;o;o;mL]]
 
   in gen_lvl design 1000.0 50
-  "tutorial 2: zombies move back and forth in straight lines"
+  "Tutorial 2: zombies move back and forth in straight lines"
 
 
 let tut4=
@@ -231,7 +231,7 @@ let tut4=
 
 
   in gen_lvl design 1000.0 50
-  "tutorial 3: red hounds are smart. they chase relentlessly"
+  "Tutorial 3: red hounds are smart. they chase relentlessly"
 
 
 
@@ -252,7 +252,7 @@ let tut5=
 
 
   in gen_lvl design 1000.0 50
-  "tutorial 4: guard dogs never leave their territory"
+  "Tutorial 4: guard dogs never leave their territory"
 
 let tut6=
     let design = [[o;o;o;o;o;o;o;o;o;o;o;o;o];
@@ -271,7 +271,7 @@ let tut6=
 
 
   in gen_lvl design 1000.0 50
-  "tutorial 5: sleepers chase if you get too close and wake them up"
+  "Tutorial 5: sleepers chase if you get too close and wake them up"
 
 (*EASY*)
 let lvl1 =
@@ -285,7 +285,7 @@ let lvl1 =
                 [x;o;o;o;o;x;x;o;x];
                 [x;x;x;x;o;x;x;o;x]]
   in gen_lvl design 1000.0 15
-  "level 1: EASY"
+  "Level 1: EASY"
 
 (*EASY-MEDIUM*)
   let lvl2 =
@@ -321,7 +321,7 @@ let lvl3 =
                 [o;mR;o;o;o;o;p;o;o;o;o;mL;o]]
 
   in gen_lvl design 1000.0 50
-  "level 3: MEDIUM"
+  "Level 3: MEDIUM"
 
 (*MEDIUM_HARD*)
   let lvl4 =
@@ -339,7 +339,7 @@ let lvl3 =
                 [o; o; o; o; o; o; o; o; o; o;mL; o;mU]]
 
   in gen_lvl design 1000.0 140
-  "level 4: MEDIUM-HARD"
+  "Level 4: MEDIUM-HARD"
 
 
 (*HARD*)
@@ -362,7 +362,7 @@ let lvl5 =
                 [x;mMm; o; o; o; x; o; o; o; o; o; o; o; o; o; mL; x];
                 [x; x; x; x; x; x; x; x; x; x; x; x; x; x; x; x; x]]
   in gen_lvl design 1000.0 39
-  "level 5: HARD"
+  "Level 5: HARD"
 
 (*NOTE: going beyond the 80char limit actually makes it clearer to see the
 board since it is layed out visually. breaking lines would not help *)
@@ -393,146 +393,6 @@ let lvl6 =
                 [x; x; x; x; x; x; x; x; x; x;mR; o; o; o; o; o; o; o; o; o; o; o; o; o; o; o; o; o; o; o]]
   in gen_lvl design 1000.0 140 "level 6: VERY HARD"
 
-(*
-let lvl1 =
-  let design = [[x;o;o;o;o;o;x;x;o;o;o;o;o;x;o;o;o;o;o;x];
-                [x;o;x;x;x;o;x;x;x;o;x;x;o;x;o;x;o;x;o;x];
-                [x;o;o;o;o;o;x;x;x;o;x;x;o;x;o;x;o;x;o;o];
-                [x;x;x;x;x;mRa;o;o;o;o;o;x;o;x;o;o;mCi;o;o;x];
-                [x;x;x;x;x;o;x;x;x;x;o;x;o;o;o;o;x;x;x;x];
-                [x;x;x;x;x;o;x;o;o;o;o;o;o;x;x;o;o;x;x;x];
-                [x;o;o;x;x;o;x;x;o;x;x;x;o;x;x;x;o;o;x;x];
-                [x;o;x;x;x;o;o;o;o;o;o;o;o;x;o;x;x;o;o;o];
-                [o;o;o;o;o;o;x;x;o;x;x;x;o;x;o;x;x;x;o;o];
-                [x;o;x;x;o;o;o;x;o;o;o;o;o;o;o;o;x;x;o;o];
-                [x;o;o;x;x;o;o;o;x;x;o;o;o;x;o;x;x;x;x;o];
-                [x;o;x;x;x;x;x;o;o;o;o;mCi;o;x;o;x;o;x;x;o];
-                [o;o;x;x;x;x;x;o;x;x;o;o;o;x;o;o;o;x;x;o];
-                [o;x;x;x;x;x;x;x;x;o;o;o;x;x;x;x;o;x;x;o];
-                [o;o;o;o;o;o;o;o;x;x;o;x;o;o;o;o;o;o;o;o];
-                [x;o;o;x;x;x;o;x;o;o;o;x;x;o;x;x;o;x;x;x];
-                [x;o;o;x;x;x;o;o;o;x;o;x;x;o;x;o;o;o;x;x];
-                [x;mR;o;o;o;o;p;x;x;x;o;x;x;o;x;o;x;o;x;x];
-                [x;o;o;x;x;o;x;o;o;o;o;x;x;o;o;o;o;o;o;o];
-                [x;o;o;x;x;x;x;o;x;x;x;o;o;o;x;x;x;o;x;o];
-                [x;o;x;x;x;o;o;o;o;x;x;x;x;o;x;x;x;o;x;o];
-                [o;o;o;x;x;x;x;x;o;x;x;x;x;o;x;x;x;o;o;o];
-                [x;x;o;o;o;o;o;x;o;o;o;o;o;mC;x;x;x;x;x;x]]
-  in gen_lvl design 1000.0 200
-  "Blue- chases you within territory. Green- chases if you go too close"
-
-
-  let lvl2 =
-  let design = [[p; o; o; o; o; o; o; o; o; o; o;mR; o];
-                [o; x; x; o; x; x; o; x; x; o; x; x; o];
-                [o; o; o; o;mR; o; o; o; o; o; o; o; o];
-                [o; x; x; o; x; x; o; x; x; o; x; x;mD];
-                [o; o; o; o; o; o; o; mL; o; o; o; o; o];
-                [o; x; x; o; x; x; o; x; x; o; x; x; o];
-                [o; o; o; o; o; o; o; o; o; o; o; o; o];
-                [mU; x; x; o; x; x; o; x; x; o; x; x; o];
-                [o; o; o;mU; o; o; o; o;mR; o; o;mR; o];
-                [o; x; x; o; x; x;mU; x; x; o; x; x; o];
-                [o; o; o; o; o; o;mL; o;mL;mU; o;mL; mC];
-                [o; o; o; o; o; o; o; o; o; o;mL; o;mU]]
-
-  in gen_lvl design 1000.0 140
-  "these monsters move horizontally & vertically,as shown by blue arrows"
-
-
-let lvl4 =
-  let design = [[x; x; p; x; x; o; x; x; x; x; x; o; x; x];
-                [o; o; o; o; x; o; o; o; o; o; o; o; o; o];
-                [x; x; o; x; x; x; x; x; x; x; x; o; x; x];
-                [o; o; o; o; o; o; o; o; o; o; x; o; o; o];
-                [x; x; o; x; x; o; o; o; x; o; mD; x; x; x];
-                [x; x; o; x; x; o; x; x; x; x; o; x; x; x];
-                [x; x; o; x; x; o; x; x; x; x; o; x; x; x];
-                [x; x; o; x; x; o; x; o; o; x; o; o; mR; o];
-                [x; x; mU; x; x; o; x; o; o; o; o; x; x; x];
-                [o; o; o; o; o; o; x; o; x; x; x; o; o; o];
-                [x; o; x; x; x; o; x; o; x; x; x; o; o; o];
-                [x; o; o; o; x; o; x; x; x; o; o; x; x; x];
-                [x; mC; x; x; x; o; x; x; x; o; o; x; x; x];
-                [x; o; x; x; x; o; x; x; x; x; mR; o; o; o];
-                [x; o; x; x; x; o; o; mC; o; o; o; x; x; x];
-                [o; o; o; o; o; x; x; o; x; x; o; x; x; x];
-                [x; x; x; x; o; x; x; o; x; x; o; x; x; x]]
-  in gen_lvl design 1000.0 50
-  "Two smart monsters are going to chase you in this level"
-
-(*MEDIUM_HARD*)
-  let lvl2 =
-  let design = [[p; o; o; o; o; o; o; o; o; o; o;mR; o];
-                [o; x; x; o; x; x; o; x; x; o; x; x; o];
-                [o; o; o; o;mR; o; o; o; o; o; o; o; o];
-                [o; x; x; o; x; x; o; x; x; o; x; x;mD];
-                [o; o; o; o; o; o; o; mL; o; o; o; o; o];
-                [o; x; x; o; x; x; o; x; x; o; x; x; o];
-                [o; o; o; o; o; o; o; o; o; o; o; o; o];
-                [mU; x; x; o; x; x; o; x; x; o; x; x; o];
-                [o; o; o;mU; o; o; o; o;mR; o; o;mR; o];
-                [o; x; x; o; x; x;mU; x; x; o; x; x; o];
-                [o; o; o; o; o; o;mL; o;mL;mU; o;mL; mC];
-                [o; o; o; o; o; o; o; o; o; o;mL; o;mU]]
-
-  in gen_lvl design 1000.0 140
-  "these monsters move horizontally & vertically,as shown by blue arrows"
-
-  let lvl6 =
-      let design = [[x;x;x;x;o;x;x;x;x;x;x;x;o;x;x;x;x;x];
-                    [x;o;o;o;o;o;o;o;o;o;o;x;o;x;x;x;x;x];
-                    [x;o;x;x;x;x;x;x;x;x;o;o;o;o;o;o;o;x];
-                    [o;o;o;o;o;o;o;o;o;o;o;o;mRa;o;o;x;o;x];
-                    [x;o;x;o;o;x;x;o;x;o;x;o;o;o;o;o;o;x];
-                    [x;o;x;o;o;x;x;o;x;o;x;o;x;o;x;x;o;x];
-                    [o;o;o;mC;o;o;o;o;o;o;o;o;o;o;o;o;mL;x];
-                    [x;o;x;o;x;x;x;o;x;x;x;o;x;x;o;x;o;x];
-                    [x;o;o;o;o;o;o;o;o;o;o;o;x;x;o;o;o;x];
-                    [x;o;x;x;o;x;x;o;x;x;x;o;o;o;o;x;x;x];
-                    [x;o;o;o;o;o;o;mU;o;o;o;o;x;x;o;o;o;x];
-                    [x;o;x;x;o;x;x;o;x;x;x;o;x;x;x;x;o;x];
-                    [x;mU;o;o;o;o;o;o;o;o;o;p;o;o;o;o;mL;x];
-                    [x;x;x;x;x;x;x;x;x;x;x;x;x;x;x;x;x;x]]
-      in gen_lvl design 1000.0 20 "Evade the monsters for 20 turns. Blue is territorial monster"
-      (*15 x 12*)
-
-  let lvl8 =
-  let design = [[x;x;x;x;o;x;x;x;x;x;x;x;o;x;x;x;x;x];
-                [x;mRa;o;o;o;o;o;o;o;o;o;x;o;x;x;x;x;x];
-                [x;o;x;x;x;x;x;x;x;x;o;o;o;o;o;o;o;x];
-                [o;o;o;o;o;o;o;o;o;x;x;o;x;x;o;o;o;x];
-                [x;o;o;o;o;p;o;o;o;o;o;o;o;x;o;o;o;x];
-                [x;o;x;x;x;x;o;x;x;x;x;o;x;x;x;o;o;x];
-                [o;o;o;o;o;x;o;o;o;o;o;o;o;o;o;mC;o;x];
-                [x;o;x;o;o;x;x;x;x;x;x;o;o;o;o;o;o;x];
-                [x;o;x;o;o;o;o;o;o;o;x;o;x;x;o;o;o;x];
-                [x;o;x;o;o;x;x;x;x;o;x;o;o;x;x;x;o;x];
-                [x;o;x;mU;o;o;o;o;o;o;o;o;o;o;o;mMm;o;x];
-                [x;o;x;o;o;x;x;o;x;x;x;o;x;x;x;x;o;x];
-                [x;mL;o;o;o;o;o;mR;o;o;o;o;o;x;o;o;o;x];
-                [x;x;x;x;x;x;x;x;x;x;x;x;x;x;x;x;x;x];
-                ]
-              in gen_lvl design 1000.0 40 "Avoid the chasing and sleeping monsters"
-
-let lvl9 =
-let design = [[x;x;x;x;x;x;x;x;x;x;x;x;x;x;x;x;x;x];
-              [x;o;o;o;o;mU;o;o;o;o;o;o;o;mCi;o;o;o;o];
-              [x;o;x;o;x;x;x;o;x;x;x;x;o;x;x;o;x;o];
-              [x;o;x;o;o;o;o;o;x;o;o;o;o;o;o;o;o;o];
-              [x;o;o;o;x;o;x;o;x;o;x;x;o;x;x;o;x;x];
-              [x;x;x;o;x;o;x;o;x;o;x;x;p;o;o;o;x;x];
-              [x;mL;o;mC;o;o;o;o;o;o;x;x;o;o;o;o;o;x];
-              [x;o;o;x;o;x;x;o;x;o;o;o;o;o;o;o;o;x];
-              [x;o;o;x;o;x;x;o;x;x;o;x;x;x;o;mU;o;x];
-              [x;o;o;x;o;x;x;o;x;x;o;o;o;o;o;o;o;x];
-              [o;o;o;o;mL;o;o;o;o;o;o;x;x;o;x;x;o;x];
-              [x;o;x;x;o;x;x;o;x;x;mRa;o;o;o;o;o;o;x];
-              [x;o;o;o;o;mC;o;o;o;o;o;o;x;x;x;x;o;x];
-              [x;x;x;x;x;x;x;x;x;x;x;o;o;o;o;o;o;x];
-              ]
-      in gen_lvl design 1000.0 20 "Two chasers, one sleeping and one territorial monster."
-*)
 let retrieve lvl =
   match lvl with
   |(-3 )-> Some test1
