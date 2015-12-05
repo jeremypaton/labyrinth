@@ -306,21 +306,21 @@ let lvl1 =
 
 (*MEDIUM*)
 let lvl3 =
-  let design = [[o;mR;o;o;o;o;o;o;o;o;o;mL;o];
-                [mD;x;x;o;x;o;x;o;x;o;x;x;mD];
+  let design = [[o;o;o;o;o;o;o;o;o;o;o;mL;o];
+                [o;x;x;o;x;o;x;o;x;o;x;x;mD];
                 [o;x;mD;o;o;o;o;o;o;o;mL;x;o];
                 [o;o;o;o;o;o;o;o;o;o;o;o;o];
                 [o;x;o;o;o;o;o;o;o;o;o;x;o];
-                [o;o;o;o;o;o;o;o;o;o;o;o;mD];
+                [o;o;o;o;o;o;o;o;o;o;o;o;o];
                 [o;x;o;o;o;o;mCi;o;o;o;o;x;o];
                 [o;o;o;o;o;o;o;o;o;o;o;o;mU];
                 [o;x;o;o;o;o;o;o;o;o;o;x;o];
                 [o;o;o;o;o;o;o;o;o;o;o;o;o];
                 [o;x;mR;o;o;o;o;o;o;o;mU;x;o];
-                [mU;x;x;o;x;o;x;o;x;o;x;x;mU];
-                [o;mR;o;o;o;o;p;o;o;o;o;mL;o]]
+                [mU;x;x;o;x;o;x;o;x;o;x;x;o];
+                [o;mL;o;o;o;o;p;o;o;o;o;o;o]]
 
-  in gen_lvl design 1000.0 50
+  in gen_lvl design 1000.0 40
   "Level 3: MEDIUM"
 
 (*MEDIUM_HARD*)
@@ -328,17 +328,17 @@ let lvl3 =
   let design = [[p; o; o; o; o; o; o; o; o; o; o;mR; o];
                 [o; x; x; o; x; x; o; x; x; o; x; x; o];
                 [o; o; o; o;mR; o; o; o; o; o; o; o; o];
-                [o; x; x; o; x; x; o; x; x; o; x; x;mD];
+                [o; x; x; o; x; x; o; x; x; o; x; x;o];
                 [o; o; o; o; o; o; o; mL; o; o; o; o; o];
                 [o; x; x; o; x; x; o; x; x; o; x; x; o];
                 [o; o; o; o; o; o; o; o; o; o; o; o; o];
                 [mU; x; x; o; x; x; o; x; x; o; x; x; o];
-                [o; o; o;mU; o; o; o; o;mR; o; o;mR; o];
+                [o; o; o;mU; o; o; o; o; o; o; o;mR; o];
                 [o; x; x; o; x; x;mU; x; x; o; x; x; o];
-                [o; o; o; o; o; o;mL; o;mL;mU; o;mL; mC];
+                [o; o; o; o; o; o;mL; o; o; o; o;o; mC];
                 [o; o; o; o; o; o; o; o; o; o;mL; o;mU]]
 
-  in gen_lvl design 1000.0 140
+  in gen_lvl design 1000.0 100
   "Level 4: MEDIUM-HARD"
 
 
