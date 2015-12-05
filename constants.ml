@@ -323,6 +323,22 @@ let lvl7 =
                     [x;mU;o;o;o;o;o;o;o;o;o;p;o;o;o;o;mL;x];
                     [x;x;x;x;x;x;x;x;x;x;x;x;x;x;x;x;x;x]]
       in gen_lvl design 1000.0 20 "this is a level"
+      (*15 x 12*)
+      let lvl9 =
+      let design = [[x;o;o;o;x;x;x;x;x;x;x;x;x;x;x];
+                    [x;o;x;o;x;x;o;x;x;x;o;o;o;o;x];
+                    [x;o;o;o;o;mCi;o;o;o;o;o;x;x;o;x];
+                    [x;o;x;o;x;o;x;o;x;x;o;o;o;mC;x];
+                    [o;mC;o;o;x;o;x;o;x;x;o;x;x;o;x];
+                    [x;o;x;o;o;o;o;o;o;o;o;o;o;o;x];
+                    [x;o;x;o;x;x;x;x;o;x;mU;o;o;o;x];
+                    [x;o;o;o;o;o;p;o;o;x;o;x;x;o;x];
+                    [x;o;x;o;x;x;o;x;o;o;o;x;x;o;x];
+                    [x;o;x;o;x;x;o;x;o;x;o;o;o;o;o];
+                    [o;mL;o;o;o;o;o;o;o;o;o;x;o;x;o];
+                    [x;x;x;x;x;x;x;x;x;x;x;x;x;x;x];
+                    ]
+        in gen_lvl design 1000.0 20 "this is level 9"
 
 (*
 let x = Wall
@@ -354,6 +370,7 @@ let retrieve lvl =
   |6 -> Some lvl6
   |7 -> Some lvl7
   |8 -> Some lvl8
+  |9 -> Some lvl9
   |_ -> None
 
 (******************************************************************************
