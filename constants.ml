@@ -63,7 +63,8 @@ let get_element_positions design element =
     | [] -> acc
     | x::xs -> (search_row element x r 0 []) @ (search element xs (r+1) acc) in
   search element design 0 []
-
+  
+(*check if a board is suitable for gameplay*)
 let find_errors tentative =
   let rows_l = if List.length tentative.levels_board > 0 then
                List.length (List.hd tentative.levels_board)
@@ -98,6 +99,7 @@ let extract_circle_monsters design =
   let extract_radius_monsters design =
   List.map (fun x-> (Radius x,x)) (get_element_positions design MRadius)
 
+(*generate a test level*)
 let gen_test design wall_weight time description=
   let mCs = extract_monsters design Chasing MChasing in
   let mMms = extract_monsters design Random  MRandom  in
@@ -115,6 +117,7 @@ let gen_test design wall_weight time description=
                          time = time;
                          description = description}
 
+(*generate a level*)
 let gen_lvl design wall_weight time description=
   let tentative_level = gen_test design wall_weight time description in
   if find_errors tentative_level = None then tentative_level
