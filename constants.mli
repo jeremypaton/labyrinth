@@ -10,6 +10,10 @@ type master_board= bool list list
 (** type levels board is a board of ints **)
 type levels_board= float list list
 
+(*Types for moving for a random monster*)
+type move_list_types =  Mv_up |Mv_dn | Mv_lt | Mv_rt
+
+
 (** position is a tuple of ints- the column order matrix coordinates (i,j) = (y,x) **)
 type position= (int*int)
 
@@ -47,6 +51,11 @@ val is_level: int -> bool
 
 val start_level : int
 
+(*Determines steps of random monster*)
+val move_list :move_list_types list
+
+(*Moving counter for random monster*)
+val move_ctr: int ref
 (** screen resolutions **)
 val resolution_x : int
 val resolution_y : int
