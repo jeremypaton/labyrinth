@@ -1,15 +1,20 @@
-(* heavily took example of http://caml.inria.fr/pub/docs/oreilly-book/pdf/chap5.pdf *)
+(* Took example of http://caml.inria.fr/pub/docs/oreilly-book/pdf/chap5.pdf. The functions
+ * that have been directly copy-pasted from that tutorial are:
+   draw_rect, draw_poly, draw_box_outline, draw_box, set_grey *)
 open Constants
 open Update
 
+
 (* Exception to be raised in order to close the graph *)
 exception End
+
 
 (* stores information for a box to be drawn on screen, including x and y position,
  * height, border width, and colors *)
 type box_data = { x:int; y:int; w:int; h:int; bw:int;
   cmid:Graphics.color; ctop:Graphics.color; cbot:Graphics.color;
   cleft:Graphics.color; cright:Graphics.color}
+
   
 (* stores info about the displayed image, including resolution (screen size),
  * the scaling of these positions for viewability, and the current
@@ -85,7 +90,6 @@ let draw_block (bcf:box_data) =
   draw_box_outline bcf Graphics.black
 
 
-
 (* draw a block-like object with an arrow tip pointing up/down/right/left.
  * To be used for the zombie monsters (walk in a straight path back
  * and forth. Uses the box_data [bcf]. [invis] is used to determine which
@@ -125,7 +129,6 @@ let draw_pointer (bcf:box_data) invis =
     Graphics.fill_poly [|(x2, my); (ix2, iy1); (ix2, iy2)|]
 
 
-
 (* takes a position [pos] to create a box_data to be drawn on display [s].
  * The box_data's size is determined by [scaling] (value of 1 makes box
  * take up an entire space on the grid. value > 1 takes more space. < 1 takes
@@ -146,6 +149,7 @@ let pos_to_boxdata (s:display) (pos: int*int) (scaling: float) (border: float) =
   cmid=Graphics.black; ctop=Graphics.black; cbot=Graphics.black; cleft=Graphics.black; cright=Graphics.black}
 
 
+(* draws the player as a small green bloxk on display [s] at position [pos]. *)
 let draw_player (s:display) (pos: int*int) =
   let scaling = 2.75 in
   let border = 2.5 in
@@ -153,9 +157,12 @@ let draw_player (s:display) (pos: int*int) =
   let bcf = {tempbcf with cmid=Graphics.rgb 100 200 100;
                           ctop=Graphics.rgb 140 240 170;
                           cbot=Graphics.rgb 80 120 80} in
-  (*Printf.printf "%s\n%!" ("player pos is "^(string_of_int (fst pos))^", "^(string_of_int (snd pos)));*)
   draw_block bcf
 
+
+(* draws a monster on display [s] at position [pos]. The monster
+ * is drawn using draw_pointer or draw_block, and with different colors,
+ * depending on the move_type [m_type] *)
 let draw_monster (s:display) (pos: int*int) (m_type: move_type)=
   let scaling = 1.5 in
   let border = 4. in
@@ -176,40 +183,9 @@ let draw_monster (s:display) (pos: int*int) (m_type: move_type)=
           | Right -> draw_pointer {no_edge with cright=visible} invis
 
 
-
-
-
-
-
-
-
-
-let next_line () =
-  let (x,y) = Graphics.current_point()
-  in if y>12 then Graphics.moveto 0 (y-12)
-  else Graphics.moveto 0 y
-
-
-let handle_char c = match c with
-  |'&' -> raise End
-  | '\n' -> next_line ()
-  | '\r' -> next_line ()
-  | _ -> Graphics.draw_char c
-
-
-
-
-
-
-(* Draw a rectangle with coordinates [(s*x) (s*y) s s] and color c *)
-let draw_point x y s c =
-  Graphics.set_color c;
-  Graphics.fill_rect (s*x) (s*y) s s
-
-
 (* Initialize the board in the display (i.e. draw the grid). Player and
  * monsters are not drawn *)
-let t_draw_board (disp_ref:display ref) () =
+let draw_board (disp_ref:display ref) () =
   let disp = !disp_ref in
   (* draw background *)
   Graphics.set_color disp.bc;
@@ -217,13 +193,20 @@ let t_draw_board (disp_ref:display ref) () =
   (* draw grid *)
   Array.iter draw_block disp.grid
 
+
+(* flip the given y position according to the number of rows in
+ * [board]. This is because the first row in a board array, which is
+ * to be drawn on the upper part of the window, needs to have a y-value
+ * close to the window height instead of 0 (since y increases from
+ * bottom to top in the GUI). *)
 let flip_y pos board=
   let rows = (List.length board) in
   ((rows-fst pos)-1, snd pos)
 
 
-
-
+(* return a list of box_data for the walls of the current level.
+ * The positions of the walls are given in [board]: false means a wall
+ * is at the current index. *)
 let create_grid (s:display) (board: bool list list) (data:box_data) =
   (* determine grid info *)
   let rows = (List.length board) in
@@ -244,7 +227,8 @@ let create_grid (s:display) (board: bool list list) (data:box_data) =
   !acc
 
 
-
+(* Create the GUI which will follow the display ref s'.
+ * All other information is in Constants, including window size *)
 let initialize_display (s':display ref) board =
   let maxx' = Constants.resolution_x in
   let maxy' = Constants.resolution_y in
@@ -262,11 +246,16 @@ let initialize_display (s':display ref) board =
   s' := {temp_disp with grid=grid'}
 
 
+(* Update the display ref [s'] and the game_state [game]
+ * to start the level [lvl], as defined in Constants. *)
 let begin_the_level (s':display ref) lvl game =
   game := (Constants.init_level lvl);
   initialize_display s' (Constants.get_master lvl)
 
 
+(* draw the "new" positions of the player and monster. 
+ * This function is to be called after updating the game_state, hence
+ * "new" positions. Always call this after draw_board *)
 let draw_new_positions (disp:display) game=
          (* draw player *)
          let board = Constants.get_master !game.level_number in
@@ -279,7 +268,8 @@ let draw_new_positions (disp:display) game=
            draw_monster disp mp (fst monster);
          done
 
-(* Loop function to be called every frame and after each key press after
+
+(* Loop function to be called every frame and after each key press
  * initialization. Updates player and monsters positions *)
 let draw_loop (disp_ref:display ref) (game:game_state ref) (keys:char list) =
   match keys with
@@ -292,7 +282,7 @@ let draw_loop (disp_ref:display ref) (game:game_state ref) (keys:char list) =
          if !game.level_number <> cur_lvl then
             begin_the_level disp_ref !game.level_number game;
          (* 1. draw background and board *)
-         t_draw_board disp_ref ();
+         draw_board disp_ref ();
          (* 2. draw text for game state, or time left if game in progress *)
          Graphics.moveto (!disp_ref.maxx/2) (!disp_ref.maxy-20);
          let text = ref ("Level "^(string_of_int !game.level_number)^" ") in
@@ -310,33 +300,19 @@ let draw_loop (disp_ref:display ref) (game:game_state ref) (keys:char list) =
          draw_new_positions !disp_ref game
 
 
-
-(* Function to execute on mouse clicks *)
-let func_mouse disp mous_pos =
-  Printf.printf "%s\n%!" ("Mouse input detected")
-
-
-
-
-
-
 (* Function to be called every frame to draw the GUI by managing each frame's
  * input (keys, mouse). Note the function is NOT recursive. *)
 let main_loop game (disp:display ref) =
   try
     while true do
-        let s = Graphics.wait_next_event [Graphics.Button_down;
-                                          Graphics.Key_pressed; Graphics.Poll] in
+        let s = Graphics.wait_next_event [Graphics.Key_pressed; Graphics.Poll] in
         if s.Graphics.keypressed then
           let k = Graphics.read_key () in
           draw_loop disp game [k]
-        else if s.Graphics.button then
-          func_mouse disp Graphics.mouse_pos
     done
   with
     | End -> Graphics.close_graph(); print_string "Game ended by user\n"
-    | _ -> Printf.printf "%s\n%!" ("EXCEPTION IN DISPLAY")
-
+    | _ -> () (*Printf.printf "%s\n%!" ("EXCEPTION IN DISPLAY")*)
 
 
 (* Begins GUI drawing by setting up a display for the first level and opening
@@ -358,4 +334,5 @@ let launch_game (start_level:int) =
   main_loop game disp
 
 
+(* begin the game *)
 let _ = launch_game Constants.start_level
