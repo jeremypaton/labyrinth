@@ -306,6 +306,24 @@ let lvl7 =
                 [x; x; x; x; o; x; o; x; x; x; o; x; x; o; x; x; x; x; x; x; x; x; x; x; x; x; x; x; x; o];
                 [x; x; x; x; x; x; x; x; x; x;mR; o; o; o; o; o; o; o; o; o; o; o; o; o; o; o; o; o; o; o]]
   in gen_lvl design 1000.0 140 "this is a level"
+
+  let lvl8 =
+      let design = [[x;x;x;x;o;x;x;x;x;x;x;x;o;x;x;x;x;x];
+                    [x;o;o;o;o;o;o;o;o;o;o;x;o;x;x;x;x;x];
+                    [x;o;x;x;x;x;x;x;x;x;o;o;o;o;o;o;o;x];
+                    [o;o;o;o;o;o;o;o;o;o;o;o;mRa;o;o;x;o;x];
+                    [x;o;x;o;o;x;x;o;x;o;x;o;o;o;o;o;o;x];
+                    [x;o;x;o;o;x;x;o;x;o;x;o;x;o;x;x;o;x];
+                    [o;o;o;mC;o;o;o;o;o;o;o;o;o;o;o;o;mL;x];
+                    [x;o;x;o;x;x;x;o;x;x;x;o;x;x;o;x;o;x];
+                    [x;o;o;o;o;o;o;o;o;o;o;o;x;x;o;o;o;x];
+                    [x;o;x;x;o;x;x;o;x;x;x;o;o;o;o;x;x;x];
+                    [x;o;o;o;o;o;o;mU;o;o;o;o;x;x;o;o;o;x];
+                    [x;o;x;x;o;x;x;o;x;x;x;o;x;x;x;x;o;x];
+                    [x;mU;o;o;o;o;o;o;o;o;o;p;o;o;o;o;mL;x];
+                    [x;x;x;x;x;x;x;x;x;x;x;x;x;x;x;x;x;x]]
+      in gen_lvl design 1000.0 20 "this is a level"
+
 (*
 let x = Wall
 let o = Path
@@ -335,6 +353,7 @@ let retrieve lvl =
   |5 -> Some lvl5
   |6 -> Some lvl6
   |7 -> Some lvl7
+  |8 -> Some lvl8
   |_ -> None
 
 (******************************************************************************
