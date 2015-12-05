@@ -56,7 +56,7 @@ TEST "level 0" =
  ****                                                                      ****
  ******************************************************************************
  ******************************************************************************)
-
+(* test Dijkstra *)
 TEST "Djikstra: straight line" =
   Dijkstra.dijkstra (4,0) (4,4) (get (Some (Constants.get_weights 0))) = (4,1)
 
@@ -68,6 +68,7 @@ TEST "Djikstra: straight line" =
  ******************************************************************************
  ******************************************************************************)
 
+(* test movement of all types of monsters *)
 TEST "Monster: up" =
 Monster.update_monster_position
 (Up,(2,2)) (0,0) (get (Some(Constants.get_master (-2))))
@@ -116,6 +117,7 @@ Monster.update_monster_position
  ******************************************************************************
  ******************************************************************************)
 
+(* test movement of player- reading the keys correctly *)
 TEST "PLayer: up down left right" =
   Player.update_player_position (4,4) ['w']
                                 (get (Some(Constants.get_master 0))) = (3,4) &&
@@ -126,6 +128,7 @@ TEST "PLayer: up down left right" =
   Player.update_player_position (4,4) ['d']
                                 (get (Some(Constants.get_master 0))) = (4,5)
 
+(* test collision detection *)
 TEST "PLayer: collisions" =
   Player.update_player_position (4,1) ['w']
                                 (get (Some(Constants.get_master 0))) = (4,1) &&
@@ -136,20 +139,5 @@ TEST "PLayer: collisions" =
   Player.update_player_position (8,4) ['d']
                                 (get (Some(Constants.get_master 0)))  = (8,4)
 
-(******************************************************************************
- ******************************************************************************
- ****                                                                      ****
- ****                    UPDATE TESTS                                      ****
- ****                                                                      ****
- ******************************************************************************
- ******************************************************************************)
-
-(******************************************************************************
- ******************************************************************************
- ****                                                                      ****
- ****                     DISPLAY TEST                                     ****
- ****                                                                      ****
- ******************************************************************************
- ******************************************************************************)
 
 let () = Pa_ounit_lib.Runtime.summarize()
