@@ -10,7 +10,8 @@ type master_board= bool list list
 (** type levels board is a board of ints **)
 type levels_board= float list list
 
-(** position is a tuple of ints- the column order matrix coordinates (i,j) = (y,x) **)
+(** position is a tuple of ints- the column order matrix coordinates 
+ i.e (i,j) = (y,x) **)
 type position= (int*int)
 
 (** game progress is a variant of strings: in_progress, win, lose, unstarted **)
