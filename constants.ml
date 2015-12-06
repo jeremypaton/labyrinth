@@ -288,21 +288,37 @@ let lvl1 =
   "Level 1: EASY"
 
 (*EASY-MEDIUM*)
-  let lvl2 =
-      let design = [[x;o;o;o;x;x;x;x;x;x;x;x;x;x;x];
-                    [x;o;x;o;x;x;o;x;x;x;o;o;o;o;x];
-                    [x;o;o;o;o;mCi;o;o;o;o;o;x;x;o;x];
-                    [x;o;x;o;x;o;x;o;x;x;o;o;o;mC;x];
-                    [o;mC;o;o;x;o;x;o;x;x;o;x;x;o;x];
-                    [x;o;x;o;o;o;o;o;o;o;o;o;o;o;x];
-                    [x;o;x;o;x;x;x;x;o;x;mU;o;o;o;x];
-                    [x;o;o;o;o;o;p;o;o;x;o;x;x;o;x];
-                    [x;o;x;o;x;x;o;x;o;o;o;x;x;o;x];
-                    [x;o;x;o;x;x;o;x;o;x;o;o;o;o;o];
-                    [o;mL;o;o;o;o;o;o;o;o;o;x;o;x;o];
-                    [x;x;x;x;x;x;x;x;x;x;x;x;x;x;x];
-                    ]
-        in gen_lvl design 1000.0 23 "level 2: EASY-MEDIUM"
+let lvl2 =
+  let design = [[x;o;o;o;x;x;x;x;x;x;x;x;x;x;x];
+                [x;o;x;o;x;x;o;x;x;x;o;o;o;o;x];
+                [x;o;o;o;o;mCi;o;o;o;o;o;x;x;o;x];
+                [x;o;x;o;x;o;x;o;x;x;o;o;o;mC;x];
+                [o;mC;o;o;x;o;x;o;x;x;o;x;x;o;x];
+                [x;o;x;o;o;o;o;o;o;o;o;o;o;o;x];
+                [x;o;x;o;x;x;x;x;o;x;mU;o;o;o;x];
+                [x;o;o;o;o;o;p;o;o;x;o;x;x;o;x];
+                [x;o;x;o;x;x;o;x;o;o;o;x;x;o;x];
+                [x;o;x;o;x;x;o;x;o;x;o;o;o;o;o];
+                [o;mL;o;o;o;o;o;o;o;o;o;x;o;x;o];
+                [x;x;x;x;x;x;x;x;x;x;x;x;x;x;x]]
+  in gen_lvl design 1000.0 23 "level 2: EASY-MEDIUM"
+
+
+(* shows off ghost mode *)
+let lvl2_5=
+  let design= [[x;o;o;o;x;x;x;x;x;x;x;x;x;x;x];
+               [x;o;x;o;x;x;o;x;x;x;o;o;o;o;x];
+               [x;o;o;o;o;mCi;o;o;o;o;o;x;x;o;x];
+               [x;o;x;o;x;o;x;o;x;x;o;o;o;mC;x];
+               [o;mC;o;o;x;o;x;o;x;x;o;x;x;o;x];
+               [x;o;x;o;o;o;o;o;o;o;o;o;o;o;x];
+               [x;o;x;o;x;x;x;x;o;x;mU;o;o;o;x];
+               [x;o;o;o;o;o;p;o;o;x;o;x;x;o;x];
+               [x;o;x;o;x;x;o;x;o;o;o;x;x;o;x];
+               [x;o;x;o;x;x;o;x;o;x;o;o;o;o;o];
+               [o;mL;o;o;o;o;o;o;o;o;o;x;o;x;o];
+               [x;x;x;x;x;x;x;x;x;x;x;x;x;x;x]]
+  in gen_lvl design 2.0 50 "level 2.5: GHOST-MODE"
 
 (*MEDIUM*)
 let lvl3 =
@@ -416,21 +432,6 @@ let lvl7 =
                 [x; x; x; x; x; x; x; x; x; x;mR; o; o; o; o; o; o; o; o; o; o; o; o; o; o; o; o; o; o; o]]
   in gen_lvl design 1000.0 140 "level 7: VERY HARD"
 
-(* shows off ghost mode *)
-let lvl7=
-  let design= [[x;o;o;o;x;x;x;x;x;x;x;x;x;x;x];
-               [x;o;x;o;x;x;o;x;x;x;o;o;o;o;x];
-               [x;o;o;o;o;mCi;o;o;o;o;o;x;x;o;x];
-               [x;o;x;o;x;o;x;o;x;x;o;o;o;mC;x];
-               [o;mC;o;o;x;o;x;o;x;x;o;x;x;o;x];
-               [x;o;x;o;o;o;o;o;o;o;o;o;o;o;x];
-               [x;o;x;o;x;x;x;x;o;x;mU;o;o;o;x];
-               [x;o;o;o;o;o;p;o;o;x;o;x;x;o;x];
-               [x;o;x;o;x;x;o;x;o;o;o;x;x;o;x];
-               [x;o;x;o;x;x;o;x;o;x;o;o;o;o;o];
-               [o;mL;o;o;o;o;o;o;o;o;o;x;o;x;o];
-               [x;x;x;x;x;x;x;x;x;x;x;x;x;x;x]]
-        in gen_lvl design 2.0 50 "level 7: GHOST-MODE"
 
 let retrieve lvl =
   match lvl with
@@ -445,11 +446,12 @@ let retrieve lvl =
   |6 -> Some tut6
   |7 -> Some lvl1
   |8 -> Some lvl2
-  |9 -> Some lvl3
-  |10 -> Some lvl4
-  |11 -> Some lvl5
-  |12 -> Some lvl6
-  |13 -> Some lvl7
+  |9 -> Some lvl2_5
+  |10 -> Some lvl3
+  |11 -> Some lvl4
+  |12 -> Some lvl5
+  |13 -> Some lvl6
+  |14 -> Some lvl7
   |_ -> None
 
 (******************************************************************************
