@@ -9,19 +9,18 @@ open Update
 exception End
 
 
-(* stores information for a box to be drawn on screen, including x and y position,
- * height, border width, and colors *)
+(* stores information for a box to be drawn on screen, including x and y
+ * position, height, border width, and colors *)
 type box_data = { x:int; y:int; w:int; h:int; bw:int;
   cmid:Graphics.color; ctop:Graphics.color; cbot:Graphics.color;
   cleft:Graphics.color; cright:Graphics.color}
 
 
 (* stores info about the displayed image, including resolution (screen size),
- * the scaling of these positions for viewability, and the current
- * x and y positions of the mouse *)
-type display = {mutable grid:box_data array; maxx:int; maxy:int; x_sep:int; y_sep:int;
-                mutable x : int; mutable y :int; bc : Graphics.color;
-                fc: Graphics.color; pc : Graphics.color}
+ * background color, the current board grid, and the x and y separations of
+ * said grid *)
+type display = {mutable grid:box_data array; maxx:int; maxy:int; x_sep:int;
+                y_sep:int; bg_col:Graphics.color}
 
 
 (* draws a rectangle on screen with bottom left point at
@@ -133,7 +132,7 @@ let draw_pointer (bcf:box_data) invis =
  * The box_data's size is determined by [scaling] (value of 1 makes box
  * take up an entire space on the grid. value > 1 takes more space. < 1 takes
  * less space). [border] determines the border size of the box_data
- * (drawn differently if it is ultimately drawn using draw_point, draw_block, etc).
+ * (drawn differently if it is drawn using draw_point, draw_block, etc).
  * (value of 2 makes entire box/block a border. Higher is less border). *)
 let pos_to_boxdata (s:display) (pos: int*int) (scaling: float) (border: float) =
   let w' = int_of_float ((float_of_int s.x_sep)/.scaling) in
@@ -146,7 +145,8 @@ let pos_to_boxdata (s:display) (pos: int*int) (scaling: float) (border: float) =
   let y' = cent_y - (h'/2) in
   let bw' = int_of_float (float_of_int ((min w' h'))/.border) in
   {x=x'; y=y'; w=w'; h=h'; bw=bw';
-  cmid=Graphics.black; ctop=Graphics.black; cbot=Graphics.black; cleft=Graphics.black; cright=Graphics.black}
+  cmid=Graphics.black; ctop=Graphics.black; cbot=Graphics.black;
+  cleft=Graphics.black; cright=Graphics.black}
 
 
 (* draws the player as a small green bloxk on display [s] at position [pos]. *)
@@ -173,10 +173,14 @@ let draw_monster (s:display) (pos: int*int) (m_type: move_type)=
   let no_edge = {tempbcf with cmid = gray1; ctop = invis; cbot = invis;
                                 cleft = invis; cright = invis} in
   match m_type with
-          | Chasing -> draw_block {tempbcf with cmid=Graphics.red; ctop=gray1; cbot=gray2}
-          | Random -> draw_block {tempbcf with cmid=Graphics.magenta; ctop = gray1; cbot=gray2}
-          | Circle _-> draw_block {tempbcf with cmid=Graphics.cyan; ctop = gray1; cbot=gray2}
-          | Radius _-> draw_block {tempbcf with cmid=Graphics.green; ctop = gray1; cbot=gray2}
+          | Chasing -> draw_block {tempbcf with cmid=Graphics.red;
+                                   ctop=gray1; cbot=gray2}
+          | Random -> draw_block {tempbcf with cmid=Graphics.magenta;
+                                  ctop = gray1; cbot=gray2}
+          | Circle _-> draw_block {tempbcf with cmid=Graphics.cyan;
+                                   ctop = gray1; cbot=gray2}
+          | Radius _-> draw_block {tempbcf with cmid=Graphics.green;
+                                   ctop = gray1; cbot=gray2}
           | Up -> draw_pointer {no_edge with ctop=visible} invis
           | Down -> draw_pointer {no_edge with cbot=visible} invis
           | Left -> draw_pointer {no_edge with cleft=visible} invis
@@ -188,7 +192,7 @@ let draw_monster (s:display) (pos: int*int) (m_type: move_type)=
 let draw_board (disp_ref:display ref) () =
   let disp = !disp_ref in
   (* draw background *)
-  Graphics.set_color disp.bc;
+  Graphics.set_color disp.bg_col;
   Graphics.fill_rect 0 0 (disp.maxx+1) (disp.maxy+1);
   (* draw grid *)
   Array.iter draw_block disp.grid
@@ -237,9 +241,9 @@ let initialize_display (s':display ref) board =
   let x_sep' = (maxx')/columns in
   let y_sep' = (maxy')/rows in
 
-  let temp_disp = {grid=[||]; maxx=maxx'; maxy=maxy'; x=60; y=60;
-                   bc=Graphics.rgb 130 130 130; fc=Graphics.black;
-                   pc=Graphics.red; x_sep=x_sep'; y_sep=y_sep'} in
+  let temp_disp = {grid=[||]; maxx=maxx'; maxy=maxy';
+                   bg_col=Graphics.rgb 130 130 130; x_sep=x_sep';
+                   y_sep=y_sep'} in
   let wall_data = {x=0; y=0; w=0;h=0; bw=5; cmid=gray1; ctop=gray3;
                    cbot=gray2; cleft=gray1; cright=gray1} in
   let grid' = Array.of_list (create_grid temp_disp board wall_data) in
@@ -310,7 +314,7 @@ let draw_loop (disp_ref:display ref) (game:game_state ref) (keys:char list) =
 let main_loop game (disp:display ref) =
   try
     while true do
-        let s = Graphics.wait_next_event [Graphics.Key_pressed; Graphics.Poll] in
+        let s = Graphics.wait_next_event [Graphics.Key_pressed;Graphics.Poll] in
         if s.Graphics.keypressed then
           let k = Graphics.read_key () in
           draw_loop disp game [k]
@@ -325,9 +329,8 @@ let main_loop game (disp:display ref) =
 let launch_game (start_level:int) =
   (* setup display for first level *)
   let board = Constants.get_master start_level in
-  let disp = ref {grid=[||]; maxx=100; maxy=100; x=60; y=60;
-                   bc=Graphics.rgb 130 130 130; fc=Graphics.black;
-                   pc=Graphics.red; x_sep=1; y_sep=1} in
+  let disp = ref {grid=[||]; maxx=100; maxy=100;bg_col=Graphics.rgb 130 130 130;
+                  x_sep=1; y_sep=1} in
   initialize_display disp board;
   (* open GUI *)
   Graphics.open_graph (" " ^ (string_of_int (!disp.maxx)) ^
