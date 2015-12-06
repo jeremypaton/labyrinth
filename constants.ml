@@ -367,8 +367,31 @@ let lvl5 =
 (*NOTE: going beyond the 80char limit actually makes it clearer to see the
 board since it is layed out visually. breaking lines would not help *)
 
+
 (*VERY HARD*)
 let lvl6 =
+  let design = [[x; x; x; x; x; x; x; x; x; x; x; x; x; x; x; x; x];
+              [x;mMm;mMm; x; x; x; x; x; x; x; x; x; x; x;mMm;mMm; x];
+              [x;mMm;mMm; x; o; x; x; o; o; o; x; x; o; x;mMm;mMm; x];
+              [x; o;mRa; o; o; o;mRa; o; o; o;mRa; o; o; o;mRa; o; x];
+                [x; o; o; o; o; o; o; o; o; o; o; o; o; o; o; o; x];
+              [x;mMm;mMm; x; o; o; o; o; o; o; o; o; o; x;mMm;mMm; x];
+              [x;mMm;mMm; x; o; o; o; o; o; o; o; o; o; x;mMm;mMm; x];
+                [x; o; o; o; o; o; o; o;mU; o; o; o; o; o; o; o; x];
+                [x; o; o; o; o; o; o;mL; p;mR; o; o; o; o; o; o; x];
+                [x; o; o; o; o; o; o; o;mD; o; o; o; o; o; o; o; x];
+              [x;mMm;mMm; x; o; o; o; o; o; o; o; o; o; x;mMm;mMm; x];
+              [x;mMm;mMm; x; o; o; o; o; o; o; o; o; o; x;mMm;mMm; x];
+                [x; o; o; o; o; o; o; o; o; o; o; o; o; o; o; o; x];
+              [x; o;mRa; o; o; o;mRa; o; o; o;mRa; o; o; o;mRa; o; x];
+              [x;mMm;mMm; x; o; x; x; o; o; o; x; x; o; x;mMm;mMm; x];
+              [x;mMm;mMm; x; x; x; x; x; x; x; x; x; x; x;mMm;mMm; x];
+                [x; x; x; x; x; x; x; x; x; x; x; x; x; x; x; x; x]]
+  in gen_lvl design 1000.0 50 "level 6: NOT THAT HARD ONCE YOU GET IT"
+
+
+(*VERY HARD*)
+let lvl7 =
   let design = [[mC;o; x; x; x; x; x; x; x; x; x; x; x; x; x; x; x; x; x; x; x; x; x; x; x; x; x; x; x; x];
                 [o; p; o; o; o; o; o; o; o; o; o; o; o; o; o; o; o; o; o; o; o;mL; o; o; o; o; o; o; o; o];
                 [o; o; o; o; o; o; o; o; o; o; o; o; o; o; o; o; o; o; o; o; o;mL; o; o; o; o; o; o; o; o];
@@ -383,15 +406,15 @@ let lvl6 =
                 [o; o; o; o; o; o;mU; o; o; x; o; x; x; o; x; o; x; x; o; x; x; o; x; x; o; x; x;mD; x; o];
                 [x; x; x; o; x; o; x; o; x; x; o; x; x; o; x; o; o; o; o; o; o; o; o; o; o; o; o; o; x; o];
                 [x; x;mR; o; x; o; x;mL; o; x; o; x; x; o; x; o; x; x; o; x; x; o; x; x; o; x; x; o; x; o];
-                [x; x; x; o; x;mD; x; o; x; x; o; x; x; o; x; o; o; o; o; o; o; o; o; o; o; o; o; o; x; o];
+                [x; x; x; o; x;mD; x; o; x; x; o; x; x; o; x; o; o; o; o; o; o; o; o; o; o; o;mD; o; x; o];
                 [x; x;mR; o; x; o; x; o;mR; x; o; x; x;mD; x;mU; x; x; o; x; x; o; x; x; o; x; x; o; x; o];
                 [x; x; x; o; x; o; x; o; x; x; o; x; x; o; x; o; o; o;mU; o; o; o; o;mR; o; o;mR; o; x; o];
-                [x; x;mR; o; x; o; x;mL; o; x;mU; x; x; o; x; o; x; x; o; x; x;mU; x; x; o; x; x; o; x; o];
+                [x; x;mR; o; x; o; x;mL; o; x;mU; x; x; o; x; o; x; x; o; x; x;mU; x; x; o; x; x;mR; o; o];
                 [x; x; x; o; x; o; x; o; x; x; o; x; x; o; x; o; o; o; o; o; o;mL; o;mL;mU; o;mL; o; x; o];
                 [x; x; o; o; o;mU; o; o; o;mR; o; o; o; o; x; o; o; o; o; o; o; o; o; o; o;mL; o;mU; o; o];
                 [x; x; x; x; o; x; o; x; x; x; o; x; x; o; x; x; x; x; x; x; x; x; x; x; x; x; x; x; x; o];
                 [x; x; x; x; x; x; x; x; x; x;mR; o; o; o; o; o; o; o; o; o; o; o; o; o; o; o; o; o; o; o]]
-  in gen_lvl design 1000.0 140 "level 6: VERY HARD"
+  in gen_lvl design 1000.0 140 "level 7: VERY HARD"
 
 let retrieve lvl =
   match lvl with
@@ -410,6 +433,7 @@ let retrieve lvl =
   |10 -> Some lvl4
   |11 -> Some lvl5
   |12 -> Some lvl6
+  |13 -> Some lvl7
   |_ -> None
 
 (******************************************************************************
