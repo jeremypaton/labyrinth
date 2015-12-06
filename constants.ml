@@ -416,6 +416,22 @@ let lvl7 =
                 [x; x; x; x; x; x; x; x; x; x;mR; o; o; o; o; o; o; o; o; o; o; o; o; o; o; o; o; o; o; o]]
   in gen_lvl design 1000.0 140 "level 7: VERY HARD"
 
+(* shows off ghost mode *)
+let lvl7=
+  let design= [[x;o;o;o;x;x;x;x;x;x;x;x;x;x;x];
+               [x;o;x;o;x;x;o;x;x;x;o;o;o;o;x];
+               [x;o;o;o;o;mCi;o;o;o;o;o;x;x;o;x];
+               [x;o;x;o;x;o;x;o;x;x;o;o;o;mC;x];
+               [o;mC;o;o;x;o;x;o;x;x;o;x;x;o;x];
+               [x;o;x;o;o;o;o;o;o;o;o;o;o;o;x];
+               [x;o;x;o;x;x;x;x;o;x;mU;o;o;o;x];
+               [x;o;o;o;o;o;p;o;o;x;o;x;x;o;x];
+               [x;o;x;o;x;x;o;x;o;o;o;x;x;o;x];
+               [x;o;x;o;x;x;o;x;o;x;o;o;o;o;o];
+               [o;mL;o;o;o;o;o;o;o;o;o;x;o;x;o];
+               [x;x;x;x;x;x;x;x;x;x;x;x;x;x;x]]
+        in gen_lvl design 2.0 50 "level 7: GHOST-MODE"
+
 let retrieve lvl =
   match lvl with
   |(-3 )-> Some test1
